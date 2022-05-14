@@ -4,13 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
 import uz.unicorn.rentme.enums.transport.TransportType;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Getter
 @Setter

@@ -1,6 +1,8 @@
 package uz.unicorn.rentme.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.dto.auth.AuthUserCreateDTO;
 import uz.unicorn.rentme.dto.auth.AuthUserDTO;
