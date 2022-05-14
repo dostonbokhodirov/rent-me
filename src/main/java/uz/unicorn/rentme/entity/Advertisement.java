@@ -5,12 +5,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.geo.Point;
+import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -30,6 +28,7 @@ public class Advertisement extends Auditable {
     private Long price;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private AdvertisementCategory category;
 
     @Column(nullable = false)

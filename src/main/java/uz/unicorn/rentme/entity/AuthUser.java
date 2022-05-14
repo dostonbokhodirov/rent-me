@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.entity;
 
 import lombok.*;
+import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.auth.AuthRole;
 import uz.unicorn.rentme.enums.auth.Gender;
 import uz.unicorn.rentme.enums.auth.Language;
@@ -42,11 +43,11 @@ public class AuthUser extends Auditable {
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(10) default 'INACTIVE'")
-    private Status status;
+    private Status status = Status.INACTIVE;
 
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(32) default 'USER'")
-    private AuthRole role;
+    private AuthRole role = AuthRole.USER;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "otp_id")

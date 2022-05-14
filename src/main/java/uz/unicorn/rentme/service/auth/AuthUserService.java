@@ -7,6 +7,8 @@ import uz.unicorn.rentme.dto.auth.AuthUserDTO;
 import uz.unicorn.rentme.dto.auth.AuthUserUpdateDTO;
 import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.entity.Otp;
+import uz.unicorn.rentme.enums.auth.AuthRole;
+import uz.unicorn.rentme.enums.auth.Status;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AuthUserMapper;
 import uz.unicorn.rentme.repository.AuthUserRepository;
@@ -28,14 +30,15 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(AuthUserCreateDTO dto) {
-        AuthUser authUser = repository.findById(1L).get();
-//        AuthUser authUser = mapper.fromCreateDTO(dto);
+        AuthUser authUser = mapper.fromCreateDTO(dto);
         Otp otp = Otp
                 .builder()
                 .code(String.valueOf(UUID.randomUUID()))
                 .expiry(LocalDateTime.now().plusMinutes(10))
                 .build();
         authUser.setOtp(otp);
+        authUser.setRole(AuthRole.USER);
+        authUser.setStatus(Status.INACTIVE);
         AuthUser save = repository.save(authUser);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }

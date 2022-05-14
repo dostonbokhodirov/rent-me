@@ -1,4 +1,4 @@
-package uz.unicorn.rentme.entity;
+package uz.unicorn.rentme.entity.base;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;

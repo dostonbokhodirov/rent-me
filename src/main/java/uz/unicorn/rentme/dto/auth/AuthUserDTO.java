@@ -26,6 +26,5 @@ public class AuthUserDTO extends GenericDTO {
     private Language language;
     private Status status;
     private AuthRole role;
-    private Otp otp;
     private List<Device> devices;
 }
