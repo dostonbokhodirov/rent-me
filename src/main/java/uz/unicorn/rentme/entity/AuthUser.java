@@ -56,11 +56,11 @@ public class AuthUser extends Auditable {
     @OneToMany(mappedBy = "authUser")
     private List<Device> devices;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "auth_user_advertisement",
-            joinColumns = {@JoinColumn(name = "auth_user_id")},
-            inverseJoinColumns = {@JoinColumn(name = "advertisement_id")})
-    private List<Advertisement> savedAdvertisements;
+//    @ManyToMany(fetch = FetchType.EAGER)
+//    @JoinTable(
+//            name = "auth_user_advertisement",
+//            joinColumns = {@JoinColumn(name = "auth_user_id")},
+//            inverseJoinColumns = {@JoinColumn(name = "advertisement_id")})
+//    private List<Advertisement> savedAdvertisements;
 
 }

@@ -43,7 +43,7 @@ public class Advertisement extends Auditable {
     @Column(nullable = false)
     private Long maxDuration;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Transport transport;
 
     @OneToMany(mappedBy = "advertisement")
