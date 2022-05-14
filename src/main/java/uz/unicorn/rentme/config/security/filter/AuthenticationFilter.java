@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -40,7 +40,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
 
-
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
@@ -49,12 +48,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginDto.getPhoneNumber(), loginDto.getCode());
             return authenticationProvider.authenticate(authenticationToken);
-        } catch (IOException e) {
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e.getMessage(), e.getCause());
+            throw new BadCredentialsException(e.getMessage(), e.getCause());
         }
-        return null;
     }
 
     @Override

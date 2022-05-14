@@ -21,6 +21,4 @@ public class Otp {
 
     private String code;
 
-//    @OneToOne(mappedBy = "otp")
-//    private AuthUser authUser;
 }

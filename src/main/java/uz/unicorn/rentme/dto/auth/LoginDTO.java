@@ -11,7 +11,6 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 @NoArgsConstructor
-@ParameterObject
 public class LoginDTO {
     @NotBlank
     @Pattern(regexp = "^\\+\\d{12}(\\d{2})?$", message = "Phone number is invalid")

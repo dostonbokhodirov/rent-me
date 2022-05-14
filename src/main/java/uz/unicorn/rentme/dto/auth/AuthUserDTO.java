@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.dto.auth;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import uz.unicorn.rentme.dto.base.GenericDTO;
 import uz.unicorn.rentme.entity.Device;
@@ -16,6 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthUserDTO extends GenericDTO {
     private String firstName;
     private String lastName;
