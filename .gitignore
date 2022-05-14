@@ -121,3 +121,5 @@ fabric.properties
 /mvnw.cmd
 /.idea/inspectionProfiles/Project_Default.xml
 /rent-me.iml
+/.idea/git_toolbox_prj.xml
+/.idea/vcs.xml
