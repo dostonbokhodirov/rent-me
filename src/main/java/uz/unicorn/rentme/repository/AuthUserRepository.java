@@ -4,8 +4,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
+import java.util.Optional;
+
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseRepository {
 
-    AuthUser findByPhoneNumber(String phoneNumber);
+    Optional<AuthUser> findByPhoneNumber(String phoneNumber);
 
 }

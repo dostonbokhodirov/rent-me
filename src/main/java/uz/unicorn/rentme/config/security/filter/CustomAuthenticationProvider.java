@@ -1,4 +1,4 @@
-package uz.unicorn.rentme.config.security;
+package uz.unicorn.rentme.config.security.filter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;

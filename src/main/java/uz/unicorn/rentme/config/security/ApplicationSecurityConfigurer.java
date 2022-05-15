@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import uz.unicorn.rentme.config.security.filter.AuthenticationFilter;
 import uz.unicorn.rentme.config.security.filter.AuthorizationFilter;
+import uz.unicorn.rentme.config.security.filter.CustomAuthenticationProvider;
 import uz.unicorn.rentme.config.security.utils.SecurityUtils;
 
 import java.util.List;

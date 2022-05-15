@@ -27,6 +27,7 @@ import uz.unicorn.rentme.config.security.utils.JWTUtils;
 import uz.unicorn.rentme.dto.auth.LoginDTO;
 import uz.unicorn.rentme.dto.auth.SessionDTO;
 import uz.unicorn.rentme.entity.AuthUser;
+import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.property.ServerProperties;
 import uz.unicorn.rentme.repository.AuthUserRepository;
 import uz.unicorn.rentme.response.AppErrorDTO;
@@ -153,12 +154,12 @@ public class AuthService implements UserDetailsService, BaseService {
 
     public AuthUser getUserByPhoneNumber(String phone) {
         log.info("Getting user by phone : {}", phone);
-        return repository.findByPhoneNumber(phone);
+        return repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        AuthUser user = repository.findByPhoneNumber(phone);
+        AuthUser user = repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
         return User.builder()
                 .username(user.getPhoneNumber())
                 .password(user.getOtp().getCode())
