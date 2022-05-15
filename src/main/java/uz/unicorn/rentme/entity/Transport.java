@@ -11,6 +11,7 @@ import uz.unicorn.rentme.enums.transport.TransportTransmission;
 import uz.unicorn.rentme.enums.transport.TransportType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -39,6 +40,9 @@ public class Transport extends Auditable {
 
     @Column(nullable = false)
     private TransportColor color;
+
+    @OneToMany(mappedBy = "transport")
+    List<Picture> pictures;
 
     @Column(columnDefinition = "bool default 'false'")
     private Boolean wellEquipped;

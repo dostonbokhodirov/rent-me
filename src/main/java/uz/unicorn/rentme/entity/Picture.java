@@ -23,6 +23,6 @@ public class Picture extends Auditable {
 
     @ManyToOne
     @JoinColumn
-    private Advertisement advertisement;
+    private Transport transport;
 
 }
