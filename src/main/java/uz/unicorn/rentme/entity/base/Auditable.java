@@ -47,3 +47,4 @@ public class Auditable implements BaseEntity, Serializable {
     private boolean deleted;
 
 }
+

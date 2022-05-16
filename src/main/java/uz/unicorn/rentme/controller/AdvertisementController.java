@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/advertisement")
 public class AdvertisementController extends AbstractController<AdvertisementService>
-implements GenericCrudController<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
+        implements GenericCrudController<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
     public AdvertisementController(AdvertisementService service) {
         super(service);
@@ -24,8 +24,8 @@ implements GenericCrudController<AdvertisementDTO, AdvertisementCreateDTO, Adver
 
     @Override
     @GetMapping(value = "/get/{id}")
-    public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
-        return null;
+    public ResponseEntity<DataDTO<AdvertisementDTO>> get(@PathVariable Long id) {
+        return service.get(id);
     }
 
     @Override

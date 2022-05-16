@@ -42,7 +42,7 @@ public class Transport extends Auditable {
     private TransportColor color;
 
     @OneToMany(mappedBy = "transport")
-    List<Picture> pictures;
+    private List<Picture> pictures;
 
     @Column(columnDefinition = "bool default 'false'")
     private Boolean wellEquipped;
