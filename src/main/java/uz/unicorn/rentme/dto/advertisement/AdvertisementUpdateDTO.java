@@ -11,4 +11,6 @@ import uz.unicorn.rentme.dto.base.GenericDTO;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertisementUpdateDTO extends GenericDTO {
+    private String title;
+    private String description;
 }
