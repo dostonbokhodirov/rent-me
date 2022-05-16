@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.controller.base.GenericCrudController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
@@ -24,26 +23,31 @@ implements GenericCrudController<AdvertisementDTO, AdvertisementCreateDTO, Adver
     }
 
     @Override
+    @GetMapping(value = "/get/{id}")
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
         return null;
     }
 
     @Override
+    @PostMapping(value = "/list")
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
         return null;
     }
 
     @Override
+    @PostMapping(value = "/create")
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         return null;
     }
 
     @Override
+    @PostMapping(value = "/update")
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
         return null;
     }
 
     @Override
+    @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
         return null;
     }
