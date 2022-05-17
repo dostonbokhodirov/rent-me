@@ -53,11 +53,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(new DataDTO<>(
                 new AppErrorDTO(HttpStatus.CONFLICT, e.getMessage(), webRequest)));
     }
-    @ExceptionHandler(value = {CustomSQLException.class})
-    public ResponseEntity<DataDTO<AppErrorDTO>> handleCustomSQL(IOException e, WebRequest webRequest) {
-        return new ResponseEntity<>(new DataDTO<>(
-                new AppErrorDTO(HttpStatus.CONFLICT, e.getMessage(), webRequest)));
-    }
 
     @Override
     protected org.springframework.http.ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

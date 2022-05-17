@@ -31,7 +31,7 @@ implements GenericCrudController<AdvertisementDTO, AdvertisementCreateDTO, Adver
     @Override
     @PostMapping(value = "/list")
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
-        return null;
+        return service.getAll(criteria);
     }
 
     @Override

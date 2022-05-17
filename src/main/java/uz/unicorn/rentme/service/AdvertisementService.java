@@ -1,17 +1,23 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
+import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
-import uz.unicorn.rentme.repository.AdvertisementRepository;
+import uz.unicorn.rentme.repository.advertisement.AdvertisementRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service
@@ -21,6 +27,9 @@ implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, Advertis
     public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository) {
         super(mapper, repository);
     }
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
@@ -44,7 +53,11 @@ implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, Advertis
 
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
-        return null;
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        Page<Advertisement> byUserId = repository.findByUserId(pageable, criteria.getUserId());
+        List<Advertisement> collect = byUserId.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
 
 }

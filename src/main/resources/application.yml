@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/rent_me_test
+    url: jdbc:postgresql://localhost:5432/rent_me
     username: postgres
-    password: postgres
+    password: 2001
   jpa:
     show-sql: true
     hibernate:
@@ -15,6 +15,10 @@ spring:
         format_sql: true
   messages:
     always-use-message-format: true
+  servlet:
+   multipart:
+     max-file-size: 10MB
+     max-request-size: 10MB
 
 springdoc:
   swagger-ui:
