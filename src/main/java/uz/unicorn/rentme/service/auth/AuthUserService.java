@@ -36,7 +36,6 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
                 .code(String.valueOf(UUID.randomUUID()))
                 .expiry(LocalDateTime.now().plusMinutes(10))
                 .build();
-        authUser.setOtp(otp);
         authUser.setRole(AuthRole.USER);
         authUser.setStatus(Status.INACTIVE);
         AuthUser save = repository.save(authUser);
