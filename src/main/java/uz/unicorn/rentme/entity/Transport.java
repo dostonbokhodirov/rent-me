@@ -39,6 +39,7 @@ public class Transport extends Auditable {
     private TransportFuel fuelType;
 
     @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
     private TransportColor color;
 
     @OneToMany(mappedBy = "transport")

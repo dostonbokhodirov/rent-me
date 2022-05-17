@@ -5,12 +5,7 @@ import lombok.*;
 import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.dto.base.GenericDTO;
 import uz.unicorn.rentme.dto.transport.TransportDTO;
-import uz.unicorn.rentme.entity.Transport;
-import uz.unicorn.rentme.enums.AdvertisementCategory;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -27,11 +22,11 @@ public class AdvertisementDTO extends GenericDTO {
 
     private Long price;
 
-    private AdvertisementCategory category;
+    private String category;
 
     private Point location;
 
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     private Long minDuration;
 

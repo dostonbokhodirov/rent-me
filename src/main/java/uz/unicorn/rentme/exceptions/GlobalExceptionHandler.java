@@ -48,11 +48,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         new AppErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage(), webRequest)));
     }
 
-    @ExceptionHandler(value = {CustomSQLException.class})
-    public ResponseEntity<DataDTO<AppErrorDTO>> handleCustomSQL(CustomSQLException e, WebRequest webRequest) {
-        return new ResponseEntity<>(new DataDTO<>(
-                new AppErrorDTO(HttpStatus.CONFLICT, e.getMessage(), webRequest)));
-    }
+//    @ExceptionHandler(value = {CustomSQLException.class})
+//    public ResponseEntity<DataDTO<AppErrorDTO>> handleCustomSQL(CustomSQLException e, WebRequest webRequest) {
+//        return new ResponseEntity<>(new DataDTO<>(
+//                new AppErrorDTO(HttpStatus.CONFLICT, e.getMessage(), webRequest)));
+//    }
+
     @ExceptionHandler(value = {CustomSQLException.class})
     public ResponseEntity<DataDTO<AppErrorDTO>> handleCustomSQL(IOException e, WebRequest webRequest) {
         return new ResponseEntity<>(new DataDTO<>(
