@@ -15,6 +15,7 @@ import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,6 +50,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {CustomSQLException.class})
     public ResponseEntity<DataDTO<AppErrorDTO>> handleCustomSQL(CustomSQLException e, WebRequest webRequest) {
+        return new ResponseEntity<>(new DataDTO<>(
+                new AppErrorDTO(HttpStatus.CONFLICT, e.getMessage(), webRequest)));
+    }
+    @ExceptionHandler(value = {CustomSQLException.class})
+    public ResponseEntity<DataDTO<AppErrorDTO>> handleCustomSQL(IOException e, WebRequest webRequest) {
         return new ResponseEntity<>(new DataDTO<>(
                 new AppErrorDTO(HttpStatus.CONFLICT, e.getMessage(), webRequest)));
     }
