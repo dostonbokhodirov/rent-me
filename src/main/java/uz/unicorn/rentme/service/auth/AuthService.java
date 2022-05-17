@@ -162,7 +162,7 @@ public class AuthService implements UserDetailsService, BaseService {
         AuthUser user = repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
         return User.builder()
                 .username(user.getPhoneNumber())
-                .password(user.getOtp().getCode())
+                .password("password")
                 .authorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + user.getRole())))
                 .build();
     }

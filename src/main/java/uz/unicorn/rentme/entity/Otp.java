@@ -17,8 +17,13 @@ public class Otp {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String phoneNumber;
+
+    @Column(nullable = false)
     private LocalDateTime expiry;
 
+    @Column(nullable = false)
     private String code;
 
 }

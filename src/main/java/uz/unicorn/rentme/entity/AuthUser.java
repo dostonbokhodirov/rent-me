@@ -49,10 +49,6 @@ public class AuthUser extends Auditable {
     @Column(columnDefinition = "varchar(32) default 'USER'")
     private AuthRole role = AuthRole.USER;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "otp_id")
-    private Otp otp;
-
     @OneToMany(mappedBy = "authUser")
     private List<Device> devices;
 
