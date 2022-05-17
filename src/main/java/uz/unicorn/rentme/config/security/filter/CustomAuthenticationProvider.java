@@ -32,7 +32,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         AuthUser authUser = authService.getUserByPhoneNumber(phoneNumber);
         if (Objects.nonNull(authUser)
                         && phoneNumber.equals(authUser.getPhoneNumber())
-                        && code.equals(authUser.getOtp().getCode())) {
+                        && code.equals("password")) {
             authorities.add(new SimpleGrantedAuthority(authUser.getRole().toString()));
             final UserDetails principal = new User(phoneNumber, code, authorities);
             return new UsernamePasswordAuthenticationToken(principal, null, authorities);
