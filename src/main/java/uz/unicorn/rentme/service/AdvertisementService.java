@@ -9,6 +9,8 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
+import uz.unicorn.rentme.exceptions.NotFoundException;
+import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.advertisement.AdvertisementRepository;
 import uz.unicorn.rentme.response.DataDTO;
@@ -19,17 +21,15 @@ import uz.unicorn.rentme.service.base.GenericCrudService;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
-implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
+        implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
     public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository) {
         super(mapper, repository);
     }
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
@@ -48,7 +48,10 @@ implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, Advertis
 
     @Override
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
-        return null;
+        Advertisement advertisement = repository.findByIdAndDeletedFalse(id);
+        if (Objects.isNull(advertisement)) throw new NotFoundException("Advertisement not found");
+        AdvertisementDTO dto = mapper.toDTO(advertisement);
+        return new ResponseEntity<>(new DataDTO<>(dto));
     }
 
     @Override

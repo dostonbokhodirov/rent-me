@@ -22,4 +22,6 @@ public class SessionDTO implements Serializable {
     private String accessToken;
 
     private String refreshToken;
+
+    private Boolean first = false;
 }

@@ -39,9 +39,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -73,6 +71,10 @@ public class AuthService implements UserDetailsService, BaseService {
             if (json_auth.has("success") && json_auth.get("success").asBoolean()) {
                 JsonNode node = json_auth.get("data");
                 SessionDTO sessionDto = objectMapper.readValue(node.toString(), SessionDTO.class);
+
+                AuthUser authUser = repository.findByPhoneNumber(dto.getPhoneNumber()).orElse(null);
+                if (Objects.isNull(authUser)) sessionDto.setFirst(true);
+
                 return new ResponseEntity<>(new DataDTO<>(sessionDto), HttpStatus.OK);
             }
             return new ResponseEntity<>(new DataDTO<>(objectMapper.readValue(json_auth.get("error").toString(),
@@ -155,6 +157,11 @@ public class AuthService implements UserDetailsService, BaseService {
     public AuthUser getUserByPhoneNumber(String phone) {
         log.info("Getting user by phone : {}", phone);
         return repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
+    }
+
+    public Optional<AuthUser> getOptionalByPhoneNumber(String phone) {
+        log.info("Getting user by phone : {}", phone);
+        return repository.findByPhoneNumber(phone);
     }
 
     @Override

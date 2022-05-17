@@ -36,7 +36,7 @@ public class Auditable implements BaseEntity, Serializable {
 
     @UpdateTimestamp
     @LastModifiedDate
-    @Column
+    @Column(columnDefinition = "timestamp with time zone")
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
@@ -47,3 +47,4 @@ public class Auditable implements BaseEntity, Serializable {
     private boolean deleted;
 
 }
+

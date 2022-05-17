@@ -30,7 +30,6 @@ import java.util.List;
 public class ApplicationSecurityConfigurer extends WebSecurityConfigurerAdapter {
     private final ObjectMapper mapper;
     private final AuthorizationFilter authorizationFilter;
-
     private final CustomAuthenticationProvider authenticationProvider;
 
     @Override

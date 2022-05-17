@@ -10,6 +10,7 @@ import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.auth.AuthService;
 import uz.unicorn.rentme.service.auth.AuthUserService;
+import uz.unicorn.rentme.service.auth.OtpService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,10 +22,12 @@ public class AuthUserController extends AbstractController<AuthUserService>
         implements GenericCrudController<AuthUserDTO, AuthUserCreateDTO, AuthUserUpdateDTO, AuthUserCriteria> {
 
     private final AuthService authService;
+    private final OtpService otpService;
 
-    public AuthUserController(AuthUserService service, AuthService authService) {
+    public AuthUserController(AuthUserService service, AuthService authService, OtpService otpService) {
         super(service);
         this.authService = authService;
+        this.otpService = otpService;
     }
 
     @PostMapping(value = "/access-token")
@@ -66,5 +69,10 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<DataDTO<Boolean>> delete(@PathVariable Long id) {
         return null;
+    }
+
+    @PostMapping(value = "/sendSms/{phoneNumber}")
+    public ResponseEntity<DataDTO<String>> sendSms(@PathVariable String phoneNumber){
+        return otpService.sendSms(phoneNumber);
     }
 }
