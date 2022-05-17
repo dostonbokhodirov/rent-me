@@ -1,22 +1,19 @@
 package uz.unicorn.rentme.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 public class Advertisement extends Auditable {
 
     @Column(nullable = false)
@@ -35,7 +32,7 @@ public class Advertisement extends Auditable {
     private Point location;
 
     @Column(nullable = false)
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(nullable = false)
     private Long minDuration;
@@ -45,5 +42,6 @@ public class Advertisement extends Auditable {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Transport transport;
+
 
 }
