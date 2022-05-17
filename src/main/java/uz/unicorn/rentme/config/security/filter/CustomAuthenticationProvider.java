@@ -11,33 +11,45 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.entity.AuthUser;
-import uz.unicorn.rentme.exceptions.BadRequestException;
+import uz.unicorn.rentme.entity.Otp;
+import uz.unicorn.rentme.repository.OtpRepository;
 import uz.unicorn.rentme.service.auth.AuthService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     private final AuthService authService;
+    private final OtpRepository otpRepository;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String phoneNumber = authentication.getPrincipal().toString();
         String code = authentication.getCredentials().toString();
         List<GrantedAuthority> authorities = new ArrayList<>();
-        AuthUser authUser = authService.getUserByPhoneNumber(phoneNumber);
-        if (Objects.nonNull(authUser)
-                        && phoneNumber.equals(authUser.getPhoneNumber())
-                        && code.equals("password")) {
-            authorities.add(new SimpleGrantedAuthority(authUser.getRole().toString()));
-            final UserDetails principal = new User(phoneNumber, code, authorities);
-            return new UsernamePasswordAuthenticationToken(principal, null, authorities);
+
+        Otp otp = otpRepository.findByPhoneNumber(phoneNumber).orElse(null);
+        if (Objects.isNull(otp)) {
+            throw new RuntimeException("Bad credentials");
         }
-        throw new RuntimeException("Bad Credentials");
+        if (!phoneNumber.equals(otp.getPhoneNumber()) || Integer.parseInt(code) != otp.getCode()) {
+            throw new RuntimeException("Phone number or otp code is incorrect");
+        }
+        if (otp.getExpiry().isBefore(LocalDateTime.now())) {
+            throw new RuntimeException("Otp code is invalid");
+        }
+
+        Optional<AuthUser> optional = authService.getOptionalByPhoneNumber(phoneNumber);
+        optional.ifPresent(authUser -> authorities.add(new SimpleGrantedAuthority(authUser.getRole().toString())));
+
+        final UserDetails principal = new User(phoneNumber, code, authorities);
+        return new UsernamePasswordAuthenticationToken(principal, code, authorities);
     }
 
     @Override

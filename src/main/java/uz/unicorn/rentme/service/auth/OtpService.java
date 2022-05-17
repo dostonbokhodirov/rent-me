@@ -8,12 +8,14 @@ import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.dto.auth.SmsSenderDTO;
 import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.entity.Otp;
+import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.repository.AuthUserRepository;
 import uz.unicorn.rentme.repository.OtpRepository;
 import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.BaseService;
+import uz.unicorn.rentme.utils.OtpUtils;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,21 +28,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OtpService implements BaseService {
 
-    private final String baseUrl = "https://rest.messagebird.com/messages";
-    private final String authorization = "AccessKey pX4Ti0YqeoTUeCzX9ezBFpWT1";
-    private final int expiry = 10; //in minutes
-
     private final OtpRepository otpRepository;
+
+    public Otp getByPhoneNumber(String phoneNumber) {
+        return otpRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new NotFoundException("Otp not found"));
+    }
 
     public ResponseEntity<DataDTO<String>> sendSms(String phoneNumber) {
         try {
-            int random  = randomCode();
+            int random  = OtpUtils.randomCode();
             String jsonInputString = (new Gson()).toJson(
                     new SmsSenderDTO(phoneNumber, "RentMe","Hello, your opt code is: " + random));
 
             var request = HttpRequest.newBuilder()
-                    .uri(URI.create(baseUrl))
-                    .header("Authorization",authorization)
+                    .uri(URI.create(OtpUtils.baseUrl))
+                    .header("Authorization",OtpUtils.authorization)
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                     .build();
@@ -55,11 +57,11 @@ public class OtpService implements BaseService {
             if (byPhoneNumber.isPresent()){
                 Otp otp = byPhoneNumber.get();
                 otp.setCode(random);
-                otp.setExpiry(LocalDateTime.now().plusMinutes(expiry));
+                otp.setExpiry(LocalDateTime.now().plusMinutes(OtpUtils.expiry));
                 otpRepository.save(otp);
                 return new ResponseEntity<>(new DataDTO<>("success"), HttpStatus.OK);
             }
-            otpRepository.save(new Otp(phoneNumber, LocalDateTime.now().plusMinutes(expiry) ,random));
+            otpRepository.save(new Otp(phoneNumber, LocalDateTime.now().plusMinutes(OtpUtils.expiry) ,random));
             // v2 =>  statusCode != 200
 
             return new ResponseEntity<>(new DataDTO<>("success"), HttpStatus.OK);
@@ -84,14 +86,6 @@ public class OtpService implements BaseService {
                     .build()), HttpStatus.OK);
         }
 
-    }
-    
-    private int randomCode(){
-        int max = 999999;
-        int min = 900000;
-        int range = max - min + 1;
-
-        return (int)(Math.random() * range) + min;
     }
 
 }
