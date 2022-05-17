@@ -6,7 +6,6 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
-import uz.unicorn.rentme.entity.Transport;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
@@ -17,11 +16,10 @@ import uz.unicorn.rentme.service.base.GenericCrudService;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Service
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
-implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
+        implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
     public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository) {
         super(mapper, repository);
@@ -44,11 +42,10 @@ implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, Advertis
 
     @Override
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
-        Optional<Advertisement> advertisementOptional = Optional.ofNullable(repository.findByIdAndDeletedFalse(id));
-        if (advertisementOptional.isEmpty())
-            throw new NotFoundException("Advertisement not found");
-        Advertisement advertisement = advertisementOptional.get();
-        return new ResponseEntity<>(new DataDTO<>(mapper.toDTO(advertisement)));
+        Advertisement advertisement = repository.findByIdAndDeletedFalse(id);
+        if (Objects.isNull(advertisement)) throw new NotFoundException("Advertisement not found");
+        AdvertisementDTO dto = mapper.toDTO(advertisement);
+        return new ResponseEntity<>(new DataDTO<>(dto));
     }
 
     @Override

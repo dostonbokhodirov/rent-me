@@ -8,8 +8,7 @@ import uz.unicorn.rentme.repository.base.BaseRepository;
 
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
 
-    @Query(value = "select a.* from Advertisement a where a.id = :id and a.deleted = false",nativeQuery = true)
-    Advertisement findByIdAndDeletedFalse(@Param("id") Long id);
+    Advertisement findByIdAndDeletedFalse(Long id);
 
 
 

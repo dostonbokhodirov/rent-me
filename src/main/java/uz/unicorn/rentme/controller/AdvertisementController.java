@@ -1,7 +1,5 @@
 package uz.unicorn.rentme.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.controller.base.GenericCrudController;
@@ -9,8 +7,6 @@ import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
-import uz.unicorn.rentme.entity.Advertisement;
-import uz.unicorn.rentme.repository.AdvertisementRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.AdvertisementService;
