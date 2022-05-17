@@ -31,11 +31,11 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
     @Override
     public ResponseEntity<DataDTO<Long>> create(AuthUserCreateDTO dto) {
         AuthUser authUser = mapper.fromCreateDTO(dto);
-        Otp otp = Otp
-                .builder()
-                .code(String.valueOf(UUID.randomUUID()))
-                .expiry(LocalDateTime.now().plusMinutes(10))
-                .build();
+//        Otp otp = Otp
+//                .builder()
+//                .code(String.valueOf(UUID.randomUUID()))
+//                .expiry(LocalDateTime.now().plusMinutes(10))
+//                .build();
         authUser.setRole(AuthRole.USER);
         authUser.setStatus(Status.INACTIVE);
         AuthUser save = repository.save(authUser);
