@@ -19,4 +19,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "inner join auth_user_advertisement aua on a.id = aua.advertisement_id where aua.auth_user_id=:userId"
             , nativeQuery = true)
     Page<Advertisement> findByUserId(Pageable pageable, Long userId);
+
+    Advertisement findByIdAndDeletedFalse(Long id);
 }

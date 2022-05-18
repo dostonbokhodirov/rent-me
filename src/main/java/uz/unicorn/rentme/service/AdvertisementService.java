@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -10,7 +11,6 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.exceptions.NotFoundException;
-import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.advertisement.AdvertisementRepository;
 import uz.unicorn.rentme.response.DataDTO;
@@ -18,8 +18,6 @@ import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,7 +25,7 @@ import java.util.Objects;
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
-    public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository) {
+    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository) {
         super(mapper, repository);
     }
 
