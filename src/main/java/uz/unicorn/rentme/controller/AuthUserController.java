@@ -50,7 +50,7 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @Override
     @PostMapping(value = "/list")
     public ResponseEntity<DataDTO<List<AuthUserDTO>>> getAll(@RequestBody AuthUserCriteria criteria) {
-        return null;
+        return service.getAll(criteria);
     }
 
     @Override
@@ -71,7 +71,7 @@ public class AuthUserController extends AbstractController<AuthUserService>
         return null;
     }
 
-    @PostMapping(value = "/sendSms/{phoneNumber}")
+    @PostMapping(value = "/send-sms/{phoneNumber}")
     public ResponseEntity<DataDTO<String>> sendSms(@PathVariable String phoneNumber){
         return otpService.sendSms(phoneNumber);
     }

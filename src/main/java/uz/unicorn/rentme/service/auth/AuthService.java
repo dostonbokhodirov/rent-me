@@ -27,6 +27,8 @@ import uz.unicorn.rentme.config.security.utils.JWTUtils;
 import uz.unicorn.rentme.dto.auth.LoginDTO;
 import uz.unicorn.rentme.dto.auth.SessionDTO;
 import uz.unicorn.rentme.entity.AuthUser;
+import uz.unicorn.rentme.enums.auth.AuthRole;
+import uz.unicorn.rentme.enums.auth.Status;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.property.ServerProperties;
 import uz.unicorn.rentme.repository.AuthUserRepository;
@@ -74,6 +76,10 @@ public class AuthService implements UserDetailsService, BaseService {
 
                 AuthUser authUser = repository.findByPhoneNumber(dto.getPhoneNumber()).orElse(null);
                 if (Objects.isNull(authUser)) sessionDto.setFirst(true);
+                else {
+                    authUser.setStatus(Status.ACTIVE);
+                    repository.save(authUser);
+                }
 
                 return new ResponseEntity<>(new DataDTO<>(sessionDto), HttpStatus.OK);
             }
