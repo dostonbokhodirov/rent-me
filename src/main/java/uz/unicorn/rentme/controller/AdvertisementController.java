@@ -34,6 +34,15 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.getAll(criteria);
     }
 
+    @GetMapping(value = "/list_my")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList( AdvertisementCriteria criteria) {
+        return service.getAllMyList(criteria);
+    }
+    @GetMapping(value = "/list_my")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getMySave( AdvertisementCriteria criteria) {
+        return service.getAllMySave(criteria);
+    }
+
     @Override
     @PostMapping(value = "/create")
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {

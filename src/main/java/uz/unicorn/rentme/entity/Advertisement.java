@@ -42,5 +42,4 @@ public class Advertisement extends Auditable {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Transport transport;
-
 }

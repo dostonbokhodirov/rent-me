@@ -9,7 +9,4 @@ import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 @Setter
 @NoArgsConstructor
 public class AdvertisementCriteria extends AbstractCriteria {
-
-    private Long userId;
-
 }

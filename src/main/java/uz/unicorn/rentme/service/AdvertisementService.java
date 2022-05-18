@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import uz.unicorn.rentme.config.security.utils.UtilsForSessionUser;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
@@ -25,8 +26,11 @@ import java.util.Objects;
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
-    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository) {
+    private final UtilsForSessionUser utils;
+
+    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
         super(mapper, repository);
+        this.utils = utils;
     }
 
     @Override
@@ -54,11 +58,22 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
+        return null;
+    }
+
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> byUserId = repository.findByUserId(pageable, criteria.getUserId());
+        Page<Advertisement> byUserId = repository.findAllByUserIdAndDeletedFalse(pageable, utils.getSessionId());
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
 
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        Page<Advertisement> byUserId = repository.findAllByCreatedBy(pageable, utils.getSessionId());
+        List<Advertisement> collect = byUserId.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+    }
 }

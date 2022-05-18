@@ -11,6 +11,7 @@ import uz.unicorn.rentme.dto.auth.AuthUserCreateDTO;
 import uz.unicorn.rentme.dto.auth.AuthUserDTO;
 import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.entity.Otp;
+import uz.unicorn.rentme.property.OpenApiProperties;
 import uz.unicorn.rentme.property.ServerProperties;
 import uz.unicorn.rentme.repository.AuthUserRepository;
 import uz.unicorn.rentme.service.auth.AuthUserService;
@@ -18,7 +19,8 @@ import uz.unicorn.rentme.service.auth.AuthUserService;
 @SpringBootApplication
 @OpenAPIDefinition
 @EnableConfigurationProperties(
-        {ServerProperties.class}
+        {ServerProperties.class,
+                OpenApiProperties.class}
 )
 @RequiredArgsConstructor
 public class RentMeApplication {
@@ -30,7 +32,7 @@ public class RentMeApplication {
         SpringApplication.run(RentMeApplication.class, args);
     }
 
-//    @Bean
+    //    @Bean
     CommandLineRunner run() {
         return args -> {
             AuthUserCreateDTO dto = AuthUserCreateDTO

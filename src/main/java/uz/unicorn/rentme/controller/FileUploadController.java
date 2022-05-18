@@ -1,6 +1,5 @@
 package uz.unicorn.rentme.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +13,9 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/file")
-public class ResourceController extends AbstractController<FileUploadService> {
+public class FileUploadController extends AbstractController<FileUploadService> {
 
-    public ResourceController(FileUploadService service) {
+    public FileUploadController(FileUploadService service) {
         super(service);
     }
 
