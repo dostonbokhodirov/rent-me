@@ -1,5 +1,7 @@
 package uz.unicorn.rentme.service.auth;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.AuthUserCriteria;
 import uz.unicorn.rentme.dto.auth.AuthUserCreateDTO;
@@ -24,6 +26,7 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
         implements GenericCrudService<AuthUserDTO, AuthUserCreateDTO, AuthUserUpdateDTO, AuthUserCriteria> {
 
     private final OtpRepository otpRepository;
+
     public AuthUserService(AuthUserMapper mapper, AuthUserRepository repository, OtpRepository otpRepository) {
         super(mapper, repository);
         this.otpRepository = otpRepository;
@@ -58,6 +61,9 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
 
     @Override
     public ResponseEntity<DataDTO<List<AuthUserDTO>>> getAll(AuthUserCriteria criteria) {
-        return null;
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<AuthUser> authUserList = repository.findAll(pageable).getContent();
+        List<AuthUserDTO> authUserDTOList = mapper.toDTO(authUserList);
+        return new ResponseEntity<>(new DataDTO<>(authUserDTOList, (long) authUserList.size()));
     }
 }
