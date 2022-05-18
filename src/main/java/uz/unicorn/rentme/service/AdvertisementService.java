@@ -1,5 +1,9 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
@@ -8,7 +12,7 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
-import uz.unicorn.rentme.repository.AdvertisementRepository;
+import uz.unicorn.rentme.repository.advertisement.AdvertisementRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
@@ -21,7 +25,7 @@ import java.util.Objects;
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
-    public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository) {
+    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository) {
         super(mapper, repository);
     }
 
@@ -50,7 +54,11 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
-        return null;
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        Page<Advertisement> byUserId = repository.findByUserId(pageable, criteria.getUserId());
+        List<Advertisement> collect = byUserId.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
 
 }

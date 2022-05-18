@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
+import uz.unicorn.rentme.service.base.BaseService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -23,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class FileUploadService {
+public class FileUploadService implements BaseService {
 
     private String uploadFile(File file, String fileName) throws IOException {
         BlobId blobId = BlobId.of("picturesaver-61bc7.appspot.com", fileName);
@@ -57,7 +58,7 @@ public class FileUploadService {
                 throw new RuntimeException(e);
             }
         });
-        return new ResponseEntity<>(new DataDTO<>(PATH));
+        return new ResponseEntity<>(new DataDTO<>(PATH, (long) PATH.size()));
     }
 
     public String upload(MultipartFile picture) throws IOException {
