@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
@@ -27,7 +28,9 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
-        return null;
+        Advertisement advertisement = mapper.fromCreateDTO(dto);
+        Advertisement saveAdvertisement = repository.save(advertisement);
+        return new ResponseEntity(new DataDTO<>(saveAdvertisement));
     }
 
     @Override

@@ -36,8 +36,8 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
 
     @Override
     @PostMapping(value = "/create")
-    public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
-        return null;
+    public ResponseEntity<DataDTO<Long>> create(@RequestBody AdvertisementCreateDTO dto) {
+        return service.create(dto);
     }
 
     @Override

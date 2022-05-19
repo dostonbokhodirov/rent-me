@@ -32,7 +32,7 @@ public interface AdvertisementMapper extends GenericMapper<Advertisement, Advert
     Advertisement fromUpdateDTO(AuthUserUpdateDTO dto, Advertisement entity);
 
     @Override
-    @Mapping(target = "transport", ignore = true)
+    @Mapping(target = "transport", ignore = false)
     Advertisement fromCreateDTO(AdvertisementCreateDTO dto);
 
 }
