@@ -18,4 +18,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     Advertisement findByIdAndDeletedFalse(Long id);
 
     Page<Advertisement> findAllByCreatedBy(Pageable pageable, Long id);
+
+    @Query(value = "select * from advertisement a where a.min_duration = i_min", nativeQuery = true)
+    Page<Advertisement> findAllByMinDurationEquals(Pageable pageable, int i_min);
 }

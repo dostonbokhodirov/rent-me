@@ -28,7 +28,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     private final UtilsForSessionUser utils;
 
-    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
+    public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
         super(mapper, repository);
         this.utils = utils;
     }
@@ -36,8 +36,9 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
-        Advertisement saveAdvertisement = repository.save(advertisement);
-        return new ResponseEntity(new DataDTO<>(saveAdvertisement));
+        repository.save(advertisement);
+        AdvertisementDTO advertisementDTO = mapper.toDTO(advertisement);
+        return new ResponseEntity(new DataDTO<>(advertisementDTO));
     }
 
     @Override
@@ -76,6 +77,14 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Page<Advertisement> byUserId = repository.findAllByCreatedBy(pageable, utils.getSessionId());
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+    }
+
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getDailyAdvertisement(AdvertisementCriteria criteria) {
+        Pageable pageable = PageRequest.of(criteria.getPage(),criteria.getSize());
+        Page<Advertisement> pages = repository.findAllByMinDurationEquals(pageable, 1);
+        List<Advertisement> advertisementList = pages.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisementList);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
 }
