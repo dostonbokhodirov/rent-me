@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertisementDTO extends GenericDTO {
+
     private String title;
     private String description;
     private Long price;
