@@ -80,4 +80,12 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
+
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getDailyAdvertisement(AdvertisementCriteria criteria) {
+        Pageable pageable = PageRequest.of(criteria.getPage(),criteria.getSize());
+        Page<Advertisement> pages = repository.findAllByMinDurationEquals(pageable, 1, 30);
+        List<Advertisement> advertisementList = pages.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisementList);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+    }
 }
