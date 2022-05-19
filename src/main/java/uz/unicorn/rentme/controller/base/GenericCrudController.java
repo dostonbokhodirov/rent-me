@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.controller.base;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import uz.unicorn.rentme.criteria.base.BaseCriteria;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.dto.base.GenericDTO;
@@ -20,7 +21,7 @@ public interface GenericCrudController<
 
     ResponseEntity<DataDTO<Long>> create(CD dto);
 
-    ResponseEntity<DataDTO<Long>> update(UD dto);
+    ResponseEntity<DataDTO<Long>> update( UD dto);
 
     ResponseEntity<DataDTO<Boolean>> delete(Long id);
 

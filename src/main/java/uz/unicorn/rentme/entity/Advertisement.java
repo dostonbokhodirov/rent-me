@@ -28,7 +28,7 @@ public class Advertisement extends Auditable {
     @Enumerated(value = EnumType.STRING)
     private AdvertisementCategory category;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "varchar")
     private Point location;
 
     @Column(nullable = false)

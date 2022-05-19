@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
+import java.util.Optional;
+
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
     @Query(value = "select a.* from advertisement a " +
@@ -15,7 +17,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             , nativeQuery = true)
     Page<Advertisement> findAllByUserIdAndDeletedFalse(Pageable pageable, Long userId);
 
-    Advertisement findByIdAndDeletedFalse(Long id);
+    Optional<Advertisement> findByIdAndDeletedFalse(Long id);
 
     Page<Advertisement> findAllByCreatedBy(Pageable pageable, Long id);
 }

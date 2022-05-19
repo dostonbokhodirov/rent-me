@@ -20,7 +20,6 @@ import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
@@ -35,7 +34,10 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
-        return null;
+        Advertisement advertisement = mapper.fromCreateDTO(dto);
+        advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
+        Advertisement save = repository.save(advertisement);
+        return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
 
     @Override
@@ -50,8 +52,9 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
-        Advertisement advertisement = repository.findByIdAndDeletedFalse(id);
-        if (Objects.isNull(advertisement)) throw new NotFoundException("Advertisement not found");
+        Advertisement advertisement = repository.findByIdAndDeletedFalse(id).orElseThrow(() -> {
+            throw new NotFoundException("Advertisement not found");
+        });
         AdvertisementDTO dto = mapper.toDTO(advertisement);
         return new ResponseEntity<>(new DataDTO<>(dto));
     }
@@ -64,6 +67,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         Page<Advertisement> byUserId = repository.findAllByUserIdAndDeletedFalse(pageable, utils.getSessionId());
+        if (byUserId.isEmpty()) throw new NotFoundException("Advertisements not found");
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));

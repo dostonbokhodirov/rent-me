@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service.auth;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
 
     private final OtpRepository otpRepository;
 
-    public AuthUserService(AuthUserMapper mapper, AuthUserRepository repository, OtpRepository otpRepository) {
+    public AuthUserService(@Qualifier("authUserMapperImpl") AuthUserMapper mapper, AuthUserRepository repository, OtpRepository otpRepository) {
         super(mapper, repository);
         this.otpRepository = otpRepository;
     }

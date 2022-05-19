@@ -2,6 +2,7 @@ package uz.unicorn.rentme.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
@@ -13,7 +14,9 @@ import javax.persistence.MappedSuperclass;
 import java.util.List;
 
 @Component
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
+uses = {TransportMapper.class})
 public interface AdvertisementMapper extends GenericMapper<Advertisement, AdvertisementDTO, AdvertisementCreateDTO, AuthUserUpdateDTO> {
 
     @Override
@@ -32,7 +35,6 @@ public interface AdvertisementMapper extends GenericMapper<Advertisement, Advert
     Advertisement fromUpdateDTO(AuthUserUpdateDTO dto, Advertisement entity);
 
     @Override
-    @Mapping(target = "transport", ignore = true)
     Advertisement fromCreateDTO(AdvertisementCreateDTO dto);
 
 }

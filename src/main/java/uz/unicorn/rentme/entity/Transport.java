@@ -42,7 +42,7 @@ public class Transport extends Auditable {
     @Enumerated(value = EnumType.STRING)
     private TransportColor color;
 
-    @OneToMany(mappedBy = "transport")
+    @OneToMany(mappedBy = "transport",cascade = CascadeType.ALL)
     private List<Picture> pictures;
 
     @Column(columnDefinition = "bool default 'false'")

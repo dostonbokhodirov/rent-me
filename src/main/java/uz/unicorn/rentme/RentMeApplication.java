@@ -7,13 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.AuditorAware;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import uz.unicorn.rentme.dto.auth.AuthUserCreateDTO;
-import uz.unicorn.rentme.dto.auth.AuthUserDTO;
-import uz.unicorn.rentme.entity.AuthUser;
-import uz.unicorn.rentme.entity.Otp;
+import uz.unicorn.rentme.entity.base.SecurityAuditorAware;
 import uz.unicorn.rentme.property.OpenApiProperties;
 import uz.unicorn.rentme.property.ServerProperties;
-import uz.unicorn.rentme.repository.AuthUserRepository;
 import uz.unicorn.rentme.service.auth.AuthUserService;
 
 @SpringBootApplication
@@ -23,9 +23,9 @@ import uz.unicorn.rentme.service.auth.AuthUserService;
                 OpenApiProperties.class}
 )
 @RequiredArgsConstructor
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+@EnableJpaRepositories
 public class RentMeApplication {
-
-    private final AuthUserRepository authUserRepository;
     private final AuthUserService authUserService;
 
     public static void main(String[] args) {
@@ -44,5 +44,11 @@ public class RentMeApplication {
             authUserService.create(dto);
         };
     }
+
+    @Bean
+    AuditorAware<Long> auditorAware() {
+        return new SecurityAuditorAware();
+    }
+
 
 }
