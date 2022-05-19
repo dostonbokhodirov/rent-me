@@ -1,31 +1,29 @@
 package uz.unicorn.rentme.service;
 
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
+import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
-import uz.unicorn.rentme.repository.advertisement.AdvertisementRepository;
+import uz.unicorn.rentme.repository.AdvertisementRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
-    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository) {
+    public AdvertisementService(/*@Qualifier("AdvertisementMapperImpl") */AdvertisementMapper mapper, AdvertisementRepository repository) {
         super(mapper, repository);
     }
 
@@ -46,8 +44,9 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
-        Advertisement advertisement = repository.findByIdAndDeletedFalse(id);
-        if (Objects.isNull(advertisement)) throw new NotFoundException("Advertisement not found");
+        Advertisement advertisement = repository
+                .findByIdAndDeletedFalse(id)
+                .orElseThrow(() -> new NotFoundException("Advertisement not found"));
         AdvertisementDTO dto = mapper.toDTO(advertisement);
         return new ResponseEntity<>(new DataDTO<>(dto));
     }
@@ -55,10 +54,18 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> byUserId = repository.findByUserId(pageable, criteria.getUserId());
-        List<Advertisement> collect = byUserId.stream().toList();
-        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+        List<Advertisement> advertisementList = repository
+                .findAllByUserId(pageable, criteria.getUserId())
+                .orElseThrow(() -> new NotFoundException("Advertisements not found"));
+        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
     }
 
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<AdvertisementShortDTO> advertisementList = repository
+                .findAllByMaxDurationGreaterThan(30L, pageable)
+                .orElseThrow(() -> new NotFoundException("Advertisement not found"));
+        return new ResponseEntity<>(new DataDTO<>(advertisementList, (long) advertisementList.size()));
+    }
 }

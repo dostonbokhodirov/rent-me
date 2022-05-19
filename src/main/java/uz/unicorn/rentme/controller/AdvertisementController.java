@@ -6,6 +6,7 @@ import uz.unicorn.rentme.controller.base.GenericCrudController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
+import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
@@ -50,6 +51,11 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
         return null;
+    }
+
+    @PostMapping(value = "/list-weekly")
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
+        return service.getAllWeekly(criteria);
     }
 
 }

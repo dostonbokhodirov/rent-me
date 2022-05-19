@@ -11,6 +11,5 @@ import uz.unicorn.rentme.dto.base.BaseDTO;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertisementCreateDTO implements BaseDTO {
-    private String title;
     private String description;
 }
