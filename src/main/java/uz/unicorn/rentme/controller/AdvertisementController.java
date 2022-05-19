@@ -60,5 +60,10 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
         return null;
     }
-
+    @GetMapping("/list_daily")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(
+            @RequestBody AdvertisementCriteria criteria
+    ){
+        return service.getDailyAdvertisement(criteria);
+    }
 }
