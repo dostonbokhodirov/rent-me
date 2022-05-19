@@ -21,6 +21,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     Page<Advertisement> findAllByCreatedBy(Pageable pageable, Long id);
 
-    @Query(value = "select * from advertisement a where a.min_duration >= i_min and a.max_duration < 30", nativeQuery = true)
+    @Query(value = "select * from advertisement a where a.min_duration >= :i_min and a.max_duration < :i_max", nativeQuery = true)
     Page<Advertisement> findAllByMinDurationEquals(Pageable pageable, int i_min, int i_max);
 }

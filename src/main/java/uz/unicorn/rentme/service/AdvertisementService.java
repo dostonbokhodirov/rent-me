@@ -42,12 +42,21 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
-        return null;
+        Advertisement advertisement = repository.findByIdAndDeletedFalse(dto.getId()).orElseThrow(() -> {
+            throw new NotFoundException("Advertisement not found");
+        });
+        Advertisement advertisement1 = mapper.fromUpdateDTO(dto, advertisement);
+        Advertisement save = repository.save(advertisement1);
+        return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
 
     @Override
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
-        return null;
+        Advertisement advertisement = repository.findByIdAndDeletedFalse(id).orElseThrow(() -> {
+            throw new NotFoundException("Advertisement not found");
+        });
+        repository.delete(advertisement);
+        return new ResponseEntity<>(new DataDTO<>(true));
     }
 
     @Override
@@ -88,4 +97,5 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisementList);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
+
 }

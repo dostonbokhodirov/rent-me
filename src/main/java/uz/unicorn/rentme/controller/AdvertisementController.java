@@ -52,18 +52,17 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     @Override
     @PostMapping(value = "/update")
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
-        return null;
+        return service.update(dto);
     }
 
     @Override
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
-        return null;
+    public ResponseEntity<DataDTO<Boolean>> delete(@PathVariable Long id) {
+
+        return service.delete(id);
     }
     @GetMapping("/list_daily")
-    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(
-            @RequestBody AdvertisementCriteria criteria
-    ){
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(@RequestBody AdvertisementCriteria criteria){
         return service.getDailyAdvertisement(criteria);
     }
 }
