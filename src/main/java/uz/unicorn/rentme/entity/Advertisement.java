@@ -25,7 +25,7 @@ public class Advertisement extends Auditable {
     @Enumerated(value = EnumType.STRING)
     private AdvertisementCategory category;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "varchar")
     private Point location;
 
     @Column(nullable = false)
@@ -39,5 +39,4 @@ public class Advertisement extends Auditable {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Transport transport;
-
 }

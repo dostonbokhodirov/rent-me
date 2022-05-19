@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,7 +18,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     @Query(value = "select a.* from public.advertisement a " +
             "inner join public.auth_user_advertisement aua on a.id = aua.advertisement_id where aua.auth_user_id=:userId"
             , nativeQuery = true)
-    Optional<List<Advertisement>> findAllByUserId(Pageable pageable, Long userId);
+    Page<Advertisement> findAllByUserId(Pageable pageable, Long userId);
 
     Optional<Advertisement> findByIdAndDeletedFalse(Long id);
 
@@ -35,4 +36,14 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     Optional<List<AdvertisementShortDTO>> findAllByMaxDurationGreaterThan(
             @Param(value = "maxDuration") Long maxDuration,
             Pageable pageable);
+
+    @Query(value = "select a.* from advertisement a " +
+            "inner join auth_user_advertisement aua on a.id = aua.advertisement_id where aua.auth_user_id=:userId and a.deleted='f'"
+            , nativeQuery = true)
+    Page<Advertisement> findAllByUserIdAndDeletedFalse(Pageable pageable, Long userId);
+
+    Page<Advertisement> findAllByCreatedBy(Pageable pageable, Long id);
+
+    @Query(value = "select * from advertisement a where a.min_duration >= :i_min and a.max_duration < :i_max", nativeQuery = true)
+    Page<Advertisement> findAllByMinDurationEquals(Pageable pageable, int i_min, int i_max);
 }

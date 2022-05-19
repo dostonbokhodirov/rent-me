@@ -1,7 +1,11 @@
 package uz.unicorn.rentme.dto.transport;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.google.j2objc.annotations.ObjectiveCName;
+import lombok.*;
+import org.springdoc.api.annotations.ParameterObject;
+import uz.unicorn.rentme.dto.base.BaseDTO;
+import uz.unicorn.rentme.dto.picture.PictureCreateDto;
 import uz.unicorn.rentme.dto.picture.PictureDTO;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
@@ -10,10 +14,12 @@ import uz.unicorn.rentme.enums.transport.TransportType;
 
 import java.util.List;
 
-
 @Getter
 @Setter
-public class TransportDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class TransportCreateDTO implements BaseDTO {
 
     private TransportType type;
 
@@ -27,8 +33,7 @@ public class TransportDTO {
 
     private TransportColor color;
 
-    private List<PictureDTO> pictures;
+    private List<PictureCreateDto> pictures;
 
     private Boolean wellEquipped;
-
 }

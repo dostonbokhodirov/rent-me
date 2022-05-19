@@ -37,25 +37,40 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
 
     @Override
     @PostMapping(value = "/create")
-    public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
-        return null;
+    public ResponseEntity<DataDTO<Long>> create(@RequestBody AdvertisementCreateDTO dto) {
+        return service.create(dto);
     }
 
     @Override
     @PostMapping(value = "/update")
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
-        return null;
+        return service.update(dto);
     }
 
     @Override
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
-        return null;
+    public ResponseEntity<DataDTO<Boolean>> delete(@PathVariable Long id) {
+        return service.delete(id);
     }
 
-    @PostMapping(value = "/list-weekly")
+    @GetMapping("/list_daily")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(@RequestBody AdvertisementCriteria criteria) {
+        return service.getDailyAdvertisement(criteria);
+    }
+
+    @GetMapping(value = "/list-weekly")
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
         return service.getAllWeekly(criteria);
+    }
+
+    @GetMapping(value = "/list_my")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
+        return service.getAllMyList(criteria);
+    }
+
+    @GetMapping(value = "/list_my_save")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getMySave(AdvertisementCriteria criteria) {
+        return service.getAllMySave(criteria);
     }
 
 }
