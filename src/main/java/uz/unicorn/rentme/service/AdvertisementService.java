@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,7 +29,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     private final UtilsForSessionUser utils;
 
-    public AdvertisementService(/*@Qualifier("AdvertisementMapperImpl") */AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
+    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
         super(mapper, repository);
         this.utils = utils;
     }

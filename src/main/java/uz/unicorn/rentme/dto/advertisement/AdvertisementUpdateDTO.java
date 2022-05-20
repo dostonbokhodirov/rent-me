@@ -19,8 +19,6 @@ import java.time.LocalDateTime;
 @ParameterObject
 public class AdvertisementUpdateDTO extends GenericDTO {
 
-    private String title;
-
     private String description;
 
     private Long price;
