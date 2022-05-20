@@ -6,6 +6,7 @@ import uz.unicorn.rentme.controller.base.GenericCrudController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
+import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
@@ -34,15 +35,6 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.getAll(criteria);
     }
 
-    @GetMapping(value = "/list_my")
-    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList( AdvertisementCriteria criteria) {
-        return service.getAllMyList(criteria);
-    }
-    @GetMapping(value = "/list_my_save")
-    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getMySave( AdvertisementCriteria criteria) {
-        return service.getAllMySave(criteria);
-    }
-
     @Override
     @PostMapping(value = "/create")
     public ResponseEntity<DataDTO<Long>> create(@RequestBody AdvertisementCreateDTO dto) {
@@ -58,11 +50,32 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     @Override
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<DataDTO<Boolean>> delete(@PathVariable Long id) {
-
         return service.delete(id);
     }
+
     @GetMapping("/list_daily")
-    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(@RequestBody AdvertisementCriteria criteria){
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(@RequestBody AdvertisementCriteria criteria) {
         return service.getDailyAdvertisement(criteria);
     }
+
+    @GetMapping(value = "/list-weekly")
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
+        return service.getAllWeekly(criteria);
+    }
+
+    @GetMapping(value = "/list_my")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
+        return service.getAllMyList(criteria);
+    }
+
+    @GetMapping(value = "/list_my_save")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getMySave(AdvertisementCriteria criteria) {
+        return service.getAllMySave(criteria);
+    }
+
+    @GetMapping(value = "/list-last")
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(@RequestBody AdvertisementCriteria criteria){
+        return service.getAllLast(criteria);
+    }
+
 }

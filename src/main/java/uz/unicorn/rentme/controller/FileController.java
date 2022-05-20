@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uz.unicorn.rentme.controller.base.AbstractController;
-import uz.unicorn.rentme.service.FileUploadService;
+import uz.unicorn.rentme.service.FileService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/file")
-public class FileUploadController extends AbstractController<FileUploadService> {
+public class FileController extends AbstractController<FileService> {
 
-    public FileUploadController(FileUploadService service) {
+    public FileController(FileService service) {
         super(service);
     }
 

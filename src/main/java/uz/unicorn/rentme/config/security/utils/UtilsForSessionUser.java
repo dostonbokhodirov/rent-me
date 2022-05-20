@@ -11,10 +11,12 @@ import java.util.Optional;
 
 
 @Component
+//@RequiredArgsConstructor
 public record UtilsForSessionUser(AuthUserRepository repository) {
 
     public Long getSessionId() {
-        Optional<AuthUser> byPhoneNumber = repository.findByPhoneNumber(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
+        Optional<AuthUser> byPhoneNumber = repository
+                .findByPhoneNumber(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return byPhoneNumber.map(Auditable::getId).orElse(null);
     }
 

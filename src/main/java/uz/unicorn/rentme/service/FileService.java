@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class FileUploadService implements BaseService {
+public class FileService implements BaseService {
 
     private String uploadFile(File file, String fileName) throws IOException {
         BlobId blobId = BlobId.of("picturesaver-61bc7.appspot.com", fileName);

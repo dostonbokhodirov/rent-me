@@ -16,9 +16,6 @@ import java.time.LocalDateTime;
 @Builder
 public class Advertisement extends Auditable {
 
-    @Column(nullable = false)
-    private String title;
-
     private String description;
 
     @Column(nullable = false)
