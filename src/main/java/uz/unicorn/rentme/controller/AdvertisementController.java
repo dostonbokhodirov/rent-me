@@ -53,9 +53,9 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.delete(id);
     }
 
-    @GetMapping("/list_daily")
-    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> dailyAds(@RequestBody AdvertisementCriteria criteria) {
-        return service.getDailyAdvertisement(criteria);
+    @GetMapping("/list-daily")
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
+        return service.getAllDaily(criteria);
     }
 
     @GetMapping(value = "/list-weekly")

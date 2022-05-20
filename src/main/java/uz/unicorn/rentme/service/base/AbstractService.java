@@ -1,6 +1,10 @@
 package uz.unicorn.rentme.service.base;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import uz.unicorn.rentme.exceptions.BadRequestException;
 import uz.unicorn.rentme.mapper.base.BaseMapper;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
@@ -9,5 +13,15 @@ public class AbstractService<M extends BaseMapper, R extends BaseRepository> imp
 
     protected final M mapper;
     protected final R repository;
+
+    protected <T> T getResponse(String json) {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(json, new TypeReference<>() {
+            });
+        } catch (JsonProcessingException e) {
+            throw new BadRequestException("Json Error");
+        }
+    }
 
 }

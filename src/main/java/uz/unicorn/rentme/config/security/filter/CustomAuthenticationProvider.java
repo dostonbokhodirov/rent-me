@@ -39,7 +39,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             throw new RuntimeException("Bad credentials");
         }
         if (!phoneNumber.equals(otp.getPhoneNumber()) || Integer.parseInt(code) != otp.getCode()) {
-            throw new RuntimeException("Phone number or otp code is incorrect");
+            throw new RuntimeException("Phone number and/or otp code is incorrect");
         }
         if (otp.getExpiry().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Otp code is invalid");
