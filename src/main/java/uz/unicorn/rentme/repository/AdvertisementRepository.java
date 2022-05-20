@@ -53,7 +53,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
                     "inner join transport t on t.id = a.transport_id " +
                     "inner join picture p on t.id = p.transport_id " +
                     "where  not p.deleted and not t.deleted and not a.deleted and p.main is true " +
-                    "order by a.created_at",
+                    "order by a.created_at desc \n-- #pageable\n",
             nativeQuery = true
     )
     Optional<List<AdvertisementShortDTO>> findAllByCreatedAtLast(Pageable pageable);
