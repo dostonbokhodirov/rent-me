@@ -28,7 +28,7 @@ public class Advertisement extends Auditable {
     @Column(nullable = false,columnDefinition = "varchar")
     private Point location;
 
-    @Column(nullable = false)
+    @Column(nullable = false,columnDefinition = "varchar")
     private LocalDateTime startDate;
 
     @Column(nullable = false)
