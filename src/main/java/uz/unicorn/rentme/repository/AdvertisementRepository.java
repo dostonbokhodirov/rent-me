@@ -46,4 +46,16 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     @Query(value = "select * from advertisement a where a.min_duration >= :i_min and a.max_duration < :i_max", nativeQuery = true)
     Page<Advertisement> findAllByMinDurationEquals(Pageable pageable, int i_min, int i_max);
+
+    @Query(
+            value = "select a.id, a.description, a.price, p.path, a.category, t.* " +
+                    "from public.advertisement a " +
+                    "inner join transport t on t.id = a.transport_id " +
+                    "inner join picture p on t.id = p.transport_id " +
+                    "where  not p.deleted and not t.deleted and not a.deleted and p.main is true " +
+                    "order by a.created_at",
+            nativeQuery = true
+    )
+    Optional<List<AdvertisementShortDTO>> findAllByCreatedAtLast(Pageable pageable);
+
 }

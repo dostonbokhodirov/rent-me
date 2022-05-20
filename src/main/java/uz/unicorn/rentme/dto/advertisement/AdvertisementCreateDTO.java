@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.dto.advertisement;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.geo.Point;

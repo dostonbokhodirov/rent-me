@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 @Component
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public record UtilsForSessionUser(AuthUserRepository repository) {
 
     public Long getSessionId() {
