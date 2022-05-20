@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.criteria;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,4 +11,8 @@ import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 @NoArgsConstructor
 public class AdvertisementCriteria extends AbstractCriteria {
 
+    @Builder
+    public AdvertisementCriteria(Integer size, Integer page) {
+        super(size, page);
+    }
 }

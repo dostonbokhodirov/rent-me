@@ -44,11 +44,9 @@ public class OtpService implements BaseService {
                     .build();
 
             var client = java.net.http.HttpClient.newHttpClient();
-            var response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+            client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
 
             Optional<Otp> byPhoneNumber = otpRepository.findByPhoneNumber(phoneNumber);
-            System.out.println("sendSMS statusCode: " + response.statusCode());
-            System.out.println("sendSMS body: " + response.body());
             //v1 =>  statusCode == 200
             if (byPhoneNumber.isPresent()) {
                 Otp otp = byPhoneNumber.get();
