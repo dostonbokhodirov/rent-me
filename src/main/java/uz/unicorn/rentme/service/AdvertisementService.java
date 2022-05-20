@@ -111,4 +111,12 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         List<AdvertisementShortDTO> advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
+
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<AdvertisementShortDTO> advertisementShortDTO = repository.findAllByCreatedAtLast(pageable).orElseThrow(
+                ()-> new NotFoundException("Advertisement not found"));
+        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTO, (long) advertisementShortDTO.size()));
+    }
+
 }
