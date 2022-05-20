@@ -37,12 +37,12 @@ public class FileService implements BaseService {
     }
 
     private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-        File tempFile = new File(fileName);
-        try (FileOutputStream fos = new FileOutputStream(tempFile)) {
+        File file = File.createTempFile("src/main/resources/" + fileName, ".png");
+        try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(multipartFile.getBytes());
         }
 
-        return tempFile;
+        return file;
     }
 
     private String getExtension(String fileName) {

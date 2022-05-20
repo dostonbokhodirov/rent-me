@@ -79,4 +79,16 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             nativeQuery = true
     )
     String findAllByMaxDurationLessThanJson(@Param(value = "maxDuration") Long maxDuration, Pageable pageable);
+
+    @Query(
+            value = "select a.id, a.description, a.price, p.path, a.category, t.* " +
+                    "from public.advertisement a " +
+                    "inner join transport t on t.id = a.transport_id " +
+                    "inner join picture p on t.id = p.transport_id " +
+                    "where  not p.deleted and not t.deleted and not a.deleted and p.main is true " +
+                    "order by a.created_at",
+            nativeQuery = true
+    )
+    Optional<List<AdvertisementShortDTO>> findAllByCreatedAtLast(Pageable pageable);
+
 }
