@@ -7,11 +7,12 @@ import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.repository.AuthUserRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 
 @Component
-public record UtilsForSessionUser(AuthUserRepository repository) {
+public record UtilsForSessionUser(HttpServletRequest httpServletRequest, AuthUserRepository repository) {
 
     public Long getSessionId() {
         Optional<AuthUser> byPhoneNumber = repository

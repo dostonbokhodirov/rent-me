@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.controller;
 
 import lombok.SneakyThrows;
+import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.controller.base.GenericCrudController;
@@ -54,8 +55,9 @@ public class AuthUserController extends AbstractController<AuthUserService>
     }
 
     @Override
+
     @PostMapping(value = "/create")
-    public ResponseEntity<DataDTO<Long>> create(AuthUserCreateDTO dto) {
+    public ResponseEntity<DataDTO<Long>> create(@ParameterObject AuthUserCreateDTO dto) {
 
         return service.create(dto);
     }

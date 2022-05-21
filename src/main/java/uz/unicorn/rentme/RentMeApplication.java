@@ -42,9 +42,8 @@ public class RentMeApplication {
             authUserService.create(dto);
         };
     }
-
     @Bean
-    AuditorAware<Long> auditorAware() {
+    AuditorAware<String> auditorAware() {
         return new SecurityAuditorAware();
     }
 }
