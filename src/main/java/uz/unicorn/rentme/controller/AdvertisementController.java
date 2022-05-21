@@ -75,7 +75,8 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
 
     @GetMapping(value = "/list-last")
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(@RequestBody AdvertisementCriteria criteria){
-        return service.getAllLast(criteria);
+//        return service.getAllLast(criteria);
+        return null;
     }
 
 }

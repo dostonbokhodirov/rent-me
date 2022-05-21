@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +23,12 @@ import uz.unicorn.rentme.service.base.GenericCrudService;
 import java.util.List;
 
 @Service
-
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
-    private UtilsForSessionUser utils;
+    private final UtilsForSessionUser utils;
 
-    public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
+    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
         super(mapper, repository);
         this.utils = utils;
     }
@@ -89,13 +89,6 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
-
-//        List<Advertisement> advertisementList = repository
-//                .findAllByUserId(pageable, criteria.getUserId())
-//                .orElseThrow(() -> new NotFoundException("Advertisements not found"));
-//        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
-//        return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
-
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {

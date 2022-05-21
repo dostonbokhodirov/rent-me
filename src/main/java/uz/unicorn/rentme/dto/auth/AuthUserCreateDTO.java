@@ -15,7 +15,7 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ParameterObject
+//@ParameterObject
 public class AuthUserCreateDTO implements BaseDTO {
 
     @NotBlank

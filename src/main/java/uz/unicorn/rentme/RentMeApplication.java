@@ -9,14 +9,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import uz.unicorn.rentme.dto.auth.AuthUserCreateDTO;
 import uz.unicorn.rentme.entity.base.SecurityAuditorAware;
 import uz.unicorn.rentme.property.OpenApiProperties;
 import uz.unicorn.rentme.property.ServerProperties;
 import uz.unicorn.rentme.service.auth.AuthUserService;
-
-import javax.persistence.EntityManager;
 
 @SpringBootApplication
 @OpenAPIDefinition
@@ -25,8 +22,7 @@ import javax.persistence.EntityManager;
                 OpenApiProperties.class}
 )
 @RequiredArgsConstructor
-//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
-@EnableJpaRepositories
+@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 public class RentMeApplication {
     private final AuthUserService authUserService;
 
@@ -46,10 +42,8 @@ public class RentMeApplication {
             authUserService.create(dto);
         };
     }
-
-//    @Bean
-//    AuditorAware<Long> auditorAware() {
-//        return new SecurityAuditorAware();
-//    }
-
+    @Bean
+    AuditorAware<String> auditorAware() {
+        return new SecurityAuditorAware();
+    }
 }

@@ -4,13 +4,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.geo.Point;
-import org.springdoc.api.annotations.ParameterObject;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.dto.transport.TransportCreateDTO;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import javax.validation.constraints.NotBlank;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -19,7 +17,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//@ParameterObject
 public class AdvertisementCreateDTO implements BaseDTO {
 
     @NotBlank
@@ -34,7 +31,7 @@ public class AdvertisementCreateDTO implements BaseDTO {
     @NotBlank
     private Point location;
 
-    @NotBlank
+    //@NotBlank
     private LocalDateTime startDate;
 
     @NotBlank
