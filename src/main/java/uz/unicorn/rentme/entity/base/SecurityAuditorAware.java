@@ -20,7 +20,6 @@ public class SecurityAuditorAware implements AuditorAware<Long> {
     public Optional<Long> getCurrentAuditor() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         if (authentication == null || !authentication.isAuthenticated()) {
             return Optional.empty();
         }
