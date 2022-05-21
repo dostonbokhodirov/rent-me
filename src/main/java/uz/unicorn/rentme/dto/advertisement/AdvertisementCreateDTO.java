@@ -10,6 +10,7 @@ import uz.unicorn.rentme.dto.transport.TransportCreateDTO;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@ParameterObject
+//@ParameterObject
 public class AdvertisementCreateDTO implements BaseDTO {
 
     @NotBlank

@@ -11,4 +11,8 @@ public interface OtpRepository extends JpaRepository<Otp, Long> {
    Optional<Otp> findByPhoneNumber(String phoneNumber);
 
     void deleteByPhoneNumber(String phoneNumber);
+
+    boolean existsByPhoneNumber(String phoneNumber);
+
+    void deleteIfExistsByPhoneNumber(String phoneNumber);
 }

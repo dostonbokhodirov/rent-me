@@ -16,6 +16,8 @@ import uz.unicorn.rentme.property.OpenApiProperties;
 import uz.unicorn.rentme.property.ServerProperties;
 import uz.unicorn.rentme.service.auth.AuthUserService;
 
+import javax.persistence.EntityManager;
+
 @SpringBootApplication
 @OpenAPIDefinition
 @EnableConfigurationProperties(
@@ -23,7 +25,7 @@ import uz.unicorn.rentme.service.auth.AuthUserService;
                 OpenApiProperties.class}
 )
 @RequiredArgsConstructor
-@EnableJpaAuditing(auditorAwareRef = "auditorAware")
+//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
 @EnableJpaRepositories
 public class RentMeApplication {
     private final AuthUserService authUserService;
@@ -45,8 +47,9 @@ public class RentMeApplication {
         };
     }
 
-    @Bean
-    AuditorAware<Long> auditorAware() {
-        return new SecurityAuditorAware();
-    }
+//    @Bean
+//    AuditorAware<Long> auditorAware() {
+//        return new SecurityAuditorAware();
+//    }
+
 }
