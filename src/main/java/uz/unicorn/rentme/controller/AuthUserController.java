@@ -56,7 +56,6 @@ public class AuthUserController extends AbstractController<AuthUserService>
     @Override
     @PostMapping(value = "/create")
     public ResponseEntity<DataDTO<Long>> create(AuthUserCreateDTO dto) {
-
         return service.create(dto);
     }
 

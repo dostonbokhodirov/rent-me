@@ -89,34 +89,26 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
-
-//        List<Advertisement> advertisementList = repository
-//                .findAllByUserId(pageable, criteria.getUserId())
-//                .orElseThrow(() -> new NotFoundException("Advertisements not found"));
-//        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
-//        return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
-
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        String json = repository.findAllByMaxDurationLessThanJson(30L, pageable);
+        String json = repository.findAllByMaxDurationLessThanJson(30L);
         List<AdvertisementShortDTO> advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        String json = repository.findAllByMaxDurationGreaterThanJson(30L, pageable);
+        String json = repository.findAllByMaxDurationGreaterThanJson(30L);
         List<AdvertisementShortDTO> advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<AdvertisementShortDTO> advertisementShortDTO = repository.findAllByCreatedAtLast(pageable).orElseThrow(
-                ()-> new NotFoundException("Advertisement not found"));
-        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTO, (long) advertisementShortDTO.size()));
+        String json = repository.findAllByLast();
+        List<AdvertisementShortDTO> advertisementShortDTOList = getResponse(json);
+        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
-
 }

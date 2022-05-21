@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.criteria.AuthUserCriteria;
 import uz.unicorn.rentme.dto.auth.AuthUserCreateDTO;
 import uz.unicorn.rentme.dto.auth.AuthUserDTO;
@@ -34,11 +35,12 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
     }
 
     @Override
+    @Transactional
     public ResponseEntity<DataDTO<Long>> create(AuthUserCreateDTO dto) {
         AuthUser authUser = mapper.fromCreateDTO(dto);
         authUser.setRole(AuthRole.USER);
         authUser.setStatus(Status.INACTIVE);
-        otpRepository.deleteByPhoneNumber(authUser.getPhoneNumber());
+        otpRepository.deleteIfExistsByPhoneNumber(authUser.getPhoneNumber());
         AuthUser save = repository.save(authUser);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
