@@ -21,6 +21,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -37,7 +38,13 @@ public class FileService implements BaseService {
     }
 
     private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
-        File file = File.createTempFile("src/main/resources/" + fileName, ".png");
+        File file;
+        if (Objects.equals(multipartFile.getContentType(), "image/png")) {
+            file = File.createTempFile("src/main/resources/" + fileName, ".png");
+        } else if (Objects.equals(multipartFile.getContentType(), "image/jpeg")) {
+            file = File.createTempFile("src/main/resources/" + fileName, ".jpg");
+        } else
+            file = File.createTempFile("src/main/resources/" + fileName, ".jpeg");
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(multipartFile.getBytes());
         }
@@ -51,7 +58,7 @@ public class FileService implements BaseService {
 
     public ResponseEntity<DataDTO<List<String>>> upload(List<MultipartFile> files) {
         ArrayList<String> PATH = new ArrayList<>(files.size());
-        files.forEach(item -> {
+        files.stream().parallel().forEach(item -> {
             try {
                 PATH.add(upload(item));
             } catch (IOException e) {
