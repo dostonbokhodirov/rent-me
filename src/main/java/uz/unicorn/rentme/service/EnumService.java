@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.service;
 
 import org.springframework.stereotype.Service;
+import uz.unicorn.rentme.enums.AdvertisementCategory;
 import uz.unicorn.rentme.enums.transport.TransportType;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
@@ -22,4 +23,11 @@ public class EnumService implements BaseService {
         return new ResponseEntity<>(new DataDTO<>(types));
     }
 
+    public static void main(String[] args) {
+        String s = "MOTORBIKE";
+        AdvertisementCategory advertisementCategory = AdvertisementCategory.valueOf(s);
+        List<TransportType> transportTypes = Arrays.stream(TransportType.values()).filter(transportType -> transportType.getCategory().equals(advertisementCategory)).toList();
+
+
+    }
 }
