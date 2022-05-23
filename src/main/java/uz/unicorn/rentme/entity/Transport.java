@@ -47,4 +47,7 @@ public class Transport extends Auditable {
     @Column(columnDefinition = "bool default 'false'")
     private Boolean wellEquipped;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    private Advertisement advertisement;
+
 }

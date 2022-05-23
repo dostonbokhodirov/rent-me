@@ -3,9 +3,11 @@ package uz.unicorn.rentme.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
@@ -14,11 +16,6 @@ import java.util.Optional;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
-    @Query(value = "select a.* from public.advertisement a " +
-            "inner join public.auth_user_advertisement aua on a.id = aua.advertisement_id where aua.auth_user_id=:userId",
-            nativeQuery = true)
-    Page<Advertisement> findAllByUserId(Pageable pageable, Long userId);
-
     Optional<Advertisement> findByIdAndDeletedFalse(Long id);
 
     Optional<List<Advertisement>> findAllByMaxDurationLessThan(Long maxDuration);
@@ -50,11 +47,8 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "where aua.auth_user_id=:userId and a.deleted='f' ",
             nativeQuery = true
     )
-    Page<Advertisement> findByUserIdAndDeletedFalse(Pageable pageable, Long userId);
+    Page<Advertisement> findAllByUserIdAndDeletedFalse(Pageable pageable,Long userId);
 
-    /*    @Query(value = "select a.* from advertisement a " +
-                "where a.created_by=:id and a.deleted='f' limit :size offset (:page-1) * :size",
-                nativeQuery = true)*/
     Page<Advertisement> findByCreatedByAndDeletedFalse(Long id, Pageable pageable);
 
     @Query(
@@ -89,4 +83,10 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     String findAllByLast();
 
     Page<Advertisement> findAllByDeletedFalse(Pageable pageable);
+
+    @Transactional
+    @Modifying
+    @Query(value = "insert into public.auth_user_advertisement" +
+            " (auth_user_id,advertisement_id) value (:userId,:id)",nativeQuery = true)
+    void saveMyAdvertisement(Long id,Long userId);
 }
