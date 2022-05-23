@@ -79,7 +79,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findAllByDeletedFalse(pageable);
         List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS,(long)advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
@@ -87,7 +87,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findByCreatedByAndDeletedFalse(utils.getSessionId(), pageable);
         List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS,(long)advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
@@ -95,7 +95,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Page<Advertisement> byUserId = repository.findAllByUserId(pageable, utils.getSessionId());
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS,(long)advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
