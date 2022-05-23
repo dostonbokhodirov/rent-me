@@ -50,9 +50,12 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             "where aua.auth_user_id=:userId and a.deleted='f' ",
             nativeQuery = true
     )
-    Page<Advertisement> findAllByUserIdAndDeletedFalse(Pageable pageable, Long userId);
+    Page<Advertisement> findByUserIdAndDeletedFalse(Pageable pageable, Long userId);
 
-    Page<Advertisement> findAllByCreatedBy(Pageable pageable, Long id);
+    /*    @Query(value = "select a.* from advertisement a " +
+                "where a.created_by=:id and a.deleted='f' limit :size offset (:page-1) * :size",
+                nativeQuery = true)*/
+    Page<Advertisement> findByCreatedByAndDeletedFalse(Long id, Pageable pageable);
 
     @Query(
             value = "select a.* from public.advertisement a " +
@@ -85,4 +88,5 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     )
     String findAllByLast();
 
+    Page<Advertisement> findAllByDeletedFalse(Pageable pageable);
 }

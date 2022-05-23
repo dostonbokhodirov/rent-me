@@ -8,7 +8,6 @@ import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
-import uz.unicorn.rentme.enums.transport.TransportType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,10 +18,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 public class Transport extends Auditable {
-
-    @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private TransportType type;
 
     @Column(nullable = false)
     private String model;
@@ -41,6 +36,10 @@ public class Transport extends Auditable {
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private TransportColor color;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private TransportType type;
 
     @OneToMany(mappedBy = "transport",cascade = CascadeType.ALL)
     private List<Picture> pictures;

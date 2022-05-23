@@ -34,7 +34,7 @@ public class OtpService implements BaseService {
         try {
             int random = OtpUtils.randomCode();
             String jsonInputString = (new Gson()).toJson(
-                    new SmsSenderDTO(phoneNumber, "RentMe", "Hello, your opt code is: " + random));
+                    new SmsSenderDTO(phoneNumber, "RentMe", "Hello, your code is: " + random));
 
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(OtpUtils.baseUrl))

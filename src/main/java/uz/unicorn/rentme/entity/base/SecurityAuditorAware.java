@@ -20,7 +20,7 @@ public class SecurityAuditorAware implements AuditorAware<Long> {
     public Optional<Long> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         System.out.println(authentication.getPrincipal());
-        Optional<AuthUser> optionalAuthUser = repository.findByPhoneNumber(authentication.getPrincipal().toString());
-        return optionalAuthUser.map(Auditable::getId);
+        Optional<AuthUser> byPhoneNumber = repository.findByPhoneNumber(authentication.getPrincipal().toString());
+        return byPhoneNumber.map(Auditable::getId);
     }
 }
