@@ -35,9 +35,9 @@ public class RentMeApplication {
         return args -> {
             AuthUserCreateDTO dto = AuthUserCreateDTO
                     .builder()
-                    .firstName("Admin")
-                    .lastName("Root")
-                    .phoneNumber("+998901234567")
+                    .firstName("Jasur")
+                    .lastName("Mutalov")
+                    .phoneNumber("+998948632001")
                     .build();
             authUserService.create(dto);
         };

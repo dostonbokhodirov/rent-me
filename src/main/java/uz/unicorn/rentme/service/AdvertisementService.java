@@ -79,7 +79,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findAllByDeletedFalse(pageable);
         List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS,(long)advertisementDTOS.size()));
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
@@ -87,15 +87,15 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findByCreatedByAndDeletedFalse(utils.getSessionId(), pageable);
         List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS,(long)advertisementDTOS.size()));
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> byUserId = repository.findAllByUserId(pageable, utils.getSessionId());
+        Page<Advertisement> byUserId = repository.findAllByUserIdAndDeletedFalse(pageable, utils.getSessionId());
         List<Advertisement> collect = byUserId.stream().toList();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS,(long)advertisementDTOS.size()));
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
@@ -120,5 +120,10 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         String json = repository.findAllByLast();
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
+    }
+
+    public ResponseEntity<DataDTO<Boolean>> save(Long id) {
+        repository.saveMyAdvertisement(id, utils.getSessionId());
+        return new ResponseEntity<>(new DataDTO<>(true));
     }
 }

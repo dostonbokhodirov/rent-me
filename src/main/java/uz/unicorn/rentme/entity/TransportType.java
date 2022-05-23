@@ -26,7 +26,4 @@ public class TransportType  extends Auditable {
 
     @Column(nullable = false)
     private String imagePath;
-
-    @OneToMany(mappedBy = "type",cascade = CascadeType.ALL)
-    private List<Transport> transports;
 }
