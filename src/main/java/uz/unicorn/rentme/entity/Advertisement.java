@@ -7,6 +7,7 @@ import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,7 +20,8 @@ public class Advertisement extends Auditable {
     private String description;
 
     @Column(nullable = false)
-    private Long price;
+    @OneToMany(mappedBy = "advertisement" ,cascade = CascadeType.ALL)
+    private List<Price> prices;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
@@ -32,10 +34,10 @@ public class Advertisement extends Auditable {
     private LocalDateTime startDate;
 
     @Column(nullable = false)
-    private Long minDuration;
+    private int minDuration;
 
     @Column(nullable = false)
-    private Long maxDuration;
+    private int maxDuration;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Transport transport;

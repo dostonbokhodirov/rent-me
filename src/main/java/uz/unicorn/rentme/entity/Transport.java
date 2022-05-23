@@ -23,7 +23,7 @@ public class Transport extends Auditable {
     private String model;
 
     @Column(nullable = false)
-    private Integer year;
+    private int year;
 
     @Column(columnDefinition = "varchar default 'MANUAL'")
     @Enumerated(value = EnumType.STRING)
@@ -41,7 +41,7 @@ public class Transport extends Auditable {
     @JoinColumn
     private TransportType type;
 
-    @OneToMany(mappedBy = "transport",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "transport", cascade = CascadeType.ALL)
     private List<Picture> pictures;
 
     @Column(columnDefinition = "bool default 'false'")

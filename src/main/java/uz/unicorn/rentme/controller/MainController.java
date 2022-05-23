@@ -1,7 +1,7 @@
 package uz.unicorn.rentme.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
@@ -22,7 +22,7 @@ public class MainController {
     private final FileService fileService;
     private final AdvertisementService advertisementService;
 
-    @PostMapping(value = "/main-page")
+    @GetMapping(value = "/main-page")
     public ResponseEntity<DataDTO<MainPageDTO>> mainPage() {
         AdvertisementCriteria advertisementCriteria = new AdvertisementCriteria(3, 0);
 
