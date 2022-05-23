@@ -25,10 +25,10 @@ public class Advertisement extends Auditable {
     @Enumerated(value = EnumType.STRING)
     private AdvertisementCategory category;
 
-    @Column(nullable = false,columnDefinition = "varchar")
+    @Column(nullable = false)
     private Point location;
 
-    @Column(nullable = false,columnDefinition = "varchar")
+    @Column(nullable = false)
     private LocalDateTime startDate;
 
     @Column(nullable = false)

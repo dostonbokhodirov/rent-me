@@ -15,6 +15,7 @@ import java.util.Optional;
 public record UtilsForSessionUser(HttpServletRequest httpServletRequest, AuthUserRepository repository) {
 
     public Long getSessionId() {
+        System.out.println(httpServletRequest.getHeaders("sub"));
         Optional<AuthUser> byPhoneNumber = repository
                 .findByPhoneNumber(SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString());
         return byPhoneNumber.map(Auditable::getId).orElse(null);

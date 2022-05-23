@@ -30,7 +30,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     }
 
     @Override
-    @PostMapping(value = "/list")
+    @GetMapping(value = "/list")
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
         return service.getAll(criteria);
     }

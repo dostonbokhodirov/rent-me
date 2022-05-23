@@ -71,15 +71,18 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
-        return null;
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findAllByDeletedFalse(pageable);
+        List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> byUserId = repository.findAllByUserIdAndDeletedFalse(pageable, utils.getSessionId());
-        if (byUserId.isEmpty()) throw new NotFoundException("Advertisements not found");
-        List<Advertisement> collect = byUserId.stream().toList();
-        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
+        Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findByCreatedByAndDeletedFalse(utils.getSessionId(), pageable);
+        List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
+        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS));
     }
 

@@ -9,7 +9,7 @@ import uz.unicorn.rentme.repository.base.BaseRepository;
 import java.util.Optional;
 
 public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseRepository {
-//    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     Optional<AuthUser> findByPhoneNumber(String phoneNumber);
 
 }

@@ -32,7 +32,7 @@ public class Auditable implements BaseEntity, Serializable {
 
     @CreatedBy
     @Column
-    private String createdBy;
+    private Long createdBy;
 
     @UpdateTimestamp
     @LastModifiedDate
@@ -41,7 +41,7 @@ public class Auditable implements BaseEntity, Serializable {
 
     @LastModifiedBy
     @Column
-    private String updatedBy;
+    private Long updatedBy;
 
     @Column(columnDefinition = "bool default 'false'")
     private boolean deleted;

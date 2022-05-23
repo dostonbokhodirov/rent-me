@@ -43,7 +43,7 @@ public class RentMeApplication {
         };
     }
     @Bean
-    AuditorAware<String> auditorAware() {
+    AuditorAware<Long> auditorAware() {
         return new SecurityAuditorAware();
     }
 }
