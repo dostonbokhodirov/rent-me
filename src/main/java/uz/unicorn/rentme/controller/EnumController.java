@@ -7,15 +7,15 @@ import org.springframework.web.bind.annotation.RestController;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
-import uz.unicorn.rentme.service.EnumService;
+import uz.unicorn.rentme.service.TransportTypeService;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/enum")
-public class EnumController extends AbstractController<EnumService> {
+public class EnumController extends AbstractController<TransportTypeService> {
 
-    public EnumController(EnumService service) { super(service); }
+    public EnumController(TransportTypeService service) { super(service); }
 
     @PostMapping("/{type}")
     public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(@PathVariable String type){
