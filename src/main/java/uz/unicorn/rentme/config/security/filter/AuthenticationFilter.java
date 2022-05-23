@@ -48,10 +48,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginDto.getPhoneNumber(), loginDto.getCode());
             return authenticationProvider.authenticate(authenticationToken);
-        } catch (NotFoundException e) {
-            log.error(e.getMessage(), e);
-            throw new BadCredentialsException(e.getMessage(), e.getCause());
-//            throw new NotFoundException(e.getMessage(), e.getCause());
         } catch (IOException | RuntimeException e) {
             log.error(e.getMessage(), e);
             throw new BadCredentialsException(e.getMessage(), e.getCause());
