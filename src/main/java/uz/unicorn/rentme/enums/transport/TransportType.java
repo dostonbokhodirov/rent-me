@@ -1,7 +1,9 @@
 package uz.unicorn.rentme.enums.transport;
 
+import lombok.Getter;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
+@Getter
 public enum TransportType {
     NEXIA(AdvertisementCategory.CAR),
     COBALT(AdvertisementCategory.CAR),
@@ -12,6 +14,7 @@ public enum TransportType {
     DAMAS(AdvertisementCategory.CAR),
     TRAILBLAZER(AdvertisementCategory.CAR),
     EPICA(AdvertisementCategory.CAR),
+    BIKE(AdvertisementCategory.MOTORBIKE),
     SPARK(AdvertisementCategory.CAR),
     EQUINOX(AdvertisementCategory.CAR);
     private AdvertisementCategory category;
