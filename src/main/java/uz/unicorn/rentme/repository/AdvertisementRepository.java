@@ -86,7 +86,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     )
     String findAllByLast();
 
-    Page<Advertisement> findAllByDeletedFalse(Pageable pageable);
+    Page<Advertisement> findByDeletedFalse(Pageable pageable);
 
     @Transactional
     @Modifying
