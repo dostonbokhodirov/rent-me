@@ -11,7 +11,7 @@ import uz.unicorn.rentme.enums.PriceType;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PriceDTO extends GenericDTO {
+public class PriceUpdateDTO extends GenericDTO {
     private Long quantity;
     private PriceType type;
 }

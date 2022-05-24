@@ -1,12 +1,14 @@
 package uz.unicorn.rentme.dto.transport;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.unicorn.rentme.dto.picture.PictureDTO;
+import uz.unicorn.rentme.entity.TransportType;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
-import uz.unicorn.rentme.enums.transport.TransportType;
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class TransportDTO {
 
     @NotBlank

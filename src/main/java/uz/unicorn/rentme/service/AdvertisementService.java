@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.service;
 
 import org.mapstruct.ap.internal.util.Strings;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -39,6 +40,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
         advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
+        advertisement.getPrices().forEach(item->item.setAdvertisement(advertisement));
         Advertisement save = repository.save(advertisement);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }

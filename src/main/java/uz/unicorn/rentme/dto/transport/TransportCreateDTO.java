@@ -3,11 +3,10 @@ package uz.unicorn.rentme.dto.transport;
 import lombok.*;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.dto.picture.PictureCreateDto;
-import uz.unicorn.rentme.entity.TransportType;
+import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
-
 
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
@@ -22,7 +21,7 @@ import java.util.List;
 public class TransportCreateDTO implements BaseDTO {
 
     @NotBlank
-    private TransportType type;
+    private TransportTypeCreateDTO type;
 
     @NotBlank
     private String model;
