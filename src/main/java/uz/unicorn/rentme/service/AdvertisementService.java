@@ -76,8 +76,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findByDeletedFalse(pageable);
-        List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.getContent().stream().toList();
+        List<Advertisement> advertisements = repository.findByDeletedFalse(criteria.getPage(),criteria.getSize());
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }

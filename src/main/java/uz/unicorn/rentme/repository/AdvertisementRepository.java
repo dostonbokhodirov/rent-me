@@ -86,7 +86,8 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     )
     String findAllByLast();
 
-    Page<Advertisement> findByDeletedFalse(Pageable pageable);
+    @Query(value = "select a.* from public.advertisement a where a.deleted = 'f' limit :size offset (:page-1)* :size",nativeQuery = true)
+    List<Advertisement> findByDeletedFalse(int page,int size);
 
     @Transactional
     @Modifying
