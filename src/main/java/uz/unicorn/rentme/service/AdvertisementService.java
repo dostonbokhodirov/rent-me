@@ -75,13 +75,15 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
-        List<Advertisement> advertisements = repository.findByDeletedFalse(criteria.getPage(),criteria.getSize());
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<Advertisement> advertisements = repository.findByDeletedFalse(pageable);
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
-        List<Advertisement> advertisements = repository.findByCreatedByAndDeletedFalse(utils.getSessionId(), criteria.getPage(), criteria.getSize());
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<Advertisement> advertisements = repository.findAllByCreatedByAndDeletedFalse(utils.getSessionId(), pageable);
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
@@ -109,7 +111,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByLast();
+        String json = repository.findAllByLast(criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }

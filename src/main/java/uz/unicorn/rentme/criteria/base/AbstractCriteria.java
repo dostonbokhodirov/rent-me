@@ -15,7 +15,6 @@ public class AbstractCriteria implements BaseCriteria {
     @NotBlank
     protected Integer size;
     @NotBlank
-    @Size(min = 1,message = "page is greater than 0")
     protected Integer page;
 
     public AbstractCriteria(Integer size, Integer page) {

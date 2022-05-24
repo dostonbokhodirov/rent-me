@@ -11,13 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
     Optional<Advertisement> findByIdAndDeletedFalse(Long id);
-
-    Page<Advertisement> findByDeletedFalse(Pageable pageable);
 
     @Query(
             value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
@@ -35,12 +34,12 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     @Query(value = "select a.* from advertisement a " +
             "inner join auth_user_advertisement aua on a.id = aua.advertisement_id " +
-            "where aua.auth_user_id=:userId and a.deleted='f' ",
+            "where aua.auth_user_id=:userId and a.deleted='f' limit :size offset :page* :size ",
             nativeQuery = true
     )
-    Page<Advertisement> findAllByUserIdAndDeletedFalse(Pageable pageable, Long userId);
+    List<Advertisement> findAllByUserIdAndDeletedFalse(Long userId, Integer size, Integer page);
 
-    Page<Advertisement> findByCreatedByAndDeletedFalse(Long id, Pageable pageable);
+    List<Advertisement> findAllByCreatedByAndDeletedFalse(Long userId, Pageable pageable);
 
     @Query(
             value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
@@ -68,8 +67,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     )
     String findAllByLast(@Param(value = "page") Integer page, @Param(value = "size") Integer size);
 
-    @Query(value = "select a.* from public.advertisement a where a.deleted = 'f' limit :size offset (:page-1)* :size",nativeQuery = true)
-    List<Advertisement> findByDeletedFalse(int page,int size);
+    List<Advertisement> findByDeletedFalse(Pageable pageable);
 
     @Transactional
     @Modifying
