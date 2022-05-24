@@ -11,24 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
     Optional<Advertisement> findByIdAndDeletedFalse(Long id);
 
-    Optional<List<Advertisement>> findAllByMaxDurationLessThan(Long maxDuration);
+    Page<Advertisement> findByDeletedFalse(Pageable pageable);
 
-    //    @Query(value = "select new  uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO(a.id, a.description, p.path, a.price, a.category, new uz.unicorn.rentme.dto.transport.TransportDTO(a.transport.type, a.transport.model, a.transport.year, a.transport.transmission, a.transport.fuelType, a.transport.color, a.transport.pictures, a.transport.wellEquipped)) from Advertisement a " +
-//            "inner join a.transport inner join Picture p " +
-//            "inner join a.transport.pictures " +
-//            "where a.maxDuration > :maxDuration and p.main is true " +
-//            "order by a.id")
-//    Optional<List<AdvertisementShortDTO>> findAllByMaxDurationGreaterThan(
-//            @Param(value = "maxDuration") Long maxDuration,
-//            Pageable pageable);
-//
     @Query(
             value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
                     "from (select a.id, a.description, a.price, p.path, a.category, t.* " +
@@ -86,4 +76,5 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     @Query(value = "insert into public.auth_user_advertisement" +
             " (auth_user_id,advertisement_id) value (:userId,:id)", nativeQuery = true)
     void saveMyAdvertisement(Long id, Long userId);
+
 }
