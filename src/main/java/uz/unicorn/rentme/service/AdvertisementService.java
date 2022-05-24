@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.service;
 
 import org.mapstruct.ap.internal.util.Strings;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +39,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
         advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
-        advertisement.getPrices().forEach(item->item.setAdvertisement(advertisement));
+        advertisement.getPrices().forEach(item -> item.setAdvertisement(advertisement));
         Advertisement save = repository.save(advertisement);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
@@ -100,25 +99,22 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByMaxDurationLessThanJson(30L);
+        String json = repository.findAllByMaxDurationLessThanJson(30L, criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByMaxDurationGreaterThanJson(30L);
+        String json = repository.findAllByMaxDurationGreaterThanJson(30L, criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByLast();
+        String json = repository.findAllByLast(criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }

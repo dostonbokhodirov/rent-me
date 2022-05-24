@@ -2,7 +2,6 @@ package uz.unicorn.rentme.dto.advertisement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.dto.price.PriceCreateDTO;
@@ -33,7 +32,7 @@ public class AdvertisementCreateDTO implements BaseDTO {
     @NotBlank(message = "Location cannot be blank")
     private Point location;
 
-    //@NotBlank(message = "Starting date cannot be blank")
+    @NotBlank(message = "Starting date cannot be blank")
     private LocalDateTime startDate;
 
     @NotBlank(message = "Minimum duration cannot be blank")
