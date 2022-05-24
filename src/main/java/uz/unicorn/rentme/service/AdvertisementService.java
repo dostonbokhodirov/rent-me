@@ -1,7 +1,7 @@
 package uz.unicorn.rentme.service;
 
 import org.mapstruct.ap.internal.util.Strings;
-import org.springframework.data.domain.Page;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
+import uz.unicorn.rentme.repository.AuthUserRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
@@ -29,10 +30,12 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
     private final UtilsForSessionUser utils;
+    private final AuthUserRepository authUserRepository;
 
-    public AdvertisementService(AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils) {
+    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils, AuthUserRepository authUserRepository) {
         super(mapper, repository);
         this.utils = utils;
+        this.authUserRepository = authUserRepository;
     }
 
     @Override
@@ -89,9 +92,11 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
-        List<Advertisement> collect = repository.findAllByUserIdAndDeletedFalse(utils.getSessionId(), criteria.getPage(), criteria.getSize());
-        List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
+        Long sessionId = utils.getSessionId();
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<Advertisement> top = authUserRepository.top(sessionId, pageable);
+        List<AdvertisementDTO> collect = mapper.toDTO(top);
+        return new ResponseEntity<>(new DataDTO<>(collect, (long) collect.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {

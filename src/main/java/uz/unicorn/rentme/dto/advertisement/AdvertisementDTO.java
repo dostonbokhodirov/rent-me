@@ -28,6 +28,4 @@ public class AdvertisementDTO extends GenericDTO {
     private TransportDTO transport;
     private LocalDateTime createdAt;
     private Long createdBy;
-    private LocalDateTime updatedAt;
-    private Long updatedBy;
 }

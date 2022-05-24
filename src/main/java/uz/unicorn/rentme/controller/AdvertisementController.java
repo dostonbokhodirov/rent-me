@@ -52,7 +52,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     public ResponseEntity<DataDTO<Boolean>> delete(@PathVariable Long id) {
         return service.delete(id);
     }
-    @PostMapping(value = "/save_advertisement/{id}")
+    @GetMapping(value = "/save_advertisement/{id}")
     public ResponseEntity<DataDTO<Boolean>> save(@PathVariable Long id) {
         return service.save(id);
     }
