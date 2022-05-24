@@ -18,6 +18,10 @@ import java.util.Optional;
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
     Optional<Advertisement> findByIdAndDeletedFalse(Long id);
 
+    List<Advertisement> findAllByCreatedByAndDeletedFalse(Long userId, Pageable pageable);
+
+    List<Advertisement> findByDeletedFalse(Pageable pageable);
+
     @Query(
             value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
                     "from (select a.id, a.description, a.price, p.path, a.category, t.* " +
@@ -38,8 +42,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             nativeQuery = true
     )
     List<Advertisement> findAllByUserIdAndDeletedFalse(Long userId, Integer size, Integer page);
-
-    List<Advertisement> findAllByCreatedByAndDeletedFalse(Long userId, Pageable pageable);
 
     @Query(
             value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
@@ -66,8 +68,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             nativeQuery = true
     )
     String findAllByLast(@Param(value = "page") Integer page, @Param(value = "size") Integer size);
-
-    List<Advertisement> findByDeletedFalse(Pageable pageable);
 
     @Transactional
     @Modifying
