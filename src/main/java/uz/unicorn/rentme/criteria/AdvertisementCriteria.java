@@ -37,6 +37,11 @@ public class AdvertisementCriteria extends AbstractCriteria {
         super(size, page);
     }
 
+    @Builder(builderMethodName = "secondBuilder", buildMethodName = "secondBuild")
+    public AdvertisementCriteria(Integer page) {
+        super(page);
+    }
+
     @Builder(builderMethodName = "searchBuilder", buildMethodName = "searchBuild")
     public AdvertisementCriteria(Long price, AdvertisementCategory category, Point location, LocalDateTime startDate, TransportType transportType, String transportModel, Integer transportYear, TransportTransmission transmission, TransportFuel transportFuel, TransportColor transportColor, Boolean wellEquipped) {
         this.price = price;

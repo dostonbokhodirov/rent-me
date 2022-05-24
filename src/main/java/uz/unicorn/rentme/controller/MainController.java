@@ -24,7 +24,7 @@ public class MainController {
 
     @GetMapping(value = "/main-page")
     public ResponseEntity<DataDTO<MainPageDTO>> mainPage() {
-        AdvertisementCriteria advertisementCriteria = new AdvertisementCriteria(3, 0);
+        AdvertisementCriteria advertisementCriteria = new AdvertisementCriteria(0);
 
         List<String> pathList = List.of(
                 "https://firebasestorage.googleapis.com/v0/b/picturesaver-61bc7.appspot.com/o/0e641539-a158-4cb0-8b38-b7088439b627.jpg?alt=media",

@@ -12,10 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class AbstractCriteria implements BaseCriteria {
 
-    @NotBlank
     protected Integer size;
-    @NotBlank
-    @Size(min = 1,message = "page is greater than 0")
     protected Integer page;
 
     public AbstractCriteria(Integer size, Integer page) {
@@ -24,6 +21,6 @@ public class AbstractCriteria implements BaseCriteria {
     }
 
     public AbstractCriteria(Integer page) {
-        this(5, page);
+        this(3, page);
     }
 }

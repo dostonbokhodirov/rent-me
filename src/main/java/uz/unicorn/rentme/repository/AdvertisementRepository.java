@@ -26,7 +26,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
                     "inner join transport t on t.id = a.transport_id " +
                     "inner join picture p on t.id = p.transport_id " +
                     "where a.max_duration > :maxDuration and p.main is true " +
-                    "order by a.id limit :size offset (:page - 1) * :size) as my_table) as text)",
+                    "order by a.id limit :size offset :page * :size) as my_table) as text)",
             nativeQuery = true
     )
     String findAllByMaxDurationGreaterThanJson(@Param(value = "maxDuration") Long maxDuration,
@@ -49,7 +49,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
                     "inner join transport t on t.id = a.transport_id " +
                     "inner join picture p on t.id = p.transport_id " +
                     "where a.max_duration <= :maxDuration and p.main is true " +
-                    "order by a.id limit :size offset (:page - 1) * :size) as my_table) as text)",
+                    "order by a.id limit :size offset :page * :size) as my_table) as text)",
             nativeQuery = true
     )
     String findAllByMaxDurationLessThanJson(@Param(value = "maxDuration") Long maxDuration,
@@ -63,7 +63,7 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
                     "inner join transport t on t.id = a.transport_id " +
                     "inner join picture p on t.id = p.transport_id " +
                     "where  not p.deleted and not t.deleted and not a.deleted and p.main is true " +
-                    "order by a.created_at desc limit :size offset (:page - 1) * :size) as my_table) as text)",
+                    "order by a.created_at desc limit :size offset :page * :size) as my_table) as text)",
             nativeQuery = true
     )
     String findAllByLast(@Param(value = "page") Integer page, @Param(value = "size") Integer size);
