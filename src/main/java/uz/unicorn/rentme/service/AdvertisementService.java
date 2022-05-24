@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.service;
 
 import org.mapstruct.ap.internal.util.Strings;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -40,7 +39,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
         advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
-        advertisement.getPrices().forEach(item->item.setAdvertisement(advertisement));
+        advertisement.getPrices().forEach(item -> item.setAdvertisement(advertisement));
         Advertisement save = repository.save(advertisement);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
@@ -84,23 +83,19 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> allByCreatedByAndDeletedFalse = repository.findByCreatedByAndDeletedFalse(utils.getSessionId(), pageable);
-        List<Advertisement> advertisements = allByCreatedByAndDeletedFalse.stream().toList();
+        List<Advertisement> advertisements = repository.findByCreatedByAndDeletedFalse(utils.getSessionId(), criteria.getPage(), criteria.getSize());
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        Page<Advertisement> byUserId = repository.findAllByUserIdAndDeletedFalse(pageable, utils.getSessionId());
-        List<Advertisement> collect = byUserId.stream().toList();
+        List<Advertisement> collect = repository.findAllByUserIdAndDeletedFalse(utils.getSessionId(), criteria.getPage(), criteria.getSize());
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(collect);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        Pageable pageable = PageRequest.of(criteria.getPag(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
         String json = repository.findAllByMaxDurationLessThanJson(30L);
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);

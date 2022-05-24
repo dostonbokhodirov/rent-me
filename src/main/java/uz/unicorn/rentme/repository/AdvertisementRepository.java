@@ -44,12 +44,16 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     @Query(value = "select a.* from advertisement a " +
             "inner join auth_user_advertisement aua on a.id = aua.advertisement_id " +
-            "where aua.auth_user_id=:userId and a.deleted='f' ",
+            "where aua.auth_user_id=:userId and a.deleted='f' limit :size offset (:page-1)* :size",
             nativeQuery = true
     )
-    Page<Advertisement> findAllByUserIdAndDeletedFalse(Pageable pageable,Long userId);
+    List<Advertisement> findAllByUserIdAndDeletedFalse(Long userId, int page, int size);
 
-    Page<Advertisement> findByCreatedByAndDeletedFalse(Long id, Pageable pageable);
+    @Query(value = "select a.* from advertisement a " +
+            "where a.created_by= :id and a.deleted='f' limit :size offset (:page-1)* :size",
+            nativeQuery = true
+    )
+    List<Advertisement> findByCreatedByAndDeletedFalse(Long id, int page, int size);
 
     @Query(
             value = "select a.* from public.advertisement a " +
@@ -87,6 +91,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     @Transactional
     @Modifying
     @Query(value = "insert into public.auth_user_advertisement" +
-            " (auth_user_id,advertisement_id) value (:userId,:id)",nativeQuery = true)
-    void saveMyAdvertisement(Long id,Long userId);
+            " (auth_user_id,advertisement_id) value (:userId,:id)", nativeQuery = true)
+    void saveMyAdvertisement(Long id, Long userId);
 }
