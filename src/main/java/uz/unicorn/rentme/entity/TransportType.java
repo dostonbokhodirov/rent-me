@@ -7,8 +7,10 @@ import lombok.Setter;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Getter
 @Setter

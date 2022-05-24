@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.dto.auth;
 
 import lombok.*;
-import org.springdoc.api.annotations.ParameterObject;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.enums.auth.Gender;
 import uz.unicorn.rentme.enums.auth.Language;
