@@ -75,7 +75,6 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<Advertisement> advertisements = repository.findByDeletedFalse(criteria.getPage(),criteria.getSize());
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
@@ -94,17 +93,15 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByMaxDurationLessThanJson(30L);
+        String json = repository.findAllByMaxDurationLessThanJson(30L, criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByMaxDurationGreaterThanJson(30L);
+        String json = repository.findAllByMaxDurationGreaterThanJson(30L, criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
