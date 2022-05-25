@@ -5,7 +5,6 @@ import lombok.*;
 import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.dto.base.GenericDTO;
 import uz.unicorn.rentme.dto.price.PriceDTO;
-import uz.unicorn.rentme.dto.transport.TransportCreateDTO;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import java.time.LocalDateTime;
@@ -25,5 +24,5 @@ public class AdvertisementUpdateDTO extends GenericDTO {
     private LocalDateTime startDate;
     private Long minDuration;
     private Long maxDuration;
-    private TransportCreateDTO transport;
+    private String transportType;
 }

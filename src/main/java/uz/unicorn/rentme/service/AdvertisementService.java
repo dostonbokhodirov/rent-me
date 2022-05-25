@@ -13,10 +13,13 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
+import uz.unicorn.rentme.entity.Transport;
+import uz.unicorn.rentme.entity.TransportType;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
 import uz.unicorn.rentme.repository.AuthUserRepository;
+import uz.unicorn.rentme.repository.TransportTypeRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
@@ -30,17 +33,31 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
     private final UtilsForSessionUser utils;
+    private final TransportTypeRepository transportTypeRepository;
     private final AuthUserRepository authUserRepository;
 
-    public AdvertisementService(@Qualifier("advertisementMapperImpl") AdvertisementMapper mapper, AdvertisementRepository repository, UtilsForSessionUser utils, AuthUserRepository authUserRepository) {
+    public AdvertisementService(
+            @Qualifier("advertisementMapperImpl") AdvertisementMapper mapper,
+            AdvertisementRepository repository,
+            UtilsForSessionUser utils,
+            TransportTypeRepository transportTypeRepository, AuthUserRepository authUserRepository) {
+
         super(mapper, repository);
         this.utils = utils;
+        this.transportTypeRepository = transportTypeRepository;
         this.authUserRepository = authUserRepository;
+
     }
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
+        TransportType transportType = transportTypeRepository
+                .findByName(dto.getTransport().getTransportType())
+                .orElseThrow(() -> new NotFoundException("Transport type not found"));
+        Transport transport = advertisement.getTransport();
+        transport.setType(transportType);
+        advertisement.setTransport(transport);
         advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
         advertisement.getPrices().forEach(item -> item.setAdvertisement(advertisement));
         Advertisement save = repository.save(advertisement);

@@ -6,11 +6,11 @@ public class OtpUtils {
     public static final String authorization = "AccessKey pX4Ti0YqeoTUeCzX9ezBFpWT1";
     public static final int expiry = 10;
 
-    public static int randomCode(){
+    public static int randomCode() {
+        int min = 100000;
         int max = 999999;
-        int min = 900000;
         int range = max - min + 1;
-        return (int)(Math.random() * range) + min;
+        return (int) (Math.random() * range) + min;
     }
 
 }

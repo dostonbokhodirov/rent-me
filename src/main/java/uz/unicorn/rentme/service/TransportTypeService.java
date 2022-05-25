@@ -15,6 +15,7 @@ import uz.unicorn.rentme.service.base.GenericCrudService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TransportTypeService extends AbstractService<TransportTypeMapper, TransportTypeRepository>
@@ -26,9 +27,10 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
     }
 
     public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(String str) {
-        Optional<List<String>> byNameStartingWith = repository.findByNameStartingWith(str);
-        if (byNameStartingWith.isPresent()) {
-            return new ResponseEntity<>(new DataDTO<>(byNameStartingWith.get()));
+        Optional<List<TransportType>> optional = repository.findByNameStartingWith(str);
+        if (optional.isPresent()) {
+            List<String> result = optional.get().stream().map(TransportType::getName).collect(Collectors.toList());
+            return new ResponseEntity<>(new DataDTO<>(result, (long) result.size()));
         }
         return new ResponseEntity<>(new DataDTO<>(null));
     }
@@ -57,6 +59,14 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
 
     @Override
     public ResponseEntity<DataDTO<List<TransportTypeDTO>>> getAll(AbstractCriteria criteria) {
-        return null;
+        List<TransportType> transportTypeList = repository.findAll();
+        List<TransportTypeDTO> transportTypeDTOList = mapper.toDTO(transportTypeList);
+        return new ResponseEntity<>(new DataDTO<>(transportTypeDTOList, (long) transportTypeDTOList.size()));
+    }
+
+    public ResponseEntity<DataDTO<List<String>>> getAllName() {
+        List<TransportType> all = repository.findAll();
+        List<String> stringList = all.stream().map(TransportType::getName).collect(Collectors.toList());
+        return new ResponseEntity<>(new DataDTO<>(stringList, (long) stringList.size()));
     }
 }

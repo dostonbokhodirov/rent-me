@@ -34,7 +34,8 @@ public class OtpService implements BaseService {
         try {
             int random = OtpUtils.randomCode();
             String jsonInputString = (new Gson()).toJson(
-                    new SmsSenderDTO(phoneNumber, "RentMe", "Hello, your code is: " + random));
+                    new SmsSenderDTO(phoneNumber,
+                            "RentMe", "Hello, your code is: %d\nDon't share anyone".formatted(random)));
 
             var request = HttpRequest.newBuilder()
                     .uri(URI.create(OtpUtils.baseUrl))
@@ -53,19 +54,19 @@ public class OtpService implements BaseService {
                 otp.setCode(random);
                 otp.setExpiry(LocalDateTime.now().plusMinutes(OtpUtils.expiry));
                 otpRepository.save(otp);
-                return new ResponseEntity<>(new DataDTO<>("success"), HttpStatus.OK);
+                return new ResponseEntity<>(new DataDTO<>("success"));
             }
             otpRepository.save(new Otp(phoneNumber, LocalDateTime.now().plusMinutes(OtpUtils.expiry), random));
             // v2 =>  statusCode != 200
 
-            return new ResponseEntity<>(new DataDTO<>("success"), HttpStatus.OK);
+            return new ResponseEntity<>(new DataDTO<>("success"));
 
         } catch (IOException | InterruptedException e) {
             return new ResponseEntity<>(new DataDTO<>(AppErrorDTO.builder()
                     .message(e.getLocalizedMessage())
                     .message(e.getMessage())
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build()), HttpStatus.OK);
+                    .status(HttpStatus.CONFLICT)
+                    .build()), HttpStatus.CONFLICT);
         }
 
     }

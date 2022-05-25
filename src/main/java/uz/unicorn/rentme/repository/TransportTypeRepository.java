@@ -11,10 +11,9 @@ import java.util.Optional;
 
 public interface TransportTypeRepository extends JpaRepository<TransportType, Long>, BaseRepository {
 
-    @Query(nativeQuery = true, value ="select ")
-    Optional<List<TransportType>> findByCategory(AdvertisementCategory category);
+    Optional<List<TransportType>> findByNameStartingWith(String startName);
 
-    Optional<List<String>> findByNameStartingWith(String startName);
+    Optional<TransportType> findByName(String name);
 
 
 }

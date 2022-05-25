@@ -19,7 +19,7 @@ import javax.persistence.Enumerated;
 @Entity
 public class TransportType  extends Auditable {
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Column(nullable = false)

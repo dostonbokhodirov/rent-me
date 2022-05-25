@@ -20,29 +20,27 @@ import java.util.List;
 @Builder
 public class TransportCreateDTO implements BaseDTO {
 
-    @NotBlank
-    private TransportTypeCreateDTO type;
+    @NotBlank(message = "Transport type cannot be blank")
+    private String transportType;
 
-    @NotBlank
+    @NotBlank(message = "Transport model cannot be blank")
     private String model;
 
-    @NotBlank
-    @Digits(integer = Integer.MAX_VALUE, fraction = 0)
+    @NotBlank(message = "Transport year cannot be blank")
     @Pattern(regexp = "\\d{4}")
     private Integer year;
 
-    @NotBlank
+    @NotBlank(message = "Transport transmission cannot be blank")
     private TransportTransmission transmission;
 
-    @NotBlank
+    @NotBlank(message = "Transport fuel type cannot be blank")
     private TransportFuel fuelType;
 
-    @NotBlank
+    @NotBlank(message = "Transport color cannot be blank")
     private TransportColor color;
 
-    @NotBlank
+    @NotBlank(message = "Transport picture cannot be blank")
     private List<PictureCreateDto> pictures;
 
-    @NotBlank
     private Boolean wellEquipped = false;
 }
