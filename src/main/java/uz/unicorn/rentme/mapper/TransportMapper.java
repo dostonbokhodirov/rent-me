@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Component;
@@ -15,7 +16,7 @@ import java.util.List;
 @Component
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
-        uses = {PictureMapper.class, TransportTypeMapper.class})
+        uses = {PictureMapper.class})
 public interface TransportMapper extends
         GenericMapper<
                 Transport,
@@ -38,5 +39,6 @@ public interface TransportMapper extends
     Transport fromUpdateDTO(TransportUpdateDTO dto, @MappingTarget Transport entity);
 
     @Override
+    @Mapping(target = "type",ignore = true)
     Transport fromCreateDTO(TransportCreateDTO dto);
 }

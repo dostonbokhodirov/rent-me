@@ -131,13 +131,13 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
-        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
         String json = repository.findAllByLast(criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
+    @Transactional
     public ResponseEntity<DataDTO<Boolean>> save(Long id) {
         repository.saveMyAdvertisement(id, utils.getSessionId());
         return new ResponseEntity<>(new DataDTO<>(true));
