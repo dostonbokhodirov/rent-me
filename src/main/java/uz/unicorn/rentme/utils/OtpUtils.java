@@ -7,8 +7,8 @@ public class OtpUtils {
     public static final int expiry = 10;
 
     public static int randomCode() {
-        int min = 100000;
-        int max = 999999;
+        int min = 10000;
+        int max = 99999;
         int range = max - min + 1;
         return (int) (Math.random() * range) + min;
     }
