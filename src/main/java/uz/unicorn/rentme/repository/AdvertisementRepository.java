@@ -62,7 +62,6 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
     )
     String findAllByLast(@Param(value = "page") Integer page, @Param(value = "size") Integer size);
 
-    @Transactional
     @Modifying
     @Query(value = "insert into public.auth_user_advertisement" +
             " (auth_user_id,advertisement_id) values (:userId,:id)", nativeQuery = true)

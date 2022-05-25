@@ -5,7 +5,6 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.repository.AuthUserRepository;
 
 import java.util.Optional;
@@ -16,11 +15,10 @@ public class SecurityAuditorAware implements AuditorAware<Long> {
     @Autowired
     private AuthUserRepository repository;
 
+
     @Override
     public Optional<Long> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(authentication.getPrincipal());
-        Optional<AuthUser> byPhoneNumber = repository.findByPhoneNumber(authentication.getPrincipal().toString());
-        return byPhoneNumber.map(Auditable::getId);
+        return repository.getUserId(authentication.getPrincipal().toString());
     }
 }

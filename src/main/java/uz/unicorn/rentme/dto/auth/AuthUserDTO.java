@@ -1,10 +1,11 @@
 package uz.unicorn.rentme.dto.auth;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import uz.unicorn.rentme.dto.base.GenericDTO;
 import uz.unicorn.rentme.entity.Device;
-import uz.unicorn.rentme.entity.Otp;
 import uz.unicorn.rentme.enums.auth.AuthRole;
 import uz.unicorn.rentme.enums.auth.Gender;
 import uz.unicorn.rentme.enums.auth.Language;
@@ -14,8 +15,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AuthUserDTO extends GenericDTO {

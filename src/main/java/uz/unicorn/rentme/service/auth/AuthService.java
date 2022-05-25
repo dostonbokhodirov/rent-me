@@ -76,7 +76,7 @@ public class AuthService implements UserDetailsService, BaseService {
                 JsonNode node = json_auth.get("data");
                 SessionDTO sessionDto = objectMapper.readValue(node.toString(), SessionDTO.class);
 
-                AuthUser authUser = repository.findByPhoneNumber(dto.getPhoneNumber()).orElse(null);
+                AuthUser authUser = getOptionalByPhoneNumber(dto.getPhoneNumber()).orElse(null);
                 if (Objects.isNull(authUser)) sessionDto.setFirst(true);
                 else {
                     otpRepository.deleteIfExistsByPhoneNumber(authUser.getPhoneNumber());
@@ -165,7 +165,9 @@ public class AuthService implements UserDetailsService, BaseService {
 
     public AuthUser getUserByPhoneNumber(String phone) {
         log.info("Getting user by phone : {}", phone);
-        return repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
+        return getOptionalByPhoneNumber(phone).orElseThrow(() -> {
+            throw new NotFoundException("User not found");
+        });
     }
 
     public Optional<AuthUser> getOptionalByPhoneNumber(String phone) {
@@ -175,7 +177,7 @@ public class AuthService implements UserDetailsService, BaseService {
 
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        AuthUser user = repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
+        AuthUser user = getUserByPhoneNumber(phone);
         return User.builder()
                 .username(user.getPhoneNumber())
                 .password("password")
