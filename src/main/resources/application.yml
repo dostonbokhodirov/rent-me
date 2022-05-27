@@ -1,9 +1,9 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/rent_me_test
-    username: doston
-    password: doston123
+    url: jdbc:postgresql://localhost:5432/rent_me
+    username: postgres
+    password: 2001
   jpa:
     show-sql: true
     hibernate:
@@ -25,3 +25,11 @@ springdoc:
     path: swagger-ui
   api-docs:
     path: /api-docs
+management:
+  endpoints:
+    web:
+     exposure:
+       include: '*'
+  endpoint:
+    health:
+      show-details: always

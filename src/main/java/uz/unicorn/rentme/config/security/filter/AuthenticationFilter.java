@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import uz.unicorn.rentme.config.security.utils.JWTUtils;
 import uz.unicorn.rentme.dto.auth.LoginDTO;
 import uz.unicorn.rentme.dto.auth.SessionDTO;
-import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 

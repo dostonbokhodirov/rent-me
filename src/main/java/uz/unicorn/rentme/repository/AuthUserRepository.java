@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import uz.unicorn.rentme.dto.auth.AuthUserDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.entity.AuthUser;
 import uz.unicorn.rentme.repository.base.BaseRepository;
@@ -18,7 +17,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
 
     @Query(value = "select a.savedAdvertisements from AuthUser a where a.id=:id ")
-    List<Advertisement> top(Long id, Pageable pageable);
+    List<Advertisement> findAuthUSerAdvertismenets(Long id, Pageable pageable);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Query(value = "select a.id from AuthUser a where a.phoneNumber=:phone ")

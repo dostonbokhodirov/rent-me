@@ -73,7 +73,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     @Override
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
-        Advertisement advertisement = repository.findByIdAndDeletedFalse(dto.getId()).orElseThrow(() -> {
+        Advertisement advertisement = repository.findById(dto.getId()).orElseThrow(() -> {
             throw new NotFoundException("Advertisement not found");
         });
         Advertisement advertisement1 = mapper.fromUpdateDTO(dto, advertisement);
@@ -84,16 +84,17 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     @Transactional
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
-        Advertisement advertisement = repository.findByIdAndDeletedFalse(id).orElseThrow(() -> {
+        Advertisement advertisement = repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Advertisement not found");
         });
-        repository.delete(advertisement);
+        advertisement.setDeleted(true);
+        repository.save(advertisement);
         return new ResponseEntity<>(new DataDTO<>(true));
     }
 
     @Override
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(Long id) {
-        Advertisement advertisement = repository.findByIdAndDeletedFalse(id).orElseThrow(() -> {
+        Advertisement advertisement = repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Advertisement not found");
         });
         AdvertisementDTO dto = mapper.toDTO(advertisement);
@@ -103,14 +104,14 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<Advertisement> advertisements = repository.findByDeletedFalse(pageable);
+        List<Advertisement> advertisements = repository.findAll(pageable).getContent();
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMyList(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<Advertisement> advertisements = repository.findAllByCreatedByAndDeletedFalse(utils.getSessionId(), pageable);
+        List<Advertisement> advertisements = repository.findAllByCreatedBy(utils.getSessionId(), pageable);
         List<AdvertisementDTO> advertisementDTOS = mapper.toDTO(advertisements);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOS, (long) advertisementDTOS.size()));
     }
@@ -118,7 +119,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
         Long sessionId = utils.getSessionId();
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<Advertisement> top = authUserRepository.top(sessionId, pageable);
+        List<Advertisement> top = authUserRepository.findAuthUSerAdvertismenets(sessionId, pageable);
         List<AdvertisementDTO> collect = mapper.toDTO(top);
         return new ResponseEntity<>(new DataDTO<>(collect, (long) collect.size()));
     }

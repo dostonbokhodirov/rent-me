@@ -42,12 +42,22 @@ public class AuthUserService extends AbstractService<AuthUserMapper, AuthUserRep
 
     @Override
     public ResponseEntity<DataDTO<Long>> update(AuthUserUpdateDTO dto) {
-        return null;
+        AuthUser authUser = repository.findById(dto.getId()).orElseThrow(() -> {
+            throw new NotFoundException("User not found");
+        });
+        AuthUser authUser1 = mapper.fromUpdateDTO(dto, authUser);
+        repository.save(authUser1);
+        return new ResponseEntity<>(new DataDTO<>(dto.getId()));
     }
 
     @Override
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
-        return null;
+        AuthUser authUser = repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("User not found");
+        });
+        authUser.setDeleted(true);
+        repository.save(authUser);
+        return new ResponseEntity<>(new DataDTO<>(true));
     }
 
     @Override
