@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.unicorn.rentme.dto.picture.PictureDTO;
-import uz.unicorn.rentme.entity.TransportType;
+import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
@@ -23,7 +23,7 @@ import java.util.List;
 public class TransportDTO {
 
     @NotBlank
-    private TransportType type;
+    private TransportModel type;
 
     @NotBlank
     private String model;

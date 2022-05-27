@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
@@ -8,13 +9,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.config.security.utils.UtilsForSessionUser;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
+import uz.unicorn.rentme.criteria.SearchCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.entity.Transport;
-import uz.unicorn.rentme.entity.TransportType;
+import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
@@ -25,8 +27,12 @@ import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.util.*;
 
 @Service
 public class AdvertisementService extends AbstractService<AdvertisementMapper, AdvertisementRepository>
@@ -40,7 +46,8 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
             @Qualifier("advertisementMapperImpl") AdvertisementMapper mapper,
             AdvertisementRepository repository,
             UtilsForSessionUser utils,
-            TransportTypeRepository transportTypeRepository, AuthUserRepository authUserRepository) {
+            TransportTypeRepository transportTypeRepository,
+            AuthUserRepository authUserRepository) {
 
         super(mapper, repository);
         this.utils = utils;
@@ -52,11 +59,11 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
-        TransportType transportType = transportTypeRepository
+        TransportModel transportModel = transportTypeRepository
                 .findByName(dto.getTransport().getTransportType())
                 .orElseThrow(() -> new NotFoundException("Transport type not found"));
         Transport transport = advertisement.getTransport();
-        transport.setType(transportType);
+        transport.setModel(transportModel);
         advertisement.setTransport(transport);
         advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
         advertisement.getPrices().forEach(item -> item.setAdvertisement(advertisement));
@@ -123,7 +130,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
-    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLongTerm(AdvertisementCriteria criteria) {
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
         String json = repository.findAllByMaxDurationGreaterThanJson(30L, criteria.getPage(), criteria.getSize());
         if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
@@ -141,5 +148,22 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<Boolean>> save(Long id) {
         repository.saveMyAdvertisement(id, utils.getSessionId());
         return new ResponseEntity<>(new DataDTO<>(true));
+    }
+
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllBySearch(SearchCriteria criteria) {
+
+        Query query = entityManager.createQuery("select t.");
+        StringBuilder queryString = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+
+
+        if (Objects.nonNull(criteria.getCategory())) {
+            queryString.append("category = :category");
+            params.put("category", criteria.getCategory());
+        }
+
+        params.keySet().forEach(t -> query.setParameter(t, params.get(t)));
+
+        return null;
     }
 }

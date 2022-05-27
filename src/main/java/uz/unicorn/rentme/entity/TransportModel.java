@@ -17,7 +17,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class TransportType  extends Auditable {
+public class TransportModel extends Auditable {
 
     @Column(nullable = false, unique = true)
     private String name;

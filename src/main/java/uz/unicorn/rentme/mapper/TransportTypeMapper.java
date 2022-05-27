@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
 import uz.unicorn.rentme.dto.transportType.TransportTypeDTO;
 import uz.unicorn.rentme.dto.transportType.TransportTypeUpdateDTO;
-import uz.unicorn.rentme.entity.TransportType;
+import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.mapper.base.GenericMapper;
 
 import java.util.List;
@@ -16,25 +16,25 @@ import java.util.List;
 @Mapper(componentModel = "spring",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
 public interface TransportTypeMapper extends
         GenericMapper<
-                TransportType,
+                TransportModel,
                 TransportTypeDTO,
                 TransportTypeCreateDTO,
                 TransportTypeUpdateDTO> {
     @Override
-    TransportType fromDTO(TransportTypeDTO dto);
+    TransportModel fromDTO(TransportTypeDTO dto);
 
     @Override
-    List<TransportType> fromDTO(List<TransportTypeDTO> dtoList);
+    List<TransportModel> fromDTO(List<TransportTypeDTO> dtoList);
 
     @Override
-    TransportTypeDTO toDTO(TransportType entity);
+    TransportTypeDTO toDTO(TransportModel entity);
 
     @Override
-    List<TransportTypeDTO> toDTO(List<TransportType> entities);
+    List<TransportTypeDTO> toDTO(List<TransportModel> entities);
 
     @Override
-    TransportType fromUpdateDTO(TransportTypeUpdateDTO dto, @MappingTarget TransportType entity);
+    TransportModel fromUpdateDTO(TransportTypeUpdateDTO dto, @MappingTarget TransportModel entity);
 
     @Override
-    TransportType fromCreateDTO(TransportTypeCreateDTO dto);
+    TransportModel fromCreateDTO(TransportTypeCreateDTO dto);
 }

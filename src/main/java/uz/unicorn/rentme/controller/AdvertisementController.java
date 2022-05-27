@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.controller.base.GenericCrudController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
+import uz.unicorn.rentme.criteria.SearchCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
@@ -25,6 +26,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
 
     @Override
     @GetMapping(value = "/get/{id}")
+
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(@PathVariable Long id) {
         return service.get(id);
     }
@@ -53,8 +55,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.delete(id);
     }
 
-    @PostMapping(value = "/save-advertisement/{id}")
-    @GetMapping(value = "/save_advertisement/{id}")
+    @GetMapping(value = "/save-advertisement/{id}")
     public ResponseEntity<DataDTO<Boolean>> save(@PathVariable Long id) {
         return service.save(id);
     }
@@ -64,9 +65,9 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.getAllDaily(criteria);
     }
 
-    @GetMapping(value = "/list-weekly")
-    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
-        return service.getAllWeekly(criteria);
+    @GetMapping(value = "/list-long-term")
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLongTerm(AdvertisementCriteria criteria) {
+        return service.getAllLongTerm(criteria);
     }
 
     @GetMapping(value = "/list-my")
@@ -82,6 +83,11 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     @GetMapping(value = "/list-last")
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(@RequestBody AdvertisementCriteria criteria) {
         return service.getAllLast(criteria);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllBySearch(@RequestBody SearchCriteria criteria) {
+        return service.getAllBySearch(criteria);
     }
 
 }

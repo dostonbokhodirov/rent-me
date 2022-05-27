@@ -5,7 +5,7 @@ import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
 import uz.unicorn.rentme.dto.transportType.TransportTypeDTO;
 import uz.unicorn.rentme.dto.transportType.TransportTypeUpdateDTO;
-import uz.unicorn.rentme.entity.TransportType;
+import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.mapper.TransportTypeMapper;
 import uz.unicorn.rentme.repository.TransportTypeRepository;
 import uz.unicorn.rentme.response.DataDTO;
@@ -27,9 +27,9 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
     }
 
     public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(String str) {
-        Optional<List<TransportType>> optional = repository.findByNameStartingWith(str);
+        Optional<List<TransportModel>> optional = repository.findByNameStartingWith(str);
         if (optional.isPresent()) {
-            List<String> result = optional.get().stream().map(TransportType::getName).collect(Collectors.toList());
+            List<String> result = optional.get().stream().map(TransportModel::getName).collect(Collectors.toList());
             return new ResponseEntity<>(new DataDTO<>(result, (long) result.size()));
         }
         return new ResponseEntity<>(new DataDTO<>(null));
@@ -37,8 +37,8 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(TransportTypeCreateDTO dto) {
-        TransportType transportType = mapper.fromCreateDTO(dto);
-        TransportType save = repository.save(transportType);
+        TransportModel transportModel = mapper.fromCreateDTO(dto);
+        TransportModel save = repository.save(transportModel);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
 
@@ -59,14 +59,14 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
 
     @Override
     public ResponseEntity<DataDTO<List<TransportTypeDTO>>> getAll(AbstractCriteria criteria) {
-        List<TransportType> transportTypeList = repository.findAll();
-        List<TransportTypeDTO> transportTypeDTOList = mapper.toDTO(transportTypeList);
+        List<TransportModel> transportModelList = repository.findAll();
+        List<TransportTypeDTO> transportTypeDTOList = mapper.toDTO(transportModelList);
         return new ResponseEntity<>(new DataDTO<>(transportTypeDTOList, (long) transportTypeDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<String>>> getAllName() {
-        List<TransportType> all = repository.findAll();
-        List<String> stringList = all.stream().map(TransportType::getName).collect(Collectors.toList());
+        List<TransportModel> all = repository.findAll();
+        List<String> stringList = all.stream().map(TransportModel::getName).collect(Collectors.toList());
         return new ResponseEntity<>(new DataDTO<>(stringList, (long) stringList.size()));
     }
 }
