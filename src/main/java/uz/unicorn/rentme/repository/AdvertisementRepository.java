@@ -6,20 +6,15 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Repository
 public interface AdvertisementRepository extends JpaRepository<Advertisement, Long>, BaseRepository {
-    Optional<Advertisement> findByIdAndDeletedFalse(Long id);
 
-    List<Advertisement> findAllByCreatedByAndDeletedFalse(Long userId, Pageable pageable);
-
-    List<Advertisement> findByDeletedFalse(Pageable pageable);
+    List<Advertisement> findAllByCreatedBy(Long userId, Pageable pageable);
 
     @Query(
             value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +

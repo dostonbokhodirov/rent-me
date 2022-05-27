@@ -23,7 +23,6 @@ public class RentMeApplication {
     public static void main(String[] args) {
         SpringApplication.run(RentMeApplication.class, args);
     }
-
     @Bean
     AuditorAware<Long> auditorAware() {
         return new SecurityAuditorAware();

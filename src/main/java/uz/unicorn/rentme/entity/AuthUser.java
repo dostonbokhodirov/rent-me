@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.auth.AuthRole;
 import uz.unicorn.rentme.enums.auth.Gender;
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Builder
+@Where(clause = "deleted is false")
 public class AuthUser extends Auditable {
 
     @Column(nullable = false)

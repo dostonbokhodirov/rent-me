@@ -10,6 +10,6 @@ public class SecurityUtils {
             "/auth/refresh-token",
             "/auth/register",
             "/swagger-ui/**",
-            "/api-docs/**"
+            "/api-docs/**","/actuator/**","/auth/create"
     };
 }

@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
@@ -15,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Builder
+@Where(clause = "deleted is false")
 public class Advertisement extends Auditable {
 
     private String description;

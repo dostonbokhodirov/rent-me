@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
@@ -17,6 +18,7 @@ import javax.persistence.Enumerated;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Where(clause = "deleted is false")
 public class TransportType  extends Auditable {
 
     @Column(nullable = false, unique = true)
