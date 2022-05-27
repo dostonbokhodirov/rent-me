@@ -16,10 +16,10 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
     Optional<AuthUser> findByPhoneNumber(String phoneNumber);
 
 
-    @Query(value = "select a.savedAdvertisements from AuthUser a where a.id=:id and a.deleted is false")
+    @Query(value = "select a.savedAdvertisements from AuthUser a where a.id=:id ")
     List<Advertisement> findAuthUSerAdvertismenets(Long id, Pageable pageable);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
-    @Query(value = "select a.id from AuthUser a where a.phoneNumber=:phone and a.deleted is false")
+    @Query(value = "select a.id from AuthUser a where a.phoneNumber=:phone ")
     Optional<Long> getUserId(String phone);
 }

@@ -60,5 +60,4 @@ public class AuthUser extends Auditable {
             joinColumns = {@JoinColumn(name = "auth_user_id")},
             inverseJoinColumns = {@JoinColumn(name = "advertisement_id")})
     private List<Advertisement> savedAdvertisements;
-
 }

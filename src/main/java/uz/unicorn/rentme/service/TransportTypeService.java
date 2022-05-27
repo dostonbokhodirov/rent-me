@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
@@ -22,7 +23,7 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
         implements GenericCrudService<TransportTypeDTO, TransportTypeCreateDTO, TransportTypeUpdateDTO, AbstractCriteria> {
 
 
-    public TransportTypeService(TransportTypeMapper mapper, TransportTypeRepository repository) {
+    public TransportTypeService(@Qualifier("transportTypeMapperImpl") TransportTypeMapper mapper, TransportTypeRepository repository) {
         super(mapper, repository);
     }
 

@@ -14,7 +14,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Where(clause = "deleted is false")
 public class Device {
 
     @Id

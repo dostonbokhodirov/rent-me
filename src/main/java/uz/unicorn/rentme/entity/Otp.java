@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Builder
-@Where(clause = "deleted is false")
 public class Otp {
 
     @Id

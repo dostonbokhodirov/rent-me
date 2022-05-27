@@ -80,7 +80,8 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         Advertisement advertisement = repository.findById(id).orElseThrow(() -> {
             throw new NotFoundException("Advertisement not found");
         });
-        repository.delete(advertisement);
+        advertisement.setDeleted(true);
+        repository.save(advertisement);
         return new ResponseEntity<>(new DataDTO<>(true));
     }
 
