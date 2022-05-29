@@ -19,6 +19,7 @@ import java.util.List;
 @Where(clause = "deleted is false")
 public class Advertisement extends Auditable {
 
+    @Column
     private String description;
 
     @Column(nullable = false)

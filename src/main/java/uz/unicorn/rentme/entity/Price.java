@@ -12,7 +12,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@Where(clause = "deleted is false")
 public class Price {
 
     @Id

@@ -23,10 +23,7 @@ import java.util.List;
 public class TransportDTO {
 
     @NotBlank(message = "Transport model can not be blank")
-    private TransportModel type;
-
-    @NotBlank(message = "Transport model can not be blank")
-    private String model;
+    private TransportModel model;
 
     @NotBlank(message = "Year can not be blank")
     @Pattern(regexp = "\\d{4}")

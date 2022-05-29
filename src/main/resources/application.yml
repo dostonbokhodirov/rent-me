@@ -1,13 +1,13 @@
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/rent_me
+    url: jdbc:postgresql://localhost:5432/rent_me_test
     username: postgres
-    password: 2001
+    password: postgres
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     open-in-view: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:

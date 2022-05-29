@@ -17,7 +17,6 @@ import java.util.List;
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AdvertisementDTO extends GenericDTO {
-
     private String description;
     private List<PriceDTO> prices;
     private String category;

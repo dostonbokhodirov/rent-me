@@ -1,5 +1,6 @@
 package uz.unicorn.rentme.service;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
@@ -148,41 +149,39 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllBySearch(SearchCriteria criteria) {
 
-        StringBuilder queryString = new StringBuilder();
         List<String> whereCause = new ArrayList<>();
         Map<String, Object> params = new HashMap<>();
 
         if (Objects.nonNull(criteria.getCategory())) {
             whereCause.add("category = :category");
-//            queryString.append("category = :category");
             params.put("category", criteria.getCategory());
         }
 
         if (Objects.nonNull(criteria.getModel())) {
+            TransportModel transportModel = transportModelRepository
+                    .findByName(criteria.getModel())
+                    .orElseThrow(() -> new NotFoundException("Transport model name is invalid"));
             whereCause.add("a.transport.model = :model");
-//            queryString.append("a.transport.model = :model");
-            params.put("model", criteria.getModel());
+            params.put("model", transportModel);
         }
 
         if (Objects.nonNull(criteria.getYear())) {
             whereCause.add("a.transport.year = :year");
-//            queryString.append("a.transport.year = :year");
             params.put("year", criteria.getYear());
         }
 
         if (Objects.nonNull(criteria.getColors())) {
-            whereCause.add("a.transport.color any in :colors");
-//            queryString.append("a.transport.color any in :colors");
+            whereCause.add("a.transport.color in :colors");
             params.put("colors", criteria.getColors());
         }
 
-        queryString.append(StringUtils.join(whereCause, " and "));
+        // TODO: 5/29/2022 location | prices | dates
 
-        String q = "select a.category from Advertisement a " +
-                "where a.deleted is false and " + queryString;
+        String q = "from Advertisement a " +
+                "where a.deleted is false and " +
+                StringUtils.join(whereCause, " and ");
 
         TypedQuery<Advertisement> query = entityManager.createQuery(q, Advertisement.class);
-
         params.keySet().forEach(t -> query.setParameter(t, params.get(t)));
 
         List<Advertisement> resultList = query.getResultList();

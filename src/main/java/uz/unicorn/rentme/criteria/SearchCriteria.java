@@ -19,9 +19,9 @@ import java.util.List;
 public class SearchCriteria implements BaseCriteria {
     private Point location;
     private AdvertisementCategory category;
-    private TransportModel model;
+    private String model;
     private Integer year;
-    private PriceSearchDTO price;
+    private PriceSearchDTO prices;
     private DateSearchDTO dates;
     private List<TransportColor> colors;
 }
