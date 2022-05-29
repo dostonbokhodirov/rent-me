@@ -7,6 +7,7 @@ import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
 import uz.unicorn.rentme.dto.transportType.TransportTypeDTO;
 import uz.unicorn.rentme.dto.transportType.TransportTypeUpdateDTO;
 import uz.unicorn.rentme.entity.TransportType;
+import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.TransportTypeMapper;
 import uz.unicorn.rentme.repository.TransportTypeRepository;
 import uz.unicorn.rentme.response.DataDTO;
@@ -45,17 +46,31 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
 
     @Override
     public ResponseEntity<DataDTO<Long>> update(TransportTypeUpdateDTO dto) {
-        return null;
+        TransportType type = repository.findById(dto.getId()).orElseThrow(() -> {
+            throw new NotFoundException("TransportType not found");
+        });
+        TransportType type1 = mapper.fromUpdateDTO(dto, type);
+        repository.save(type1);
+        return new ResponseEntity<>(new DataDTO<>(dto.getId()));
     }
 
     @Override
     public ResponseEntity<DataDTO<Boolean>> delete(Long id) {
-        return null;
+        TransportType type = repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("TransportType not found");
+        });
+        type.setDeleted(true);
+        repository.save(type);
+        return new ResponseEntity<>(new DataDTO<>(true));
     }
 
     @Override
     public ResponseEntity<DataDTO<TransportTypeDTO>> get(Long id) {
-        return null;
+        TransportType type = repository.findById(id).orElseThrow(() -> {
+            throw new NotFoundException("TransportType not found");
+        });
+        TransportTypeDTO dto = mapper.toDTO(type);
+        return new ResponseEntity<>(new DataDTO<>(dto));
     }
 
     @Override
@@ -66,8 +81,7 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
     }
 
     public ResponseEntity<DataDTO<List<String>>> getAllName() {
-        List<TransportType> all = repository.findAll();
-        List<String> stringList = all.stream().map(TransportType::getName).collect(Collectors.toList());
-        return new ResponseEntity<>(new DataDTO<>(stringList, (long) stringList.size()));
+        List<String> allName = repository.findAllName();
+        return new ResponseEntity<>(new DataDTO<>(allName, (long) allName.size()));
     }
 }

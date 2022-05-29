@@ -15,5 +15,6 @@ public interface TransportTypeRepository extends JpaRepository<TransportType, Lo
 
     Optional<TransportType> findByName(String name);
 
-
+@Query(value = "select t.name from TransportType t ")
+    List<String>  findAllName();
 }

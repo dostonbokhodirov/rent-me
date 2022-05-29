@@ -70,8 +70,8 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
             throw new NotFoundException("Advertisement not found");
         });
         Advertisement advertisement1 = mapper.fromUpdateDTO(dto, advertisement);
-        Advertisement save = repository.save(advertisement1);
-        return new ResponseEntity<>(new DataDTO<>(save.getId()));
+        repository.save(advertisement1);
+        return new ResponseEntity<>(new DataDTO<>(dto.getId()));
     }
 
     @Override
