@@ -39,6 +39,6 @@ public interface TransportMapper extends
     Transport fromUpdateDTO(TransportUpdateDTO dto, @MappingTarget Transport entity);
 
     @Override
-    @Mapping(target = "type",ignore = true)
+    @Mapping(target = "model",ignore = true)
     Transport fromCreateDTO(TransportCreateDTO dto);
 }

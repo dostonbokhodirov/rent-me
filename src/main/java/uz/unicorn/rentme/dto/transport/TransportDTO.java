@@ -23,10 +23,7 @@ import java.util.List;
 public class TransportDTO {
 
     @NotBlank
-    private TransportModel type;
-
-    @NotBlank
-    private String model;
+    private TransportModel model;
 
     @NotBlank
     @Digits(integer = Integer.MAX_VALUE, fraction = 0)

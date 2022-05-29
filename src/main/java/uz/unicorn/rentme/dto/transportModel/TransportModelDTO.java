@@ -1,4 +1,4 @@
-package uz.unicorn.rentme.dto.transportType;
+package uz.unicorn.rentme.dto.transportModel;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -11,7 +11,7 @@ import uz.unicorn.rentme.enums.AdvertisementCategory;
 @AllArgsConstructor
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TransportTypeUpdateDTO extends GenericDTO {
+public class TransportModelDTO extends GenericDTO {
     private String name;
     private AdvertisementCategory category;
     private String imagePath;
