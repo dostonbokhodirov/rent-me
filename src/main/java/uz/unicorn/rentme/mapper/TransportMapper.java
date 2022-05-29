@@ -18,8 +18,7 @@ import java.util.List;
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
         uses = {PictureMapper.class})
 public interface TransportMapper extends
-        GenericMapper<
-                Transport,
+        GenericMapper<Transport,
                 TransportDTO,
                 TransportCreateDTO,
                 TransportUpdateDTO> {

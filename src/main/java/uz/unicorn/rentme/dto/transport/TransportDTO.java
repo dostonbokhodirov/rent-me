@@ -22,30 +22,28 @@ import java.util.List;
 @NoArgsConstructor
 public class TransportDTO {
 
-    @NotBlank
+    @NotBlank(message = "Transport model can not be blank")
     private TransportModel type;
 
-    @NotBlank
+    @NotBlank(message = "Transport model can not be blank")
     private String model;
 
-    @NotBlank
-    @Digits(integer = Integer.MAX_VALUE, fraction = 0)
+    @NotBlank(message = "Year can not be blank")
     @Pattern(regexp = "\\d{4}")
     private Integer year;
 
-    @NotBlank
+    @NotBlank(message = "Transport transmission can not be blank")
     private TransportTransmission transmission;
 
-    @NotBlank
+    @NotBlank(message = "Transport fuel can not be blank")
     private TransportFuel fuelType;
 
-    @NotBlank
+    @NotBlank(message = "Transport color can not be blank")
     private TransportColor color;
 
-    @NotBlank
+    @NotBlank(message = "Transport pictures can not be blank")
     private List<PictureDTO> pictures;
 
-    @NotBlank
     private Boolean wellEquipped = false;
 
 }

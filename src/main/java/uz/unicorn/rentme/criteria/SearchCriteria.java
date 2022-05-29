@@ -20,7 +20,7 @@ public class SearchCriteria implements BaseCriteria {
     private Point location;
     private AdvertisementCategory category;
     private TransportModel model;
-    private int year;
+    private Integer year;
     private PriceSearchDTO price;
     private DateSearchDTO dates;
     private List<TransportColor> colors;

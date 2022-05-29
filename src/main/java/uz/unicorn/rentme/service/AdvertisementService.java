@@ -27,11 +27,7 @@ import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.TypedQuery;
 import java.util.*;
 
 @Service
@@ -153,18 +149,47 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllBySearch(SearchCriteria criteria) {
 
-        Query query = entityManager.createQuery("select t.");
         StringBuilder queryString = new StringBuilder();
+        List<String> whereCause = new ArrayList<>();
         Map<String, Object> params = new HashMap<>();
 
-
         if (Objects.nonNull(criteria.getCategory())) {
-            queryString.append("category = :category");
+            whereCause.add("category = :category");
+//            queryString.append("category = :category");
             params.put("category", criteria.getCategory());
         }
 
+        if (Objects.nonNull(criteria.getModel())) {
+            whereCause.add("a.transport.model = :model");
+//            queryString.append("a.transport.model = :model");
+            params.put("model", criteria.getModel());
+        }
+
+        if (Objects.nonNull(criteria.getYear())) {
+            whereCause.add("a.transport.year = :year");
+//            queryString.append("a.transport.year = :year");
+            params.put("year", criteria.getYear());
+        }
+
+        if (Objects.nonNull(criteria.getColors())) {
+            whereCause.add("a.transport.color any in :colors");
+//            queryString.append("a.transport.color any in :colors");
+            params.put("colors", criteria.getColors());
+        }
+
+        queryString.append(StringUtils.join(whereCause, " and "));
+
+        String q = "select a.category from Advertisement a " +
+                "where a.deleted is false and " + queryString;
+
+        TypedQuery<Advertisement> query = entityManager.createQuery(q, Advertisement.class);
+
         params.keySet().forEach(t -> query.setParameter(t, params.get(t)));
 
-        return null;
+        List<Advertisement> resultList = query.getResultList();
+        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(resultList);
+
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
+
     }
 }
