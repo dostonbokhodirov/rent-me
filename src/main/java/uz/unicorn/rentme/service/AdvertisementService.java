@@ -1,6 +1,5 @@
 package uz.unicorn.rentme.service;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +20,7 @@ import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
 import uz.unicorn.rentme.repository.AuthUserRepository;
-import uz.unicorn.rentme.repository.TransportTypeRepository;
+import uz.unicorn.rentme.repository.TransportModelRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
@@ -35,19 +34,19 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         implements GenericCrudService<AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO, AdvertisementCriteria> {
 
     private final UtilsForSessionUser utils;
-    private final TransportTypeRepository transportTypeRepository;
+    private final TransportModelRepository transportModelRepository;
     private final AuthUserRepository authUserRepository;
 
     public AdvertisementService(
             @Qualifier("advertisementMapperImpl") AdvertisementMapper mapper,
             AdvertisementRepository repository,
             UtilsForSessionUser utils,
-            TransportTypeRepository transportTypeRepository,
+            TransportModelRepository transportModelRepository,
             AuthUserRepository authUserRepository) {
 
         super(mapper, repository);
         this.utils = utils;
-        this.transportTypeRepository = transportTypeRepository;
+        this.transportModelRepository = transportModelRepository;
         this.authUserRepository = authUserRepository;
 
     }
@@ -55,8 +54,8 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     @Override
     public ResponseEntity<DataDTO<Long>> create(AdvertisementCreateDTO dto) {
         Advertisement advertisement = mapper.fromCreateDTO(dto);
-        TransportModel transportModel = transportTypeRepository
-                .findByName(dto.getTransport().getTransportType())
+        TransportModel transportModel = transportModelRepository
+                .findByName(dto.getTransport().getModel())
                 .orElseThrow(() -> new NotFoundException("Transport type not found"));
         Transport transport = advertisement.getTransport();
         transport.setModel(transportModel);
@@ -73,8 +72,8 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
             throw new NotFoundException("Advertisement not found");
         });
         Advertisement advertisement1 = mapper.fromUpdateDTO(dto, advertisement);
-        Advertisement save = repository.save(advertisement1);
-        return new ResponseEntity<>(new DataDTO<>(save.getId()));
+        repository.save(advertisement1);
+        return new ResponseEntity<>(new DataDTO<>(dto.getId()));
     }
 
     @Override

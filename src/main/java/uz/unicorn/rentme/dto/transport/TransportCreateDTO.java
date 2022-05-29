@@ -3,12 +3,10 @@ package uz.unicorn.rentme.dto.transport;
 import lombok.*;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.dto.picture.PictureCreateDto;
-import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
 
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import java.util.List;
@@ -19,9 +17,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TransportCreateDTO implements BaseDTO {
-
-    @NotBlank(message = "Transport type cannot be blank")
-    private String transportType;
 
     @NotBlank(message = "Transport model cannot be blank")
     private String model;

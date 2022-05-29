@@ -62,5 +62,4 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
             " (auth_user_id,advertisement_id) values (:userId,:id)", nativeQuery = true)
     void saveMyAdvertisement(Long id, Long userId);
 
-
 }

@@ -2,21 +2,19 @@ package uz.unicorn.rentme.controller;
 
 import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
-import uz.unicorn.rentme.criteria.AdvertisementCriteria;
-import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
-import uz.unicorn.rentme.dto.transportType.TransportTypeCreateDTO;
-import uz.unicorn.rentme.dto.transportType.TransportTypeDTO;
+import uz.unicorn.rentme.dto.transportModel.TransportModelCreateDTO;
+import uz.unicorn.rentme.dto.transportModel.TransportModelDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
-import uz.unicorn.rentme.service.TransportTypeService;
+import uz.unicorn.rentme.service.TransportModelService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/transport-type")
-public class TransportTypeController extends AbstractController<TransportTypeService> {
+@RequestMapping("/transport-model")
+public class TransportModelController extends AbstractController<TransportModelService> {
 
-    public TransportTypeController(TransportTypeService service) {
+    public TransportModelController(TransportModelService service) {
         super(service);
     }
 
@@ -26,12 +24,12 @@ public class TransportTypeController extends AbstractController<TransportTypeSer
     }
 
     @PostMapping(value = "/create")
-    public ResponseEntity<DataDTO<Long>> create(@RequestBody TransportTypeCreateDTO dto) {
+    public ResponseEntity<DataDTO<Long>> create(@RequestBody TransportModelCreateDTO dto) {
         return service.create(dto);
     }
 
     @GetMapping(value = "/list-details")
-    public ResponseEntity<DataDTO<List<TransportTypeDTO>>> getAllDetails() {
+    public ResponseEntity<DataDTO<List<TransportModelDTO>>> getAllDetails() {
         return service.getAll(null);
     }
 
