@@ -19,7 +19,7 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 @Entity
 @Where(clause = "deleted is false")
-public class TransportType  extends Auditable {
+public class TransportModel  extends Auditable {
 
     @Column(nullable = false, unique = true)
     private String name;

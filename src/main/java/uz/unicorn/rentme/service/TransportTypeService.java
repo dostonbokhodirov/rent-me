@@ -29,9 +29,9 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
     }
 
     public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(String str) {
-        Optional<List<TransportType>> optional = repository.findByNameStartingWith(str);
+        Optional<List<TransportModel>> optional = repository.findByNameStartingWith(str);
         if (optional.isPresent()) {
-            List<String> result = optional.get().stream().map(TransportType::getName).collect(Collectors.toList());
+            List<String> result = optional.get().stream().map(TransportModel::getName).collect(Collectors.toList());
             return new ResponseEntity<>(new DataDTO<>(result, (long) result.size()));
         }
         return new ResponseEntity<>(new DataDTO<>(null));
@@ -39,8 +39,8 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(TransportTypeCreateDTO dto) {
-        TransportType transportType = mapper.fromCreateDTO(dto);
-        TransportType save = repository.save(transportType);
+        TransportModel transportModel = mapper.fromCreateDTO(dto);
+        TransportModel save = repository.save(transportModel);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
 
@@ -81,7 +81,8 @@ public class TransportTypeService extends AbstractService<TransportTypeMapper, T
     }
 
     public ResponseEntity<DataDTO<List<String>>> getAllName() {
-        List<String> allName = repository.findAllName();
-        return new ResponseEntity<>(new DataDTO<>(allName, (long) allName.size()));
+        List<TransportType> all = repository.findAll();
+        List<String> stringList = all.stream().map(TransportType::getName).collect(Collectors.toList());
+        return new ResponseEntity<>(new DataDTO<>(stringList, (long) stringList.size()));
     }
 }

@@ -36,7 +36,7 @@ public class MainController {
         );
         List<AdvertisementShortDTO> lastAdvertisements = advertisementService.getAllLast(advertisementCriteria).getData().getData();
         List<AdvertisementShortDTO> dailyAdvertisements = advertisementService.getAllDaily(advertisementCriteria).getData().getData();
-        List<AdvertisementShortDTO> weeklyAdvertisements = advertisementService.getAllWeekly(advertisementCriteria).getData().getData();
+        List<AdvertisementShortDTO> weeklyAdvertisements = advertisementService.getAllLongTerm(advertisementCriteria).getData().getData();
 
         MainPageDTO dto = MainPageDTO
                 .builder()

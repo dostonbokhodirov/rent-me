@@ -22,9 +22,6 @@ import java.util.List;
 public class Transport extends Auditable {
 
     @Column(nullable = false)
-    private String model;
-
-    @Column(nullable = false)
     private int year;
 
     @Column(columnDefinition = "varchar default 'MANUAL'")
@@ -41,7 +38,7 @@ public class Transport extends Auditable {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn
-    private TransportType type;
+    private TransportModel model;
 
     @OneToMany(mappedBy = "transport", cascade = CascadeType.ALL)
     private List<Picture> pictures;
