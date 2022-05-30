@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.mapstruct.ap.internal.util.Strings;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -123,21 +122,21 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
         String json = repository.findAllByMaxDurationLessThanJson(30L, criteria.getPage(), criteria.getSize());
-        if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
+        if (StringUtils.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLongTerm(AdvertisementCriteria criteria) {
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
         String json = repository.findAllByMaxDurationGreaterThanJson(30L, criteria.getPage(), criteria.getSize());
-        if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
+        if (StringUtils.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
         List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
         String json = repository.findAllByLast(criteria.getPage(), criteria.getSize());
-        if (Strings.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
+        if (StringUtils.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
         return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
     }
 
