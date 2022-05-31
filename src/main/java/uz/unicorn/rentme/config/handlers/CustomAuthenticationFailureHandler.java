@@ -18,7 +18,6 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class CustomAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-
     private final ObjectMapper mapper;
 
     @Override

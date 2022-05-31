@@ -1,8 +1,10 @@
 package uz.unicorn.rentme.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.dto.transport.TransportCreateDTO;
 import uz.unicorn.rentme.dto.transport.TransportDTO;
 import uz.unicorn.rentme.dto.transport.TransportUpdateDTO;
@@ -11,10 +13,15 @@ import uz.unicorn.rentme.mapper.base.GenericMapper;
 
 import java.util.List;
 
+@Component
 @Mapper(componentModel = "spring",
-        uses = {PictureMapper.class},
-        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL)
-public interface TransportMapper extends GenericMapper<Transport, TransportDTO, TransportCreateDTO, TransportUpdateDTO> {
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
+        uses = {PictureMapper.class})
+public interface TransportMapper extends
+        GenericMapper<Transport,
+                TransportDTO,
+                TransportCreateDTO,
+                TransportUpdateDTO> {
     @Override
     Transport fromDTO(TransportDTO dto);
 
@@ -31,5 +38,6 @@ public interface TransportMapper extends GenericMapper<Transport, TransportDTO, 
     Transport fromUpdateDTO(TransportUpdateDTO dto, @MappingTarget Transport entity);
 
     @Override
+    @Mapping(target = "model",ignore = true)
     Transport fromCreateDTO(TransportCreateDTO dto);
 }

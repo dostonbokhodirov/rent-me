@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.entity;
 
 import lombok.*;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

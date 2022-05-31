@@ -22,16 +22,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeTypeUtils;
 import uz.unicorn.rentme.config.security.utils.JWTUtils;
 import uz.unicorn.rentme.dto.auth.LoginDTO;
 import uz.unicorn.rentme.dto.auth.SessionDTO;
 import uz.unicorn.rentme.entity.AuthUser;
-import uz.unicorn.rentme.enums.auth.AuthRole;
 import uz.unicorn.rentme.enums.auth.Status;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.property.ServerProperties;
 import uz.unicorn.rentme.repository.AuthUserRepository;
+import uz.unicorn.rentme.repository.OtpRepository;
 import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
@@ -49,18 +50,19 @@ public class AuthService implements UserDetailsService, BaseService {
 
 
     private final AuthUserRepository repository;
+    private final OtpRepository otpRepository;
     private final ServerProperties serverProperties;
     private final ObjectMapper objectMapper;
 
-    public AuthService(AuthUserRepository repository, ServerProperties serverProperties, ObjectMapper objectMapper) {
+    public AuthService(AuthUserRepository repository, OtpRepository otpRepository, ServerProperties serverProperties, ObjectMapper objectMapper) {
         this.repository = repository;
+        this.otpRepository = otpRepository;
         this.serverProperties = serverProperties;
         this.objectMapper = objectMapper;
     }
 
-
+    @Transactional
     public ResponseEntity<DataDTO<SessionDTO>> getToken(LoginDTO dto) {
-
         try {
             HttpClient httpclient = HttpClientBuilder.create().build();
             HttpPost httppost = new HttpPost(serverProperties.getServerUrl() + "/api/login");
@@ -74,9 +76,10 @@ public class AuthService implements UserDetailsService, BaseService {
                 JsonNode node = json_auth.get("data");
                 SessionDTO sessionDto = objectMapper.readValue(node.toString(), SessionDTO.class);
 
-                AuthUser authUser = repository.findByPhoneNumber(dto.getPhoneNumber()).orElse(null);
+                AuthUser authUser = getOptionalByPhoneNumber(dto.getPhoneNumber()).orElse(null);
                 if (Objects.isNull(authUser)) sessionDto.setFirst(true);
                 else {
+                    otpRepository.deleteIfExistsByPhoneNumber(authUser.getPhoneNumber());
                     authUser.setStatus(Status.ACTIVE);
                     repository.save(authUser);
                 }
@@ -162,7 +165,9 @@ public class AuthService implements UserDetailsService, BaseService {
 
     public AuthUser getUserByPhoneNumber(String phone) {
         log.info("Getting user by phone : {}", phone);
-        return repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
+        return getOptionalByPhoneNumber(phone).orElseThrow(() -> {
+            throw new NotFoundException("User not found");
+        });
     }
 
     public Optional<AuthUser> getOptionalByPhoneNumber(String phone) {
@@ -172,7 +177,7 @@ public class AuthService implements UserDetailsService, BaseService {
 
     @Override
     public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
-        AuthUser user = repository.findByPhoneNumber(phone).orElseThrow(() -> new NotFoundException("User not found"));
+        AuthUser user = getUserByPhoneNumber(phone);
         return User.builder()
                 .username(user.getPhoneNumber())
                 .password("password")

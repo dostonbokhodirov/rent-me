@@ -11,6 +11,7 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.dto.auth.AuthUserUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.mapper.base.GenericMapper;
+import uz.unicorn.rentme.mapper.base.PriceMapper;
 
 import javax.persistence.MappedSuperclass;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 @Component
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
-uses = {TransportMapper.class})
+uses = {TransportMapper.class, PriceMapper.class,LocationMapper.class})
 public interface AdvertisementMapper extends GenericMapper<Advertisement, AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO> {
 
     @Override

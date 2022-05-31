@@ -42,11 +42,13 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
             @ApiResponse(responseCode = "403", description = "${get.advertisement.resCode.403.description}",
                     content = @Content) })
     @GetMapping(value = "/get/{id}")
+
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(@PathVariable Long id) {
         return service.get(id);
     }
 
     @Override
+    @GetMapping(value = "/list")
     @Operation(summary = "${getAll.advertisement.summary}", description = "${getAll.advertisement.description}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "${getAll.advertisement.resCode.200.description}",
@@ -88,14 +90,19 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.delete(id);
     }
 
+    @GetMapping(value = "/save-advertisement/{id}")
+    public ResponseEntity<DataDTO<Boolean>> save(@PathVariable Long id) {
+        return service.save(id);
+    }
+
     @GetMapping("/list-daily")
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
         return service.getAllDaily(criteria);
     }
 
-    @GetMapping(value = "/list-weekly")
-    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllWeekly(AdvertisementCriteria criteria) {
-        return service.getAllWeekly(criteria);
+    @GetMapping(value = "/list-long-term")
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLongTerm(AdvertisementCriteria criteria) {
+        return service.getAllLongTerm(criteria);
     }
 
 
@@ -104,15 +111,19 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
         return service.getAllMyList(criteria);
     }
 
-    @GetMapping(value = "/list_my_save")
+    @GetMapping(value = "/list-saved")
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getMySave(AdvertisementCriteria criteria) {
         return service.getAllMySave(criteria);
     }
 
     @GetMapping(value = "/list-last")
-    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(@RequestBody AdvertisementCriteria criteria){
-//        return service.getAllLast(criteria);
-        return null;
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(@RequestBody AdvertisementCriteria criteria) {
+        return service.getAllLast(criteria);
+    }
+
+    @PostMapping(value = "/search")
+    public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllBySearch(@RequestBody SearchCriteria criteria) {
+        return service.getAllBySearch(criteria);
     }
 
 }

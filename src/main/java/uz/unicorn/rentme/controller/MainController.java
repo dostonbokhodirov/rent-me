@@ -1,7 +1,7 @@
 package uz.unicorn.rentme.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
@@ -22,9 +22,9 @@ public class MainController {
     private final FileService fileService;
     private final AdvertisementService advertisementService;
 
-    @PostMapping(value = "/main-page")
+    @GetMapping(value = "/main-page")
     public ResponseEntity<DataDTO<MainPageDTO>> mainPage() {
-        AdvertisementCriteria advertisementCriteria = new AdvertisementCriteria(3, 0);
+        AdvertisementCriteria advertisementCriteria = new AdvertisementCriteria(0);
 
         List<String> pathList = List.of(
                 "https://firebasestorage.googleapis.com/v0/b/picturesaver-61bc7.appspot.com/o/0e641539-a158-4cb0-8b38-b7088439b627.jpg?alt=media",
@@ -36,7 +36,7 @@ public class MainController {
         );
         List<AdvertisementShortDTO> lastAdvertisements = advertisementService.getAllLast(advertisementCriteria).getData().getData();
         List<AdvertisementShortDTO> dailyAdvertisements = advertisementService.getAllDaily(advertisementCriteria).getData().getData();
-        List<AdvertisementShortDTO> weeklyAdvertisements = advertisementService.getAllWeekly(advertisementCriteria).getData().getData();
+        List<AdvertisementShortDTO> weeklyAdvertisements = advertisementService.getAllLongTerm(advertisementCriteria).getData().getData();
 
         MainPageDTO dto = MainPageDTO
                 .builder()

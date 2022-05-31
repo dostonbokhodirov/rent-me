@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,6 +21,6 @@ public class AbstractCriteria implements BaseCriteria {
     }
 
     public AbstractCriteria(Integer page) {
-        this(5, page);
+        this(3, page);
     }
 }

@@ -35,15 +35,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
         Otp otp = otpRepository.findByPhoneNumber(phoneNumber).orElse(null);
-        if (Objects.isNull(otp)) {
-            throw new RuntimeException("Bad credentials");
-        }
-        if (!phoneNumber.equals(otp.getPhoneNumber()) || Integer.parseInt(code) != otp.getCode()) {
+        
+        if (Objects.isNull(otp)) throw new RuntimeException("Bad credentials");
+        if (!phoneNumber.equals(otp.getPhoneNumber()) || Integer.parseInt(code) != otp.getCode())
             throw new RuntimeException("Phone number and/or otp code is incorrect");
-        }
-        if (otp.getExpiry().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Otp code is invalid");
-        }
+        if (otp.getExpiry().isBefore(LocalDateTime.now())) throw new RuntimeException("Otp code is invalid");
 
         Optional<AuthUser> optional = authService.getOptionalByPhoneNumber(phoneNumber);
         optional.ifPresent(authUser -> authorities.add(new SimpleGrantedAuthority(authUser.getRole().toString())));

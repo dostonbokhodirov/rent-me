@@ -10,8 +10,6 @@ import uz.unicorn.rentme.mapper.base.BaseMapper;
 import uz.unicorn.rentme.repository.base.BaseRepository;
 
 import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 public class AbstractService<M extends BaseMapper, R extends BaseRepository> implements BaseService {
@@ -23,7 +21,6 @@ public class AbstractService<M extends BaseMapper, R extends BaseRepository> imp
     protected EntityManager entityManager;
 
     protected <T> T getResponse(String json) {
-        assert json != null;
         ObjectMapper mapper = new ObjectMapper();
         try {
             return mapper.readValue(json, new TypeReference<>() {

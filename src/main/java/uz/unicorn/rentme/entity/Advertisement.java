@@ -1,12 +1,13 @@
 package uz.unicorn.rentme.entity;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
+import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,28 +15,32 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Entity
 @Builder
+@Where(clause = "deleted is false")
 public class Advertisement extends Auditable {
 
+    @Column
     private String description;
 
     @Column(nullable = false)
-    private Long price;
+    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL)
+    private List<Price> prices;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private AdvertisementCategory category;
 
-    @Column(nullable = false,columnDefinition = "varchar")
-    private Point location;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private Location location;
 
-    @Column(nullable = false,columnDefinition = "varchar")
+    @Column(nullable = false)
     private LocalDateTime startDate;
 
     @Column(nullable = false)
-    private Long minDuration;
+    private int minDuration;
 
     @Column(nullable = false)
-    private Long maxDuration;
+    private int maxDuration;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Transport transport;

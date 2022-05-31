@@ -15,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import uz.unicorn.rentme.config.security.utils.JWTUtils;
 import uz.unicorn.rentme.dto.auth.LoginDTO;
 import uz.unicorn.rentme.dto.auth.SessionDTO;
-import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 
@@ -48,10 +47,6 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
             UsernamePasswordAuthenticationToken authenticationToken =
                     new UsernamePasswordAuthenticationToken(loginDto.getPhoneNumber(), loginDto.getCode());
             return authenticationProvider.authenticate(authenticationToken);
-        } catch (NotFoundException e) {
-            log.error(e.getMessage(), e);
-            throw new BadCredentialsException(e.getMessage(), e.getCause());
-//            throw new NotFoundException(e.getMessage(), e.getCause());
         } catch (IOException | RuntimeException e) {
             log.error(e.getMessage(), e);
             throw new BadCredentialsException(e.getMessage(), e.getCause());

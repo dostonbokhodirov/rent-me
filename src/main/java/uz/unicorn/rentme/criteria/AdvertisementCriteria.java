@@ -15,4 +15,9 @@ public class AdvertisementCriteria extends AbstractCriteria {
     public AdvertisementCriteria(Integer size, Integer page) {
         super(size, page);
     }
+
+    @Builder(builderMethodName = "secondBuilder", buildMethodName = "secondBuild")
+    public AdvertisementCriteria(Integer page) {
+        super(page);
+    }
 }

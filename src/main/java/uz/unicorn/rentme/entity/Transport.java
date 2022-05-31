@@ -4,11 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
-import uz.unicorn.rentme.enums.transport.TransportType;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,17 +18,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Where(clause = "deleted is false")
 public class Transport extends Auditable {
 
     @Column(nullable = false)
-    @Enumerated(value = EnumType.STRING)
-    private TransportType type;
-
-    @Column(nullable = false)
-    private String model;
-
-    @Column(nullable = false)
-    private Integer year;
+    private int year;
 
     @Column(columnDefinition = "varchar default 'MANUAL'")
     @Enumerated(value = EnumType.STRING)
@@ -42,7 +36,11 @@ public class Transport extends Auditable {
     @Enumerated(value = EnumType.STRING)
     private TransportColor color;
 
-    @OneToMany(mappedBy = "transport",cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn
+    private TransportModel model;
+
+    @OneToMany(mappedBy = "transport", cascade = CascadeType.ALL)
     private List<Picture> pictures;
 
     @Column(columnDefinition = "bool default 'false'")

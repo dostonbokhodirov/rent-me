@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.dto.auth;
 
 import lombok.*;
-import org.springdoc.api.annotations.ParameterObject;
 import uz.unicorn.rentme.dto.base.BaseDTO;
 import uz.unicorn.rentme.enums.auth.Gender;
 import uz.unicorn.rentme.enums.auth.Language;
@@ -15,29 +14,27 @@ import javax.validation.constraints.Pattern;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-//@ParameterObject
 public class AuthUserCreateDTO implements BaseDTO {
 
-    @NotBlank
-    @Pattern(regexp = "[A-Z]+")
+    @NotBlank(message = "First name cannot be blank")
+    @Pattern(regexp = "[A-Z]+", message = "First name is invalid")
     private String firstName;
 
-    @NotBlank
-    @Pattern(regexp = "[A-Z]+")
+    @NotBlank(message = "Last name cannot be blank")
+    @Pattern(regexp = "[A-Z]+", message = "Last name is invalid")
     private String lastName;
 
-    @NotBlank
-//    @Pattern(regexp = "^\\+\\d{12}(\\d{2})?$", message = "Phone number is invalid")
-    @Pattern(regexp = "[+](998)\\d{9}", message = "Phone number is invalid")
+    @NotBlank(message = "Phone number cannot be blank")
+    @Pattern(regexp = "^\\+\\d{12}(\\d{2})?$", message = "Phone number is invalid")
     private String phoneNumber;
 
-    @NotBlank
+    @NotBlank(message = "Language cannot be blank")
     private Language language;
 
     @Email(regexp = "^\\w+([.-]?\\w+)*@\\w+([.-]?\\w+)*(\\.\\w{2,3})+$", message = "Email is invalid")
     private String email = "example@gmail.com";
 
-    @NotBlank
+    @NotBlank(message = "Gender cannot be blank")
     private Gender gender;
 
 }

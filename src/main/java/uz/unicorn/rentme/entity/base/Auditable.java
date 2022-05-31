@@ -3,6 +3,7 @@ package uz.unicorn.rentme.entity.base;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -32,7 +33,7 @@ public class Auditable implements BaseEntity, Serializable {
 
     @CreatedBy
     @Column
-    private String createdBy;
+    private Long createdBy;
 
     @UpdateTimestamp
     @LastModifiedDate
@@ -41,7 +42,7 @@ public class Auditable implements BaseEntity, Serializable {
 
     @LastModifiedBy
     @Column
-    private String updatedBy;
+    private Long updatedBy;
 
     @Column(columnDefinition = "bool default 'false'")
     private boolean deleted;
