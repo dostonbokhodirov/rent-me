@@ -8,5 +8,5 @@ public enum TransportColor {
     BLUE,
     GREY,
     YELLOW,
-    DARKGREY;
+    DARKGREY
 }

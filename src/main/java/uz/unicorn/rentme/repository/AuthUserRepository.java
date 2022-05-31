@@ -17,7 +17,7 @@ public interface AuthUserRepository extends JpaRepository<AuthUser, Long>, BaseR
 
 
     @Query(value = "select a.savedAdvertisements from AuthUser a where a.id=:id ")
-    List<Advertisement> findAuthUSerAdvertismenets(Long id, Pageable pageable);
+    List<Advertisement> findAuthUserAdvertisements(Long id, Pageable pageable);
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     @Query(value = "select a.id from AuthUser a where a.phoneNumber=:phone ")
