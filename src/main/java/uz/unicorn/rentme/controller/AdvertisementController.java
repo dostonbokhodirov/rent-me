@@ -33,14 +33,14 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     }
 
     @Override
-    @Operation(summary = "${get.advertisement.summary}", description = "${get.advertisement.description}")
+    @Operation(summary = "${get.summary}", description = "${get.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "${get.advertisement.resCode.200.description}",
+            @ApiResponse(responseCode = "200", description = "${get.resCode.200.desc}",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = SessionDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "${get.advertisement.resCode.404.description}",
+            @ApiResponse(responseCode = "404", description = "${get.resCode.404.desc}",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "${get.advertisement.resCode.403.description}",
+            @ApiResponse(responseCode = "403", description = "${get.resCode.403.desc}",
                     content = @Content) })
     @GetMapping(value = "/get/{id}")
 
@@ -50,14 +50,14 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
 
     @Override
     @GetMapping(value = "/list")
-    @Operation(summary = "${getAll.advertisement.summary}", description = "${getAll.advertisement.description}")
+    @Operation(summary = "${getAll.summary}", description = "${getAll.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "${getAll.advertisement.resCode.200.description}",
+            @ApiResponse(responseCode = "200", description = "${getAll.resCode.200.desc}",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = SessionDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "${getAll.advertisement.resCode.404.description}",
+            @ApiResponse(responseCode = "404", description = "${getAll.resCode.404.desc}",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "${getAll.advertisement.resCode.403.description}",
+            @ApiResponse(responseCode = "403", description = "${getAll.resCode.403.desc}",
                     content = @Content) })
     @PostMapping(value = "/list")
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAll(AdvertisementCriteria criteria) {
@@ -65,14 +65,14 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     }
 
     @Override
-    @Operation(summary = "${create.advertisement.summary}", description = "${create.advertisement.description}")
+    @Operation(summary = "${create.summary}", description = "${create.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "${create.advertisement.resCode.200.description}",
+            @ApiResponse(responseCode = "200", description = "${create.resCode.200.desc}",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = SessionDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "${create.advertisement.resCode.404.description}",
+            @ApiResponse(responseCode = "404", description = "${create.resCode.404.desc}",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "${create.advertisement.resCode.403.description}",
+            @ApiResponse(responseCode = "403", description = "${create.resCode.403.desc}",
                     content = @Content) })
     @PostMapping(value = "/create")
     public ResponseEntity<DataDTO<Long>> create(@RequestBody AdvertisementCreateDTO dto) {
@@ -80,14 +80,14 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     }
 
     @Override
-    @Operation(summary = "${update.advertisement.summary}", description = "${update.advertisement.description}")
+    @Operation(summary = "${update.summary}", description = "${update.desc}")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "${update.advertisement.resCode.200.description}",
+            @ApiResponse(responseCode = "200", description = "${update.resCode.200.desc}",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = SessionDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "${update.advertisement.resCode.404.description}",
+            @ApiResponse(responseCode = "404", description = "${update.resCode.404.desc}",
                     content = @Content),
-            @ApiResponse(responseCode = "403", description = "${update.advertisement.resCode.403.description}",
+            @ApiResponse(responseCode = "403", description = "${update.resCode.403.desc}",
                     content = @Content) })
     @PostMapping(value = "/update")
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
