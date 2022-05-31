@@ -2,7 +2,6 @@ package uz.unicorn.rentme.entity;
 
 import lombok.*;
 import org.hibernate.annotations.Where;
-import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
@@ -23,15 +22,16 @@ public class Advertisement extends Auditable {
     private String description;
 
     @Column(nullable = false)
-    @OneToMany(mappedBy = "advertisement" ,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "advertisement", cascade = CascadeType.ALL)
     private List<Price> prices;
 
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private AdvertisementCategory category;
 
-    @Column(nullable = false)
-    private Point location;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(nullable = false)
+    private Location location;
 
     @Column(nullable = false)
     private LocalDateTime startDate;

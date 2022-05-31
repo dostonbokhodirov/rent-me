@@ -58,11 +58,11 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
                 .findByName(dto.getTransport().getModel())
                 .orElseThrow(() -> new NotFoundException("Transport type not found"));
         Transport transport = advertisement.getTransport();
-        transport.setModel(transportModel);
-        advertisement.setTransport(transport);
-        advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport()));
-        advertisement.getPrices().forEach(item -> item.setAdvertisement(advertisement));
-        Advertisement save = repository.save(advertisement);
+        transport.setModel(transportModel);  //set Transport model
+        advertisement.setTransport(transport); // set Transport
+        advertisement.getTransport().getPictures().forEach(item -> item.setTransport(advertisement.getTransport())); //set picture path
+        advertisement.getPrices().forEach(item -> item.setAdvertisement(advertisement)); //set Advertisement to Price table
+        Advertisement save = repository.save(advertisement); //save data
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
 
@@ -114,7 +114,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllMySave(AdvertisementCriteria criteria) {
         Long sessionId = utils.getSessionId();
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<Advertisement> top = authUserRepository.findAuthUSerAdvertismenets(sessionId, pageable);
+        List<Advertisement> top = authUserRepository.findAuthUserAdvertisements(sessionId, pageable);
         List<AdvertisementDTO> collect = mapper.toDTO(top);
         return new ResponseEntity<>(new DataDTO<>(collect, (long) collect.size()));
     }

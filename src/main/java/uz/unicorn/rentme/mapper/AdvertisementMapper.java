@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
-uses = {TransportMapper.class, PriceMapper.class})
+uses = {TransportMapper.class, PriceMapper.class,LocationMapper.class})
 public interface AdvertisementMapper extends GenericMapper<Advertisement, AdvertisementDTO, AdvertisementCreateDTO, AdvertisementUpdateDTO> {
 
     @Override

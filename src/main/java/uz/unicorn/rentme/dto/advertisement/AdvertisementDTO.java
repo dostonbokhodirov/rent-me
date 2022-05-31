@@ -4,8 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.dto.base.GenericDTO;
+import uz.unicorn.rentme.dto.location.LocationDto;
 import uz.unicorn.rentme.dto.price.PriceDTO;
 import uz.unicorn.rentme.dto.transport.TransportDTO;
+import uz.unicorn.rentme.entity.Location;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,7 +22,7 @@ public class AdvertisementDTO extends GenericDTO {
     private String description;
     private List<PriceDTO> prices;
     private String category;
-    private Point location;
+    private LocationDto location;
     private LocalDateTime startDate;
     private Long minDuration;
     private Long maxDuration;
