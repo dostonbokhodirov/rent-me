@@ -80,6 +80,15 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     }
 
     @Override
+    @Operation(summary = "${update.advertisement.summary}", description = "${update.advertisement.description}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "${update.advertisement.resCode.200.description}",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = SessionDTO.class)) }),
+            @ApiResponse(responseCode = "404", description = "${update.advertisement.resCode.404.description}",
+                    content = @Content),
+            @ApiResponse(responseCode = "403", description = "${update.advertisement.resCode.403.description}",
+                    content = @Content) })
     @PostMapping(value = "/update")
     public ResponseEntity<DataDTO<Long>> update(AdvertisementUpdateDTO dto) {
         return service.update(dto);
