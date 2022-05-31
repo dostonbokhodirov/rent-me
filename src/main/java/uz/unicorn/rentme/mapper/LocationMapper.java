@@ -3,7 +3,7 @@ package uz.unicorn.rentme.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
 import uz.unicorn.rentme.dto.location.LocationCreateDTO;
-import uz.unicorn.rentme.dto.location.LocationDto;
+import uz.unicorn.rentme.dto.location.LocationDTO;
 import uz.unicorn.rentme.dto.location.LocationUpdateDTO;
 import uz.unicorn.rentme.entity.Location;
 import uz.unicorn.rentme.mapper.base.GenericMapper;
@@ -11,18 +11,18 @@ import uz.unicorn.rentme.mapper.base.GenericMapper;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public interface LocationMapper extends GenericMapper<Location, LocationDto, LocationCreateDTO, LocationUpdateDTO> {
+public interface LocationMapper extends GenericMapper<Location, LocationDTO, LocationCreateDTO, LocationUpdateDTO> {
     @Override
-    Location fromDTO(LocationDto dto);
+    Location fromDTO(LocationDTO dto);
 
     @Override
-    List<Location> fromDTO(List<LocationDto> dtoList);
+    List<Location> fromDTO(List<LocationDTO> dtoList);
 
     @Override
-    LocationDto toDTO(Location entity);
+    LocationDTO toDTO(Location entity);
 
     @Override
-    List<LocationDto> toDTO(List<Location> entities);
+    List<LocationDTO> toDTO(List<Location> entities);
 
     @Override
     Location fromUpdateDTO(LocationUpdateDTO dto,@MappingTarget Location entity);

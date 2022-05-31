@@ -183,8 +183,8 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         TypedQuery<Advertisement> query = entityManager.createQuery(q, Advertisement.class);
         params.keySet().forEach(t -> query.setParameter(t, params.get(t)));
 
-        List<Advertisement> resultList = query.getResultList();
-        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(resultList);
+        List<Advertisement> advertisementList = query.getResultList();
+        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
 
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
 

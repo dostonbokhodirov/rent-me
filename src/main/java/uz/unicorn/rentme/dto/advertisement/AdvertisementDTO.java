@@ -2,9 +2,8 @@ package uz.unicorn.rentme.dto.advertisement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.dto.base.GenericDTO;
-import uz.unicorn.rentme.dto.location.LocationDto;
+import uz.unicorn.rentme.dto.location.LocationDTO;
 import uz.unicorn.rentme.dto.price.PriceDTO;
 import uz.unicorn.rentme.dto.transport.TransportDTO;
 import uz.unicorn.rentme.entity.Location;
@@ -22,7 +21,7 @@ public class AdvertisementDTO extends GenericDTO {
     private String description;
     private List<PriceDTO> prices;
     private String category;
-    private LocationDto location;
+    private LocationDTO location;
     private LocalDateTime startDate;
     private Long minDuration;
     private Long maxDuration;
