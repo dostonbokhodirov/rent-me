@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.controller.base.GenericCrudController;
 import uz.unicorn.rentme.criteria.AdvertisementCriteria;
+import uz.unicorn.rentme.criteria.SearchCriteria;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
