@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.service;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,8 +37,9 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     private final TransportModelRepository transportModelRepository;
     private final AuthUserRepository authUserRepository;
 
+
     public AdvertisementService(
-            AdvertisementMapper mapper,
+            @Qualifier("advertisementMapperImpl") AdvertisementMapper mapper,
             AdvertisementRepository repository,
             UtilsForSessionUser utils,
             TransportModelRepository transportModelRepository,
