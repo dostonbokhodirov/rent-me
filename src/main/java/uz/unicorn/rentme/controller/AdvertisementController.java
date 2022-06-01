@@ -40,6 +40,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     @Override
     @PostMapping(value = "/create")
     public ResponseEntity<DataDTO<Long>> create(@RequestBody AdvertisementCreateDTO dto) {
+
         return service.create(dto);
     }
 
@@ -57,6 +58,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
 
     @GetMapping(value = "/save-advertisement/{id}")
     public ResponseEntity<DataDTO<Boolean>> save(@PathVariable Long id) {
+
         return service.save(id);
     }
 
@@ -81,7 +83,7 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
     }
 
     @GetMapping(value = "/list-last")
-    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(@RequestBody AdvertisementCriteria criteria) {
+    public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
         return service.getAllLast(criteria);
     }
 

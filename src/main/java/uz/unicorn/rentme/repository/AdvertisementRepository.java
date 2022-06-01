@@ -16,46 +16,16 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     List<Advertisement> findAllByCreatedBy(Long userId, Pageable pageable);
 
-    @Query(
-            value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
-                    "from (select a.id, a.description, a.price, p.path, a.category, t.* " +
-                    "from public.advertisement a " +
-                    "inner join transport t on t.id = a.transport_id " +
-                    "inner join picture p on t.id = p.transport_id " +
-                    "where a.max_duration > :maxDuration and p.main is true " +
-                    "order by a.id limit :size offset :page * :size) as my_table) as text)",
-            nativeQuery = true
-    )
-    String findAllByMaxDurationGreaterThanJson(@Param(value = "maxDuration") Long maxDuration,
-                                               @Param(value = "page") Integer page,
-                                               @Param(value = "size") Integer size);
+    @Query(value = "from Advertisement a  where a.maxDuration>=:maxDuration")
+    List<Advertisement> findAllByMaxDurationGreaterThanJson(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
 
 
-    @Query(
-            value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
-                    "from (select a.id, a.description, a.price, p.path, a.category, t.* " +
-                    "from public.advertisement a " +
-                    "inner join transport t on t.id = a.transport_id " +
-                    "inner join picture p on t.id = p.transport_id " +
-                    "where a.max_duration <= :maxDuration and p.main is true " +
-                    "order by a.id limit :size offset :page* :size) as my_table) as text)",
-            nativeQuery = true
-    )
-    String findAllByMaxDurationLessThanJson(@Param(value = "maxDuration") Long maxDuration,
-                                            @Param(value = "page") Integer page,
-                                            @Param(value = "size") Integer size);
+    @Query(value = "from Advertisement a where a.maxDuration<=:maxDuration ")
+    List<Advertisement> findAllByMaxDurationLessThanJson(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
 
-    @Query(
-            value = "select cast((select array_to_json(array_agg(row_to_json(my_table))) " +
-                    "from (select a.id, a.description, a.price, p.path, a.category, t.* " +
-                    "from public.advertisement a " +
-                    "inner join transport t on t.id = a.transport_id " +
-                    "inner join picture p on t.id = p.transport_id " +
-                    "where  not p.deleted and not t.deleted and not a.deleted and p.main is true " +
-                    "order by a.created_at desc limit :size offset :page * :size) as my_table) as text)",
-            nativeQuery = true
-    )
-    String findAllByLast(@Param(value = "page") Integer page, @Param(value = "size") Integer size);
+
+    @Query(value = "from Advertisement a order by a.createdAt desc ")
+    List<Advertisement> findAllByLast(Pageable pageable);
 
     @Modifying
     @Query(value = "insert into public.auth_user_advertisement" +

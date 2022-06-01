@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -38,7 +37,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     private final AuthUserRepository authUserRepository;
 
     public AdvertisementService(
-            @Qualifier("advertisementMapperImpl") AdvertisementMapper mapper,
+            AdvertisementMapper mapper,
             AdvertisementRepository repository,
             UtilsForSessionUser utils,
             TransportModelRepository transportModelRepository,
@@ -120,24 +119,32 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
-        List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByMaxDurationLessThanJson(30L, criteria.getPage(), criteria.getSize());
-        if (StringUtils.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
-        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<Advertisement> allByMaxDurationLessThanJson = repository.findAllByMaxDurationLessThanJson(30, pageable);
+        return getDataDTOResponseEntity(allByMaxDurationLessThanJson);
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLongTerm(AdvertisementCriteria criteria) {
-        List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByMaxDurationGreaterThanJson(30L, criteria.getPage(), criteria.getSize());
-        if (StringUtils.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
-        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<Advertisement> allByMaxDurationGreaterThanJson = repository.findAllByMaxDurationGreaterThanJson(30, pageable);
+
+        return getDataDTOResponseEntity(allByMaxDurationGreaterThanJson);
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLast(AdvertisementCriteria criteria) {
-        List<AdvertisementShortDTO> advertisementShortDTOList = new ArrayList<>();
-        String json = repository.findAllByLast(criteria.getPage(), criteria.getSize());
-        if (StringUtils.isNotEmpty(json)) advertisementShortDTOList = getResponse(json);
-        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOList, (long) advertisementShortDTOList.size()));
+        Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
+        List<Advertisement> allByLast = repository.findAllByLast(pageable);
+        return getDataDTOResponseEntity(allByLast);
+    }
+
+    private ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getDataDTOResponseEntity(List<Advertisement> allByLast) {
+        allByLast.
+                forEach(item -> item.getTransport().getPictures().
+                        stream().
+                        filter(p -> p.getMain().equals(true)).
+                        forEach(p -> item.getTransport().setPictures(List.of(p))));
+        List<AdvertisementShortDTO> advertisementShortDTOS = mapper.toShortDTO(allByLast);
+        return new ResponseEntity<>(new DataDTO<>(advertisementShortDTOS, (long) advertisementShortDTOS.size()));
     }
 
     @Transactional

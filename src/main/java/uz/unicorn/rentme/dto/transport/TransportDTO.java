@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import uz.unicorn.rentme.dto.picture.PictureDTO;
+import uz.unicorn.rentme.dto.transportModel.TransportModelDTO;
 import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
@@ -23,7 +24,7 @@ import java.util.List;
 public class TransportDTO {
 
     @NotBlank(message = "Transport model can not be blank")
-    private TransportModel model;
+    private TransportModelDTO model;
 
     @NotBlank(message = "Year can not be blank")
     @Pattern(regexp = "\\d{4}")
@@ -36,7 +37,7 @@ public class TransportDTO {
     private TransportFuel fuelType;
 
     @NotBlank(message = "Transport color can not be blank")
-    private TransportColor color;
+    private String color;
 
     @NotBlank(message = "Transport pictures can not be blank")
     private List<PictureDTO> pictures;
