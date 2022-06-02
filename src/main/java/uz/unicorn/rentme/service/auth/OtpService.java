@@ -32,8 +32,8 @@ public class OtpService implements BaseService {
 
     public ResponseEntity<DataDTO<String>> sendSms(String phoneNumber) {
         try {
-//            int random = OtpUtils.randomCode();
-            int random = 1;
+            int random = OtpUtils.randomCode();
+//            int random = 1;
             String jsonInputString = (new Gson()).toJson(
                     new SmsSenderDTO(phoneNumber,
                             "RentMe", "Hello, your code is: %d\nDon't share anyone".formatted(random)));
