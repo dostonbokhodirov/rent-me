@@ -22,8 +22,7 @@ public class AdvertisementShortDTO extends GenericDTO {
 
     private String description;
     private List<PriceDTO> prices;
-    private String picture;
     private AdvertisementCategory category;
-    private TransportDTO transportDTO;
+    private TransportDTO transport;
 
 }

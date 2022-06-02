@@ -7,6 +7,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementCreateDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
+import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.dto.auth.AuthUserUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
@@ -31,6 +32,7 @@ public interface AdvertisementMapper extends GenericMapper<Advertisement, Advert
     @Override
     AdvertisementDTO toDTO(Advertisement entity);
 
+
     @Override
     List<AdvertisementDTO> toDTO(List<Advertisement> entities);
 
@@ -40,4 +42,7 @@ public interface AdvertisementMapper extends GenericMapper<Advertisement, Advert
     @Override
     Advertisement fromCreateDTO(AdvertisementCreateDTO dto);
 
+
+    AdvertisementShortDTO toShortDTO(Advertisement entity);
+    List<AdvertisementShortDTO> toShortDTO(List<Advertisement> entities);
 }

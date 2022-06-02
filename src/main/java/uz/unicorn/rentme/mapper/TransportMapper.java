@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 @Mapper(componentModel = "spring",
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.SET_TO_NULL,
-        uses = {PictureMapper.class})
+        uses = {PictureMapper.class,TransportModelMapper.class})
 public interface TransportMapper extends
         GenericMapper<Transport,
                 TransportDTO,
@@ -35,9 +35,11 @@ public interface TransportMapper extends
     List<TransportDTO> toDTO(List<Transport> entities);
 
     @Override
+//    @Mapping(target = "color",source = "dto.color.name")
     Transport fromUpdateDTO(TransportUpdateDTO dto, @MappingTarget Transport entity);
 
     @Override
     @Mapping(target = "model",ignore = true)
+    @Mapping(target = "color",source = "dto.color.name")
     Transport fromCreateDTO(TransportCreateDTO dto);
 }
