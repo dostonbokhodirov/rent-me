@@ -15,5 +15,5 @@ public class MainPageDTO implements BaseDTO {
     private List<String> picturePathList;
     private List<AdvertisementShortDTO> lastAdvertisements;
     private List<AdvertisementShortDTO> dailyAdvertisements;
-    private List<AdvertisementShortDTO> weeklyAdvertisements;
+    private List<AdvertisementShortDTO> monthlyAdvertisements;
 }

@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.config.security.utils.UtilsForSessionUser;
@@ -124,13 +125,13 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllDaily(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<Advertisement> allByMaxDurationLessThanJson = repository.findAllByMaxDurationLessThanJson(30, pageable);
+        List<Advertisement> allByMaxDurationLessThanJson = repository.findAllByMaxDurationLessThan(30, pageable);
         return getDataDTOResponseEntity(allByMaxDurationLessThanJson);
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementShortDTO>>> getAllLongTerm(AdvertisementCriteria criteria) {
         Pageable pageable = PageRequest.of(criteria.getPage(), criteria.getSize());
-        List<Advertisement> allByMaxDurationGreaterThanJson = repository.findAllByMaxDurationGreaterThanJson(30, pageable);
+        List<Advertisement> allByMaxDurationGreaterThanJson = repository.findAllByMaxDurationGreaterThan(30, pageable);
 
         return getDataDTOResponseEntity(allByMaxDurationGreaterThanJson);
     }
