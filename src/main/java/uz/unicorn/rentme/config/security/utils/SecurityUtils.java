@@ -13,6 +13,7 @@ public class SecurityUtils {
             "/api-docs/**",
             "/actuator/**",
             "/auth/create",
-            "/main-page"
+            "/main-page",
+            "/transport-model/**"
     };
 }

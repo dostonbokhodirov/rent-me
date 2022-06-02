@@ -16,6 +16,7 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
 import uz.unicorn.rentme.entity.Transport;
 import uz.unicorn.rentme.entity.TransportModel;
+import uz.unicorn.rentme.exceptions.BadRequestException;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
@@ -25,6 +26,7 @@ import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
+import uz.unicorn.rentme.utils.DateUtils;
 
 import javax.persistence.TypedQuery;
 import java.util.*;
@@ -147,15 +149,12 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
     }
 
     public ResponseEntity<DataDTO<List<AdvertisementDTO>>> getAllBySearch(SearchCriteria criteria) {
-
         List<String> whereCause = new ArrayList<>();
         Map<String, Object> params = new HashMap<>();
-
         if (Objects.nonNull(criteria.getCategory())) {
             whereCause.add("category = :category");
             params.put("category", criteria.getCategory());
         }
-
         if (Objects.nonNull(criteria.getModel())) {
             TransportModel transportModel = transportModelRepository
                     .findByName(criteria.getModel())
@@ -163,30 +162,74 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
             whereCause.add("a.transport.model = :model");
             params.put("model", transportModel);
         }
-
         if (Objects.nonNull(criteria.getYear())) {
             whereCause.add("a.transport.year = :year");
             params.put("year", criteria.getYear());
         }
-
         if (Objects.nonNull(criteria.getColors())) {
             whereCause.add("a.transport.color in :colors");
             params.put("colors", criteria.getColors());
         }
+        if (Objects.nonNull(criteria.getLocation())) {
+            whereCause.add("(3959 * acos(cos(radians(:latitude)) * cos(radians(a.location.latitude)) " +
+                    "* cos(radians(a.location.longitude) - radians(:longitude)) + sin(radians(:latitude)) " +
+                    "* sin(radians(a.location.latitude)))) < :distance");
+            if (Objects.isNull(criteria.getLocation().getLatitude())) {
+                throw new BadRequestException("Latitude cannot be null");
+            }
+            if (Objects.isNull(criteria.getLocation().getLongitude())) {
+                throw new BadRequestException("Longitude cannot be null");
+            }
+            params.put("distance", criteria.getLocation().getDistance() / 1.6);
+            params.put("latitude", criteria.getLocation().getLatitude());
+            params.put("longitude", criteria.getLocation().getLongitude());
+        }
 
-        // TODO: 5/29/2022 location | prices | dates
+        if (Objects.nonNull(criteria.getPrice()) && Objects.nonNull(criteria.getPrice().getType())) {
+            if (Objects.isNull(criteria.getPrice().getType())) {
+                throw new BadRequestException("Price type cannot be null");
+            }
+            whereCause.add("p.type = :type");
+            whereCause.add("p.quantity between :minPrice and :maxPrice");
+            params.put("type", criteria.getPrice().getType());
+            params.put("minPrice", criteria.getPrice().getMinPrice());
+            params.put("maxPrice", criteria.getPrice().getMaxPrice());
+        }
 
-        String q = "from Advertisement a " +
+        if (Objects.nonNull(criteria.getDate())) {
+            if (criteria.getDate().getStartDate().after(criteria.getDate().getEndDate())) {
+                throw new BadRequestException("Start Date must be before than ending date");
+            }
+            whereCause.add("a.startDate < :startDate");
+            whereCause.add("a.maxDuration > :maxDuration ");
+            params.put("startDate",
+                    DateUtils.toLocalDate(criteria.getDate().getStartDate()));
+            params.put("maxDuration",
+                    DateUtils.getDifferenceDays(criteria.getDate().getEndDate(), criteria.getDate().getStartDate()));
+        }
+        TypedQuery<Advertisement> query = getQuery(whereCause, params);
+        List<Advertisement> advertisementList;
+        advertisementList = getResults(criteria, query);
+        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
+        return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
+    }
+
+    private List<Advertisement> getResults(SearchCriteria criteria, TypedQuery<Advertisement> query) {
+        return Objects.isNull(criteria.getPage()) || Objects.isNull(criteria.getSize())
+                ? query.getResultList()
+                : query
+                .setFirstResult(criteria.getPage() * criteria.getSize())
+                .setMaxResults(criteria.getSize())
+                .getResultList();
+    }
+
+    private TypedQuery<Advertisement> getQuery(List<String> whereCause, Map<String, Object> params) {
+        String q = "select a from Advertisement a inner join a.prices p " +
                 "where a.deleted is false and " +
                 StringUtils.join(whereCause, " and ");
-
         TypedQuery<Advertisement> query = entityManager.createQuery(q, Advertisement.class);
         params.keySet().forEach(t -> query.setParameter(t, params.get(t)));
-
-        List<Advertisement> advertisementList = query.getResultList();
-        List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
-
-        return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
-
+        return query;
     }
+
 }

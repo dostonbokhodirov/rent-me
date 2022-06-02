@@ -12,6 +12,8 @@ import uz.unicorn.rentme.dto.base.GenericDTO;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LocationDTO extends GenericDTO {
-    private String address;
-    private Point location;
+    private String name;
+    private Double longitude;
+    private Double latitude;
+    private Long distance = 10L;
 }

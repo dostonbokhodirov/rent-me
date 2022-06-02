@@ -10,8 +10,9 @@ import uz.unicorn.rentme.dto.base.BaseDTO;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LocationCreateDTO implements BaseDTO {
+public class LocationSearchDTO implements BaseDTO {
     private String name;
     private Double longitude;
     private Double latitude;
+    private Long distance = 10L;
 }

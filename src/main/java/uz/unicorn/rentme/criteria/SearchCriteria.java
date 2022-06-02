@@ -1,11 +1,11 @@
 package uz.unicorn.rentme.criteria;
 
 import lombok.*;
-import org.springframework.data.geo.Point;
+import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 import uz.unicorn.rentme.criteria.base.BaseCriteria;
 import uz.unicorn.rentme.dto.DateSearchDTO;
+import uz.unicorn.rentme.dto.location.LocationSearchDTO;
 import uz.unicorn.rentme.dto.price.PriceSearchDTO;
-import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 import uz.unicorn.rentme.enums.transport.TransportColor;
 
@@ -16,12 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SearchCriteria implements BaseCriteria {
-    private Point location;
+public class SearchCriteria extends AbstractCriteria implements BaseCriteria {
+    private LocationSearchDTO location;
     private AdvertisementCategory category;
     private String model;
     private Integer year;
-    private PriceSearchDTO prices;
-    private DateSearchDTO dates;
+    private PriceSearchDTO price;
+    private DateSearchDTO date;
     private List<TransportColor> colors;
 }

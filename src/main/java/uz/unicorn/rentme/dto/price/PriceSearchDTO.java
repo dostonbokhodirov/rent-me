@@ -13,6 +13,6 @@ import uz.unicorn.rentme.enums.PriceType;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class PriceSearchDTO implements BaseDTO {
     private PriceType type;
-    private Long minPrice;
-    private Long maxPrice;
+    private Long minPrice = 0L;
+    private Long maxPrice = Long.MAX_VALUE;
 }

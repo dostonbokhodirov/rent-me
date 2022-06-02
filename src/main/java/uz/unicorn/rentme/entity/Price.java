@@ -1,7 +1,6 @@
 package uz.unicorn.rentme.entity;
 
 import lombok.*;
-import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.enums.PriceType;
 
 import javax.persistence.*;
