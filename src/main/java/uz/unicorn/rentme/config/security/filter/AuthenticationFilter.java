@@ -19,7 +19,6 @@ import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -54,7 +53,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws ServletException, IOException {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException {
         User user = (User) authentication.getPrincipal();
         Date expiryForAccessToken = JWTUtils.getExpiry();
         Date expiryForRefreshToken = JWTUtils.getExpiryForRefreshToken();

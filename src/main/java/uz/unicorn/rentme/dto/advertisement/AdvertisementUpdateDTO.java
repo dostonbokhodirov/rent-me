@@ -2,11 +2,9 @@ package uz.unicorn.rentme.dto.advertisement;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.springframework.data.geo.Point;
 import uz.unicorn.rentme.dto.base.GenericDTO;
 import uz.unicorn.rentme.dto.location.LocationUpdateDTO;
 import uz.unicorn.rentme.dto.price.PriceDTO;
-import uz.unicorn.rentme.entity.Location;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import java.time.LocalDateTime;

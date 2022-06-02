@@ -16,8 +16,6 @@ import uz.unicorn.rentme.service.base.AbstractService;
 import uz.unicorn.rentme.service.base.GenericCrudService;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class TransportModelService extends AbstractService<TransportModelMapper, TransportModelRepository>
@@ -28,14 +26,6 @@ public class TransportModelService extends AbstractService<TransportModelMapper,
         super(mapper, repository);
     }
 
-    public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(String str) {
-        Optional<List<TransportModel>> optional = repository.findByNameStartingWith(str);
-        if (optional.isPresent()) {
-            List<String> result = optional.get().stream().map(TransportModel::getName).collect(Collectors.toList());
-            return new ResponseEntity<>(new DataDTO<>(result, (long) result.size()));
-        }
-        return new ResponseEntity<>(new DataDTO<>(null));
-    }
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(TransportModelCreateDTO dto) {
@@ -81,8 +71,14 @@ public class TransportModelService extends AbstractService<TransportModelMapper,
     }
 
     public ResponseEntity<DataDTO<List<String>>> getAllName() {
-        List<TransportModel> all = repository.findAll();
-        List<String> stringList = all.stream().map(TransportModel::getName).collect(Collectors.toList());
-        return new ResponseEntity<>(new DataDTO<>(stringList, (long) stringList.size()));
+        List<String> all = repository.findAllName();
+        return new ResponseEntity<>(new DataDTO<>(all, (long) all.size()));
+    }
+
+    public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(String str) {
+        List<String> names = repository.getNameStartsWith("%" + str + "%").orElseThrow(() -> {
+            throw new NotFoundException("Model not found");
+        });
+        return new ResponseEntity<>(new DataDTO<>(names, (long) names.size()));
     }
 }

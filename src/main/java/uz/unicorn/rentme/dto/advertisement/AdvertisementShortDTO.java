@@ -7,9 +7,6 @@ import uz.unicorn.rentme.dto.price.PriceDTO;
 import uz.unicorn.rentme.dto.transport.TransportDTO;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.List;
 
 @Getter
