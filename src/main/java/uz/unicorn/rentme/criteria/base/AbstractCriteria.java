@@ -21,6 +21,6 @@ public class AbstractCriteria implements BaseCriteria {
     }
 
     public AbstractCriteria(Integer page) {
-        this(3, page);
+        this(5, page);
     }
 }

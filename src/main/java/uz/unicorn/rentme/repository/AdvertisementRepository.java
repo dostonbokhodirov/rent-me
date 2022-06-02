@@ -16,20 +16,18 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     List<Advertisement> findAllByCreatedBy(Long userId, Pageable pageable);
 
-    @Query(value = "from Advertisement a  where a.maxDuration>=:maxDuration")
-    List<Advertisement> findAllByMaxDurationGreaterThanJson(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
+    @Query(value = "select a.* from public.advertisement a  where a.max_duration>=:maxDuration order by random()", nativeQuery = true)
+    List<Advertisement> findAllByMaxDurationGreaterThan(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
 
+    @Query(value = "select a.* from public.advertisement a where a.max_duration<=:maxDuration order by random()", nativeQuery = true)
+    List<Advertisement> findAllByMaxDurationLessThan(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
 
-    @Query(value = "from Advertisement a where a.maxDuration<=:maxDuration ")
-    List<Advertisement> findAllByMaxDurationLessThanJson(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
-
-
-    @Query(value = "from Advertisement a order by a.createdAt desc ")
+    @Query(value = "from Advertisement a order by a.createdAt desc")
     List<Advertisement> findAllByLast(Pageable pageable);
 
     @Modifying
-    @Query(value = "insert into public.auth_user_advertisement" +
-            " (auth_user_id,advertisement_id) values (:userId,:id)", nativeQuery = true)
+    @Query(value = "insert into public.auth_user_advertisement " +
+            "(auth_user_id,advertisement_id) values (:userId,:id)", nativeQuery = true)
     void saveMyAdvertisement(Long id, Long userId);
 
 }
