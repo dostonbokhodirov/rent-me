@@ -76,7 +76,7 @@ public class TransportModelService extends AbstractService<TransportModelMapper,
     }
 
     public ResponseEntity<DataDTO<List<String>>> getTransportTypeVal(String str) {
-        List<String> names = repository.getNameStartsWith("%" + str + "%").orElseThrow(() -> {
+        List<String> names = repository.getNameStartsWith(str + "%").orElseThrow(() -> {
             throw new NotFoundException("Model not found");
         });
         return new ResponseEntity<>(new DataDTO<>(names, (long) names.size()));
