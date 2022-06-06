@@ -7,7 +7,6 @@ import uz.unicorn.rentme.enums.AdvertisementCategory;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter

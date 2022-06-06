@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import uz.unicorn.rentme.response.AppErrorDTO;
 import uz.unicorn.rentme.response.DataDTO;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
     private final ObjectMapper mapper;
 
     @Override
-    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException {
         mapper.writeValue(response.getOutputStream(),
                 new DataDTO<>(new AppErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR,
                         exception.getLocalizedMessage(),

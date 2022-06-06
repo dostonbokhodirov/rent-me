@@ -10,7 +10,6 @@ import uz.unicorn.rentme.dto.MainPageDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.AdvertisementService;
-import uz.unicorn.rentme.service.FileService;
 
 import java.util.List;
 
@@ -19,7 +18,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainController {
 
-    private final FileService fileService;
     private final AdvertisementService advertisementService;
 
     @PostMapping(value = "/main-page")

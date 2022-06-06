@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.entity.base.Auditable;
-import uz.unicorn.rentme.enums.transport.TransportColor;
 import uz.unicorn.rentme.enums.transport.TransportFuel;
 import uz.unicorn.rentme.enums.transport.TransportTransmission;
 

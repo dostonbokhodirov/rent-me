@@ -6,7 +6,6 @@ import uz.unicorn.rentme.dto.base.GenericDTO;
 import uz.unicorn.rentme.dto.location.LocationDTO;
 import uz.unicorn.rentme.dto.price.PriceDTO;
 import uz.unicorn.rentme.dto.transport.TransportDTO;
-import uz.unicorn.rentme.entity.Location;
 
 import java.time.LocalDateTime;
 import java.util.List;
