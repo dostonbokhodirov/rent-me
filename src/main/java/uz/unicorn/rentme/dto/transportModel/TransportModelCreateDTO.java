@@ -15,4 +15,5 @@ public class TransportModelCreateDTO implements BaseDTO {
     private String name;
     private AdvertisementCategory category;
     private String imagePath;
+    private String brand;
 }

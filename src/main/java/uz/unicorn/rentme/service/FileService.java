@@ -30,7 +30,7 @@ public class FileService implements BaseService {
     private String uploadFile(File file, String fileName) throws IOException {
         BlobId blobId = BlobId.of("picturesaver-61bc7.appspot.com", fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType("media").build();
-        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream("src/main/resources/firebase.json"));
+        Credentials credentials = GoogleCredentials.fromStream(new FileInputStream("upload/firebase.json"));
         Storage storage = StorageOptions.newBuilder().setCredentials(credentials).build().getService();
         storage.create(blobInfo, Files.readAllBytes(file.toPath()));
         String DOWNLOAD_URL = "https://firebasestorage.googleapis.com/v0/b/picturesaver-61bc7.appspot.com/o/%s?alt=media";

@@ -6,9 +6,11 @@ import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 import uz.unicorn.rentme.dto.transportModel.TransportModelCreateDTO;
 import uz.unicorn.rentme.dto.transportModel.TransportModelDTO;
 import uz.unicorn.rentme.dto.transportModel.TransportModelUpdateDTO;
+import uz.unicorn.rentme.entity.Brand;
 import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.TransportModelMapper;
+import uz.unicorn.rentme.repository.BrandRepository;
 import uz.unicorn.rentme.repository.TransportModelRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
@@ -21,16 +23,22 @@ import java.util.List;
 public class TransportModelService extends AbstractService<TransportModelMapper, TransportModelRepository>
         implements GenericCrudService<TransportModelDTO, TransportModelCreateDTO, TransportModelUpdateDTO, AbstractCriteria> {
 
+    private final BrandRepository brandRepository;
 
-    public TransportModelService(@Qualifier("transportModelMapperImpl") TransportModelMapper mapper, TransportModelRepository repository) {
+    public TransportModelService(@Qualifier("transportModelMapperImpl") TransportModelMapper mapper, TransportModelRepository repository, BrandRepository brandRepository) {
         super(mapper, repository);
+        this.brandRepository = brandRepository;
     }
 
 
     @Override
     public ResponseEntity<DataDTO<Long>> create(TransportModelCreateDTO dto) {
-        TransportModel transportModel = mapper.fromCreateDTO(dto);
-        TransportModel save = repository.save(transportModel);
+        TransportModel model = mapper.fromCreateDTO(dto);
+        Brand brand = brandRepository.findByName(dto.getBrand()).orElseThrow(() -> {
+            throw new NotFoundException("Brand not found");
+        });
+        model.setBrand(brand);
+        TransportModel save = repository.save(model);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
 

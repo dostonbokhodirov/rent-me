@@ -8,10 +8,7 @@ import org.hibernate.annotations.Where;
 import uz.unicorn.rentme.entity.base.Auditable;
 import uz.unicorn.rentme.enums.AdvertisementCategory;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -30,4 +27,8 @@ public class TransportModel  extends Auditable {
 
     @Column(nullable = false)
     private String imagePath;
+
+    @ManyToOne
+    @JoinColumn
+    private Brand brand;
 }

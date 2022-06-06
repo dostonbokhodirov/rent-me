@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.stereotype.Component;
@@ -36,5 +37,6 @@ public interface TransportModelMapper extends
     TransportModel fromUpdateDTO(TransportModelUpdateDTO dto, @MappingTarget TransportModel entity);
 
     @Override
+    @Mapping(target = "brand",ignore=true)
     TransportModel fromCreateDTO(TransportModelCreateDTO dto);
 }
