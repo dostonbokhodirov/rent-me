@@ -40,11 +40,11 @@ public class FileService implements BaseService {
     private File convertToFile(MultipartFile multipartFile, String fileName) throws IOException {
         File file;
         if (Objects.equals(multipartFile.getContentType(), "image/png")) {
-            file = File.createTempFile("src/main/resources/" + fileName, ".png");
+            file = File.createTempFile("upload/" + fileName, ".png");
         } else if (Objects.equals(multipartFile.getContentType(), "image/jpeg")) {
-            file = File.createTempFile("src/main/resources/" + fileName, ".jpg");
+            file = File.createTempFile("upload/" + fileName, ".jpg");
         } else
-            file = File.createTempFile("src/main/resources/" + fileName, ".jpeg");
+            file = File.createTempFile("upload/" + fileName, ".jpeg");
         try (FileOutputStream fos = new FileOutputStream(file)) {
             fos.write(multipartFile.getBytes());
         }
