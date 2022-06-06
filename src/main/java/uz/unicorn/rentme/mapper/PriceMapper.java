@@ -1,4 +1,4 @@
-package uz.unicorn.rentme.mapper.base;
+package uz.unicorn.rentme.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -7,6 +7,7 @@ import uz.unicorn.rentme.dto.price.PriceCreateDTO;
 import uz.unicorn.rentme.dto.price.PriceDTO;
 import uz.unicorn.rentme.dto.price.PriceUpdateDTO;
 import uz.unicorn.rentme.entity.Price;
+import uz.unicorn.rentme.mapper.base.GenericMapper;
 
 import java.util.List;
 

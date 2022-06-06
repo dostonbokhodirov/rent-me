@@ -43,7 +43,6 @@ public class AdvertisementController extends AbstractController<AdvertisementSer
             @ApiResponse(responseCode = "403", description = "${get.resCode.403.desc}",
                     content = @Content) })
     @GetMapping(value = "/get/{id}")
-
     public ResponseEntity<DataDTO<AdvertisementDTO>> get(@PathVariable Long id) {
         return service.get(id);
     }
