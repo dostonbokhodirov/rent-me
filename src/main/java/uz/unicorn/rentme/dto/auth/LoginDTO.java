@@ -15,6 +15,6 @@ public class LoginDTO {
     @Pattern(regexp = "^\\+\\d{12}(\\d{2})?$", message = "Phone number is invalid")
     private String phoneNumber;
 
-    @NotBlank(message = "Phone number cannot be blank")
+    @NotBlank(message = "Code cannot be blank")
     private String code;
 }

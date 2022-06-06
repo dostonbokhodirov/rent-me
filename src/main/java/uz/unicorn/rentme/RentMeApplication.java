@@ -29,8 +29,4 @@ public class RentMeApplication {
         return new SecurityAuditorAware();
     }
 
-    @Bean
-    public RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
 }

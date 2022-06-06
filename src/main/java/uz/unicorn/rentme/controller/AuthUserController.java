@@ -1,6 +1,7 @@
 package uz.unicorn.rentme.controller;
 
 import lombok.SneakyThrows;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.unicorn.rentme.controller.base.AbstractController;
 import uz.unicorn.rentme.controller.base.GenericCrudController;
@@ -14,6 +15,7 @@ import uz.unicorn.rentme.service.auth.OtpService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,7 +33,7 @@ public class AuthUserController extends AbstractController<AuthUserService>
     }
 
     @PostMapping(value = "/access-token")
-    public ResponseEntity<DataDTO<SessionDTO>> getToken(@RequestBody LoginDTO dto) {
+    public ResponseEntity<DataDTO<SessionDTO>> getToken(@RequestBody @Valid LoginDTO dto) {
         return authService.getToken(dto);
     }
 
@@ -49,6 +51,7 @@ public class AuthUserController extends AbstractController<AuthUserService>
 
     @Override
     @PostMapping(value = "/list")
+    @PreAuthorize(value = "hasAnyRole('USER')")
     public ResponseEntity<DataDTO<List<AuthUserDTO>>> getAll(@RequestBody AuthUserCriteria criteria) {
         return service.getAll(criteria);
     }
