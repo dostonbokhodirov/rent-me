@@ -42,7 +42,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
 
     public AdvertisementService(
-            @Qualifier("advertisementMapperImpl") AdvertisementMapper mapper,
+            AdvertisementMapper mapper,
             AdvertisementRepository repository,
             UtilsForSessionUser utils,
             TransportModelRepository transportModelRepository,

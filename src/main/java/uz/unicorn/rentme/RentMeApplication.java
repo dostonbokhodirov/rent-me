@@ -7,7 +7,6 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.web.client.RestTemplate;
 import uz.unicorn.rentme.entity.base.SecurityAuditorAware;
 import uz.unicorn.rentme.property.OpenApiProperties;
 import uz.unicorn.rentme.property.ServerProperties;

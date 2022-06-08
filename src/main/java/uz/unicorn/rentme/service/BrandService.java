@@ -25,7 +25,7 @@ public class BrandService extends AbstractService<BrandMapper, BrandRepository> 
         BrandUpdateDTO,
         AbstractCriteria> {
 
-    public BrandService(@Qualifier("brandMapperImpl") BrandMapper mapper, BrandRepository repository) {
+    public BrandService(BrandMapper mapper, BrandRepository repository) {
         super(mapper, repository);
     }
 

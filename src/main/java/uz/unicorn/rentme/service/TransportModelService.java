@@ -1,6 +1,5 @@
 package uz.unicorn.rentme.service;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 import uz.unicorn.rentme.dto.transportModel.TransportModelCreateDTO;
@@ -25,7 +24,7 @@ public class TransportModelService extends AbstractService<TransportModelMapper,
 
     private final BrandRepository brandRepository;
 
-    public TransportModelService(@Qualifier("transportModelMapperImpl") TransportModelMapper mapper, TransportModelRepository repository, BrandRepository brandRepository) {
+    public TransportModelService(TransportModelMapper mapper, TransportModelRepository repository, BrandRepository brandRepository) {
         super(mapper, repository);
         this.brandRepository = brandRepository;
     }
