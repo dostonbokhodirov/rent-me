@@ -17,11 +17,9 @@ import javax.validation.constraints.Pattern;
 public class AuthUserCreateDTO implements BaseDTO {
 
     @NotBlank(message = "First name cannot be blank")
-    @Pattern(regexp = "[A-Z]+", message = "First name is invalid")
     private String firstName;
 
     @NotBlank(message = "Last name cannot be blank")
-    @Pattern(regexp = "[A-Z]+", message = "Last name is invalid")
     private String lastName;
 
     @NotBlank(message = "Phone number cannot be blank")

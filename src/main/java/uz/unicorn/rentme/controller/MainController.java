@@ -10,6 +10,7 @@ import uz.unicorn.rentme.dto.MainPageDTO;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
 import uz.unicorn.rentme.service.AdvertisementService;
+import uz.unicorn.rentme.service.BrandService;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 public class MainController {
 
     private final AdvertisementService advertisementService;
+    private final BrandService brandService;
 
     @PostMapping(value = "/main-page")
     public ResponseEntity<DataDTO<MainPageDTO>> mainPage(@RequestBody Integer size) {
@@ -33,7 +35,8 @@ public class MainController {
         );
         MainPageDTO dto = MainPageDTO
                 .builder()
-                .picturePathList(pathList)
+                .pictures(pathList)
+                .brands(brandService.getAllToMain().getData().getData())
                 .lastAdvertisements(advertisementService.getAllLast(advertisementCriteria).getData().getData())
                 .dailyAdvertisements(advertisementService.getAllDaily(advertisementCriteria).getData().getData())
                 .monthlyAdvertisements(advertisementService.getAllLongTerm(advertisementCriteria).getData().getData())

@@ -1,12 +1,23 @@
 package uz.unicorn.rentme.utils;
 
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Component
 public class OtpUtils {
 
-    public static final String baseUrl = "https://rest.messagebird.com/messages";
-    public static final String authorization = "AccessKey xsTieTlZpZJjxyexNB2LK8PzJ";
-    public static final int expiry = 10;
+    @Value(value = "${otp.url}")
+    private String baseUrl;
 
-    public static int randomCode() {
+    @Value(value = "${otp.authorization}")
+    private String authorization;
+
+    @Value(value = "${otp.expiry}")
+    private int expiry;
+
+    public int randomCode() {
         int min = 10000;
         int max = 99999;
         int range = max - min + 1;

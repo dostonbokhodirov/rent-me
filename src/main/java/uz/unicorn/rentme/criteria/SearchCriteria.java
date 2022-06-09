@@ -19,6 +19,7 @@ import java.util.List;
 public class SearchCriteria extends AbstractCriteria implements BaseCriteria {
     private LocationSearchDTO location;
     private AdvertisementCategory category;
+    private String brand;
     private String model;
     private Integer year;
     private PriceSearchDTO price;

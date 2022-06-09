@@ -14,6 +14,7 @@ public class SecurityUtils {
             "/actuator/**",
             "/auth/create",
             "/main-page",
-            "/transport-model/**"
+            "/transport-model/**",
+            "/brand/**"
     };
 }

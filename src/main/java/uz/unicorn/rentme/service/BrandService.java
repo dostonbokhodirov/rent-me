@@ -1,11 +1,11 @@
 package uz.unicorn.rentme.service;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import uz.unicorn.rentme.criteria.base.AbstractCriteria;
 import uz.unicorn.rentme.dto.brand.BrandCreateDTO;
 import uz.unicorn.rentme.dto.brand.BrandDTO;
+import uz.unicorn.rentme.dto.brand.BrandShortDTO;
 import uz.unicorn.rentme.dto.brand.BrandUpdateDTO;
 import uz.unicorn.rentme.entity.Brand;
 import uz.unicorn.rentme.exceptions.NotFoundException;
@@ -32,7 +32,7 @@ public class BrandService extends AbstractService<BrandMapper, BrandRepository> 
     @Override
     public ResponseEntity<DataDTO<Long>> create(BrandCreateDTO dto) {
         Brand brand = mapper.fromCreateDTO(dto);
-        brand.getModels().forEach(item->item.setBrand(brand));
+        brand.getModels().forEach(item -> item.setBrand(brand));
         Brand save = repository.save(brand);
         return new ResponseEntity<>(new DataDTO<>(save.getId()));
     }
@@ -68,5 +68,16 @@ public class BrandService extends AbstractService<BrandMapper, BrandRepository> 
         List<Brand> all = repository.findAll(pageable).getContent();
         List<BrandDTO> brandDTOS = mapper.toDTO(all);
         return new ResponseEntity<>(new DataDTO<>(brandDTOS, (long) brandDTOS.size()));
+    }
+
+    public ResponseEntity<DataDTO<List<BrandDTO>>> getAll() {
+        List<Brand> all = repository.findAll();
+        List<BrandDTO> brandDTOS = mapper.toDTO(all);
+        return new ResponseEntity<>(new DataDTO<>(brandDTOS, (long) brandDTOS.size()));
+    }
+
+    public ResponseEntity<DataDTO<List<BrandShortDTO>>> getAllToMain() {
+        List<BrandShortDTO> all = repository.findAllToMain();
+        return new ResponseEntity<>(new DataDTO<>(all, (long) all.size()));
     }
 }

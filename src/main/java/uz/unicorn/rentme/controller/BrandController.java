@@ -56,4 +56,5 @@ public class BrandController
     public ResponseEntity<DataDTO<Boolean>> delete(@PathVariable Long id) {
         return service.delete(id);
     }
+
 }

@@ -25,6 +25,7 @@ import java.util.Optional;
 public class OtpService implements BaseService {
 
     private final OtpRepository otpRepository;
+    private final OtpUtils otpUtils;
 
     public Otp getByPhoneNumber(String phoneNumber) {
         return otpRepository.findByPhoneNumber(phoneNumber).orElseThrow(() -> new NotFoundException("Otp not found"));
@@ -32,36 +33,29 @@ public class OtpService implements BaseService {
 
     public ResponseEntity<DataDTO<String>> sendSms(String phoneNumber) {
         try {
-//            int random = OtpUtils.randomCode();
+//            int random = otpUtils.randomCode();
             int random = 1;
             String jsonInputString = (new Gson()).toJson(
                     new SmsSenderDTO(phoneNumber,
                             "RentMe", "Hello, your code is: %d\nDon't share anyone".formatted(random)));
-
             var request = HttpRequest.newBuilder()
-                    .uri(URI.create(OtpUtils.baseUrl))
-                    .header("Authorization", OtpUtils.authorization)
+                    .uri(URI.create(otpUtils.getBaseUrl()))
+                    .header("Authorization", otpUtils.getAuthorization())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(jsonInputString))
                     .build();
-
             var client = java.net.http.HttpClient.newHttpClient();
             client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
-
             Optional<Otp> byPhoneNumber = otpRepository.findByPhoneNumber(phoneNumber);
-            //v1 =>  statusCode == 200
             if (byPhoneNumber.isPresent()) {
                 Otp otp = byPhoneNumber.get();
                 otp.setCode(random);
-                otp.setExpiry(LocalDateTime.now().plusMinutes(OtpUtils.expiry));
+                otp.setExpiry(LocalDateTime.now().plusMinutes(otpUtils.getExpiry()));
                 otpRepository.save(otp);
                 return new ResponseEntity<>(new DataDTO<>("success"));
             }
-            otpRepository.save(new Otp(phoneNumber, LocalDateTime.now().plusMinutes(OtpUtils.expiry), random));
-            // v2 =>  statusCode != 200
-
+            otpRepository.save(new Otp(phoneNumber, LocalDateTime.now().plusMinutes(otpUtils.getExpiry()), random));
             return new ResponseEntity<>(new DataDTO<>("success"));
-
         } catch (IOException | InterruptedException e) {
             return new ResponseEntity<>(new DataDTO<>(AppErrorDTO.builder()
                     .message(e.getLocalizedMessage())
