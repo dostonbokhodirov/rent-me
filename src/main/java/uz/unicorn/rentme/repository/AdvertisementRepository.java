@@ -16,10 +16,10 @@ public interface AdvertisementRepository extends JpaRepository<Advertisement, Lo
 
     List<Advertisement> findAllByCreatedBy(Long userId, Pageable pageable);
 
-    @Query(value = "select a.* from public.advertisement a where a.max_duration>=:maxDuration where a.deleted is false order by random()", nativeQuery = true)
+    @Query(value = "select a.* from public.advertisement a where a.deleted is false and a.max_duration>=:maxDuration order by random()", nativeQuery = true)
     List<Advertisement> findAllByMaxDurationGreaterThan(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
 
-    @Query(value = "select a.* from public.advertisement a where a.max_duration<=:maxDuration where a.deleted is false order by random()", nativeQuery = true)
+    @Query(value = "select a.* from public.advertisement a where a.deleted is false and a.max_duration<=:maxDuration order by random()", nativeQuery = true)
     List<Advertisement> findAllByMaxDurationLessThan(@Param(value = "maxDuration") int maxDuration, Pageable pageable);
 
     @Query(value = "from Advertisement a order by a.createdAt desc")
