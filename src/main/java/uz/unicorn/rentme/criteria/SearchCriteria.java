@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SearchCriteria extends AbstractCriteria implements BaseCriteria {
+public class                                                                                                              SearchCriteria extends AbstractCriteria implements BaseCriteria {
     private LocationSearchDTO location;
     private AdvertisementCategory category;
     private String brand;

@@ -1,10 +1,8 @@
 package uz.unicorn.rentme.service;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uz.unicorn.rentme.config.security.utils.UtilsForSessionUser;
@@ -15,6 +13,7 @@ import uz.unicorn.rentme.dto.advertisement.AdvertisementDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementShortDTO;
 import uz.unicorn.rentme.dto.advertisement.AdvertisementUpdateDTO;
 import uz.unicorn.rentme.entity.Advertisement;
+import uz.unicorn.rentme.entity.Brand;
 import uz.unicorn.rentme.entity.Transport;
 import uz.unicorn.rentme.entity.TransportModel;
 import uz.unicorn.rentme.exceptions.BadRequestException;
@@ -22,6 +21,7 @@ import uz.unicorn.rentme.exceptions.NotFoundException;
 import uz.unicorn.rentme.mapper.AdvertisementMapper;
 import uz.unicorn.rentme.repository.AdvertisementRepository;
 import uz.unicorn.rentme.repository.AuthUserRepository;
+import uz.unicorn.rentme.repository.BrandRepository;
 import uz.unicorn.rentme.repository.TransportModelRepository;
 import uz.unicorn.rentme.response.DataDTO;
 import uz.unicorn.rentme.response.ResponseEntity;
@@ -38,6 +38,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
 
     private final UtilsForSessionUser utils;
     private final TransportModelRepository transportModelRepository;
+    private final BrandRepository brandRepository;
     private final AuthUserRepository authUserRepository;
 
 
@@ -46,11 +47,12 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
             AdvertisementRepository repository,
             UtilsForSessionUser utils,
             TransportModelRepository transportModelRepository,
-            AuthUserRepository authUserRepository) {
+            BrandRepository brandRepository, AuthUserRepository authUserRepository) {
 
         super(mapper, repository);
         this.utils = utils;
         this.transportModelRepository = transportModelRepository;
+        this.brandRepository = brandRepository;
         this.authUserRepository = authUserRepository;
 
     }
@@ -164,6 +166,11 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
         if (Objects.nonNull(criteria.getCategory())) {
             whereCause.add("category = :category");
             params.put("category", criteria.getCategory());
+        }
+        if (Objects.nonNull(criteria.getBrand())) {
+            Brand brand = brandRepository.findByName(criteria.getBrand()).orElseThrow(() -> new NotFoundException("Brand name is invalid"));
+            whereCause.add("a.transport.model.brand = :brand");
+            params.put("brand", brand);
         }
         if (Objects.nonNull(criteria.getModel())) {
             TransportModel transportModel = transportModelRepository
