@@ -15,6 +15,6 @@ public interface BrandRepository extends JpaRepository<Brand, Long>, BaseReposit
 
     Optional<Brand> findByName(String brand);
 
-    @Query(value = "select b.name, b.image from Brand b")
+    @Query(value = "select new uz.unicorn.rentme.dto.brand.BrandShortDTO(b.name, b.image) from Brand b")
     List<BrandShortDTO> findAllToMain();
 }

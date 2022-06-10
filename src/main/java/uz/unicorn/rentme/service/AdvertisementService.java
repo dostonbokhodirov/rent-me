@@ -225,8 +225,7 @@ public class AdvertisementService extends AbstractService<AdvertisementMapper, A
                     DateUtils.getDifferenceDays(criteria.getDate().getEndDate(), criteria.getDate().getStartDate()));
         }
         TypedQuery<Advertisement> query = getQuery(whereCause, params);
-        List<Advertisement> advertisementList;
-        advertisementList = getResults(criteria, query);
+        List<Advertisement> advertisementList = getResults(criteria, query);
         List<AdvertisementDTO> advertisementDTOList = mapper.toDTO(advertisementList);
         return new ResponseEntity<>(new DataDTO<>(advertisementDTOList, (long) advertisementDTOList.size()));
     }
